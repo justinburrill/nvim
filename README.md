@@ -1,2 +1,1 @@
-# nvim
-neovim configuration
+place in ~/.config/
