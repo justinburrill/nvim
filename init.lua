@@ -7,6 +7,8 @@ vim.opt.signcolumn = "yes"
 vim.opt.expandtab = true
 vim.opt.smartindent = true
 vim.opt.winborder = "rounded"
+vim.opt.formatoptions:remove({ 'c', 'r', 'o' }) -- don't start comment on new line when pressing enter
+
 vim.g.clipboard = {
     name = 'WslClipboard',
     copy = {
@@ -29,7 +31,7 @@ vim.pack.add({
     { src = "https://github.com/stevearc/oil.nvim" },
     { src = "https://github.com/echasnovski/mini.pick" },
     { src = "https://github.com/echasnovski/mini.surround" },
-    { src = "https://github.com/nvim-lua/plenary.nvim"},
+    { src = "https://github.com/nvim-lua/plenary.nvim" },
     { src = "https://github.com/numToStr/Comment.nvim" },
     { src = "https://github.com/neovim/nvim-lspconfig" },
     -- { src = "https://github.com/folke/lazydev.nvim ", ft = "lua" }, -- using the one below until folke comes back from vacation
@@ -153,7 +155,7 @@ end)
 vim.keymap.set("n", "<leader>e", ":Oil<CR>")
 vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename" })
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
-vim.keymap.set("n", "<leader>o", ":Pick files<CR>", { desc = ":Pick files" })
+vim.keymap.set("n", "<leader>pf", ":Pick files<CR>", { desc = ":Pick files" })
 vim.keymap.set("n", "<leader>ph", ":Pick help<CR>", { desc = ":Pick help" })
 vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "View diagnostic" })
 vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end,
@@ -162,18 +164,30 @@ vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1, float = tr
     { desc = "Jump to next diagnostic" })
 vim.keymap.set("i", "<C-H>", "<C-W>") -- delete word with ctrl+backspace
 
--- linewise comment
-vim.keymap.set({ "i", "n" }, "<C-_>", function() commentapi.toggle.linewise.current() end)
+-- linewise COMMENTS with CTRL
+-- TODO: cursor isn't placed correctly when I start a comment on an empty line
+vim.keymap.set({ "i", "n" }, "<C-_>", commentapi.toggle.linewise.current)
 vim.keymap.set("x", "<C-_>", function()
     vim.api.nvim_feedkeys(escape_key, "nx", false)
     commentapi.toggle.linewise(vim.fn.visualmode())
 end)
--- blockwise comment
-vim.keymap.set({ "i", "n" }, "<M-/>", function() commentapi.toggle.blockwise.current() end)
+-- blockwise comment with ALT
+vim.keymap.set("n", "<M-/>", commentapi.toggle.blockwise.current)
 vim.keymap.set("x", "<M-/>", function()
     vim.api.nvim_feedkeys(escape_key, "nx", false)
     commentapi.toggle.blockwise(vim.fn.visualmode())
 end)
+-- TODO: create comment at cursor if I do ALT while in insert mode
+-- vim.keymap.set("i", "<M-/>", function() commentapi.
+
+-- FOLDING
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 4
+vim.opt.foldcolumn = "0"
+vim.opt.foldtext = ""
+vim.opt.foldnestmax = 6 -- don't create folds after X levels deep
 
 
 -- ACTIVATE COLOURSCHEME
