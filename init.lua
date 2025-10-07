@@ -29,6 +29,7 @@ vim.pack.add({
     { src = "https://github.com/stevearc/oil.nvim" },
     { src = "https://github.com/echasnovski/mini.pick" },
     { src = "https://github.com/echasnovski/mini.surround" },
+    { src = "https://github.com/nvim-lua/plenary.nvim"},
     { src = "https://github.com/numToStr/Comment.nvim" },
     { src = "https://github.com/neovim/nvim-lspconfig" },
     -- { src = "https://github.com/folke/lazydev.nvim ", ft = "lua" }, -- using the one below until folke comes back from vacation
@@ -36,13 +37,22 @@ vim.pack.add({
     { src = "https://github.com/mason-org/mason.nvim" },
     { src = "https://github.com/mason-org/mason-lspconfig.nvim" },
     { src = "https://github.com/folke/which-key.nvim" },
+    { src = "https://github.com/nvimtools/none-ls.nvim" },
 })
 
 local lspconfig = require("lspconfig")
+local null_ls = require("null-ls")
 
+null_ls.setup({
+    sources = {
+        null_ls.builtins.formatting.black,
+    }
+})
 require "lazydev".setup()
 require "mini.pick".setup()
-require "mini.surround".setup()
+require "mini.surround".setup({
+    n_lines = 50,
+})
 require "nvim-treesitter".setup()
 require "oil".setup()
 require "mason".setup()
@@ -50,7 +60,7 @@ require "mason-lspconfig".setup()
 require "which-key".setup({
     notify = true,
     preset = "helix",
-    delay = 300,
+    delay = 500,
     plugins = {
         marks = true,
         registers = true,
@@ -60,18 +70,12 @@ require "which-key".setup({
         no_overlap = false,
         height = { min = 10, max = 30 },
         wo = {
-            winblend = 1,
+            winblend = 0,
         }
     },
     layout = {
         width = { max = 50 }
     }
-})
-require "vague".setup({
-    style = {
-        strings = "none",
-        keywords = "bold",
-    },
 })
 
 -- TREESITTER
@@ -79,7 +83,7 @@ local treesitter_ok, treesitter_configs = pcall(require, "nvim-treesitter.config
 if treesitter_ok then
     treesitter_configs.setup {
         ensure_installed = { "c", "cpp", "lua", "python", "typescript",
-            "vim", "rust", "vue", "sql", "html", "css" },
+            "vim", "rust", "vue", "sql", "html", "css", "bash" },
         sync_install = true,
         ignore_install = {},
         auto_install = true,
@@ -97,7 +101,7 @@ if treesitter_ok then
 end
 
 -- LSPCONFIG
-vim.lsp.enable({ "lua_ls", "clangd", "basedpyright", "rust_analyzer", "denols", "ts_ls", "black" })
+vim.lsp.enable({ "lua_ls", "clangd", "basedpyright", "rust_analyzer", "denols", "ts_ls", "bashls" })
 vim.lsp.config("basedpyright", {
     settings = {
         basedpyright = {
@@ -138,7 +142,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 local commentapi = require("Comment.api")
 local escape_key = vim.api.nvim_replace_termcodes("<ESC>", true, false, true)
 vim.g.mapleader = " "
-vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, { desc = "format" })
+vim.keymap.set("n", "<leader>cf", vim.lsp.buf.format, { desc = "Code format" })
 vim.keymap.set("n", "<C-Space>", vim.lsp.buf.hover)
 vim.keymap.set("i", "<C-Space>", "<C-x><C-o>") -- omnifunc autocomplete
 vim.keymap.set("i", "<C-z>", function()
@@ -147,10 +151,10 @@ vim.keymap.set("i", "<C-z>", function()
     -- until punctuation or x many characters or something
 end)
 vim.keymap.set("n", "<leader>e", ":Oil<CR>")
-vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "rename" })
+vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename" })
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
 vim.keymap.set("n", "<leader>o", ":Pick files<CR>", { desc = ":Pick files" })
-vim.keymap.set("n", "<leader>h", ":Pick help<CR>", { desc = ":Pick help" })
+vim.keymap.set("n", "<leader>ph", ":Pick help<CR>", { desc = ":Pick help" })
 vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "View diagnostic" })
 vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end,
     { desc = "Jump to previous diagnostic" })
@@ -173,5 +177,10 @@ end)
 
 
 -- ACTIVATE COLOURSCHEME
+require "vague".setup({
+    style = {
+        strings = "none",
+        keywords = "bold",
+    },
+})
 vim.cmd("colorscheme vague")
-
