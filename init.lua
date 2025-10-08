@@ -26,20 +26,19 @@ vim.g.clipboard = {
 
 -- PLUGINS PACKAGES
 vim.pack.add({
-    { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
-    { src = "https://github.com/vague2k/vague.nvim",             name = "vague" },
-    { src = "https://github.com/stevearc/oil.nvim" },
     { src = "https://github.com/echasnovski/mini.pick" },
     { src = "https://github.com/echasnovski/mini.surround" },
-    { src = "https://github.com/nvim-lua/plenary.nvim" },
-    { src = "https://github.com/numToStr/Comment.nvim" },
-    { src = "https://github.com/neovim/nvim-lspconfig" },
-    -- { src = "https://github.com/folke/lazydev.nvim ", ft = "lua" }, -- using the one below until folke comes back from vacation
-    { src = "https://github.com/Jari27/lazydev.nvim",            name = "lazydev", ft = "lua", version = "deprecate_client_notify" },
-    { src = "https://github.com/mason-org/mason.nvim" },
-    { src = "https://github.com/mason-org/mason-lspconfig.nvim" },
+    { src = "https://github.com/folke/lazydev.nvim",             ft = "lua" },
     { src = "https://github.com/folke/which-key.nvim" },
+    { src = "https://github.com/mason-org/mason-lspconfig.nvim" },
+    { src = "https://github.com/mason-org/mason.nvim" },
+    { src = "https://github.com/neovim/nvim-lspconfig" },
+    { src = "https://github.com/numToStr/Comment.nvim" },
+    { src = "https://github.com/nvim-lua/plenary.nvim" },
+    { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
     { src = "https://github.com/nvimtools/none-ls.nvim" },
+    { src = "https://github.com/stevearc/oil.nvim" },
+    { src = "https://github.com/vague2k/vague.nvim",             name = "vague" },
 })
 
 local lspconfig = require("lspconfig")
@@ -184,10 +183,10 @@ end)
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.opt.foldlevel = 99
-vim.opt.foldlevelstart = 4
+vim.opt.foldlevelstart = 6
 vim.opt.foldcolumn = "0"
 vim.opt.foldtext = ""
-vim.opt.foldnestmax = 6 -- don't create folds after X levels deep
+vim.opt.foldnestmax = 8 -- don't create folds after X levels deep
 
 
 -- ACTIVATE COLOURSCHEME
