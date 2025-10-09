@@ -156,6 +156,7 @@ vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename" })
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
 vim.keymap.set("n", "<leader>pf", ":Pick files<CR>", { desc = ":Pick files" })
 vim.keymap.set("n", "<leader>ph", ":Pick help<CR>", { desc = ":Pick help" })
+vim.keymap.set("n", "<leader>pb", ":Pick buffers<CR>", { desc = ":Pick buffers" })
 vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "View diagnostic" })
 vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end,
     { desc = "Jump to previous diagnostic" })
