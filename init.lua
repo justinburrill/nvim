@@ -1,3 +1,9 @@
+vim.o.smartcase = true -- for case-insensitive finding/searching
+-- Directly setting format options doesn't work because it is overwritten later (default is jncroql)
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead", "BufWinEnter" }, {
+    pattern = { "*" },
+    callback = function() vim.o.formatoptions="tjn" end,
+})
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.wrap = false
@@ -7,16 +13,19 @@ vim.opt.signcolumn = "yes"
 vim.opt.expandtab = true
 vim.opt.smartindent = true
 vim.opt.winborder = "rounded"
-vim.opt.formatoptions:remove({ 'c', 'r', 'o' }) -- don't start comment on new line when pressing enter
--- FOLDING
+vim.o.showbreak = '↪'
+vim.o.fillchars = "stl: ,stlnc: "
+vim.o.listchars = 'trail:·,nbsp:+,tab:⟶ ,leadmultispace:\u{258F}   ,extends:▶,precedes:◀,nbsp:⏑'
+vim.o.list = true
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.opt.foldlevel = 99
-vim.opt.foldlevelstart = 15
+vim.opt.foldlevelstart = 10
 vim.opt.foldcolumn = "0"
 vim.opt.foldtext = ""
-vim.opt.foldnestmax = 15 -- don't create folds after X levels deep
+vim.opt.foldnestmax = 10 -- don't create folds after X levels deep
 
+local get_text_from_powershell = 'powershell.exe -NoLogo -NoProfile -c [Console]::Out.Write($(Get-Clipboard -Raw -TextFormatType UnicodeText).tostring().replace("`r", ""))'
 vim.g.clipboard = {
     name = 'WslClipboard',
     copy = {
@@ -24,10 +33,8 @@ vim.g.clipboard = {
         ['*'] = 'clip.exe',
     },
     paste = {
-        ['+'] =
-        'powershell.exe -NoLogo -NoProfile -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-        ['*'] =
-        'powershell.exe -NoLogo -NoProfile -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+        ['+'] = get_text_from_powershell,
+        ['*'] = get_text_from_powershell,
     },
     cache_enabled = 0,
 }
@@ -159,12 +166,19 @@ vim.keymap.set("i", "<C-z>", function()
     -- if the text before my cursor isn't from the clipboard, then delete
     -- until punctuation or x many characters or something
 end)
+vim.keymap.set("n", "gi", vim.lsp.buf.implementation, {desc="Go to implementation"})
+vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, {desc="Go to type definition"})
+vim.keymap.set("n", "<leader>s", vim.lsp.buf.signature_help, {desc="Show signature"})
 vim.keymap.set("n", "<leader>e", ":Oil<CR>")
 vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename" })
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
 vim.keymap.set("n", "<leader>pf", ":Pick files<CR>", { desc = ":Pick files" })
 vim.keymap.set("n", "<leader>ph", ":Pick help<CR>", { desc = ":Pick help" })
 vim.keymap.set("n", "<leader>pb", ":Pick buffers<CR>", { desc = ":Pick buffers" })
+vim.keymap.set("n", "<leader>gb", function()
+    -- local lineNum = vim.api.nvim_win_get_cursor(0)[1]
+    -- TODO
+end, { desc = "Git blame" })
 vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "View diagnostic" })
 vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end,
     { desc = "Jump to previous diagnostic" })
@@ -183,7 +197,7 @@ end)
 vim.keymap.set("n", "<M-/>", commentapi.toggle.blockwise.current)
 vim.keymap.set("x", "<M-/>", function()
     vim.api.nvim_feedkeys(escape_key, "nx", false)
-    commentapi.toggle.blockwise(vim.fn.visualmode())
+    commentapi.toggle.blockwise(vim.fn.visualmode()) -- once upon a time there was a lazy brown dog that jumped over a quick fox or something
 end)
 -- TODO: create comment at cursor if I do ALT while in insert mode
 -- vim.keymap.set("i", "<M-/>", function() commentapi.
@@ -197,3 +211,8 @@ require "vague".setup({
     },
 })
 vim.cmd("colorscheme vague")
+
+-- HIGHLIGHTING
+vim.cmd("highlight StatusLine guifg=#e8f3ff")
+vim.cmd("highlight StatusLineNC guifg=#544f61")
+
