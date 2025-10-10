@@ -8,6 +8,14 @@ vim.opt.expandtab = true
 vim.opt.smartindent = true
 vim.opt.winborder = "rounded"
 vim.opt.formatoptions:remove({ 'c', 'r', 'o' }) -- don't start comment on new line when pressing enter
+-- FOLDING
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 15
+vim.opt.foldcolumn = "0"
+vim.opt.foldtext = ""
+vim.opt.foldnestmax = 15 -- don't create folds after X levels deep
 
 vim.g.clipboard = {
     name = 'WslClipboard',
@@ -179,15 +187,6 @@ vim.keymap.set("x", "<M-/>", function()
 end)
 -- TODO: create comment at cursor if I do ALT while in insert mode
 -- vim.keymap.set("i", "<M-/>", function() commentapi.
-
--- FOLDING
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-vim.opt.foldlevel = 99
-vim.opt.foldlevelstart = 6
-vim.opt.foldcolumn = "0"
-vim.opt.foldtext = ""
-vim.opt.foldnestmax = 8 -- don't create folds after X levels deep
 
 
 -- ACTIVATE COLOURSCHEME
