@@ -2,7 +2,7 @@ vim.o.smartcase = true -- for case-insensitive finding/searching
 -- Directly setting format options doesn't work because it is overwritten later (default is jncroql)
 vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead", "BufWinEnter" }, {
     pattern = { "*" },
-    callback = function() vim.o.formatoptions="tjn" end,
+    callback = function() vim.o.formatoptions = "tjn" end,
 })
 vim.opt.number = true
 vim.opt.relativenumber = true
@@ -25,7 +25,8 @@ vim.opt.foldcolumn = "0"
 vim.opt.foldtext = ""
 vim.opt.foldnestmax = 10 -- don't create folds after X levels deep
 
-local get_text_from_powershell = 'powershell.exe -NoLogo -NoProfile -c [Console]::Out.Write($(Get-Clipboard -Raw -TextFormatType UnicodeText).tostring().replace("`r", ""))'
+local get_text_from_powershell =
+'powershell.exe -NoLogo -NoProfile -c [Console]::Out.Write($(Get-Clipboard -Raw -TextFormatType UnicodeText).tostring().replace("`r", ""))'
 vim.g.clipboard = {
     name = 'WslClipboard',
     copy = {
@@ -38,6 +39,17 @@ vim.g.clipboard = {
     },
     cache_enabled = 0,
 }
+
+function os.capture(cmd, raw)
+    local f = assert(io.popen(cmd, 'r'))
+    local s = assert(f:read('*a'))
+    f:close()
+    if raw then return s end
+    s = string.gsub(s, '^%s+', '')
+    s = string.gsub(s, '%s+$', '')
+    s = string.gsub(s, '[\n\r]+', ' ')
+    return s
+end
 
 -- PLUGINS PACKAGES
 vim.pack.add({
@@ -166,9 +178,9 @@ vim.keymap.set("i", "<C-z>", function()
     -- if the text before my cursor isn't from the clipboard, then delete
     -- until punctuation or x many characters or something
 end)
-vim.keymap.set("n", "gi", vim.lsp.buf.implementation, {desc="Go to implementation"})
-vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, {desc="Go to type definition"})
-vim.keymap.set("n", "<leader>s", vim.lsp.buf.signature_help, {desc="Show signature"})
+vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "Go to implementation" })
+vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { desc = "Go to type definition" })
+vim.keymap.set("n", "<leader>s", vim.lsp.buf.signature_help, { desc = "Show signature" })
 vim.keymap.set("n", "<leader>e", ":Oil<CR>")
 vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename" })
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
@@ -176,8 +188,14 @@ vim.keymap.set("n", "<leader>pf", ":Pick files<CR>", { desc = ":Pick files" })
 vim.keymap.set("n", "<leader>ph", ":Pick help<CR>", { desc = ":Pick help" })
 vim.keymap.set("n", "<leader>pb", ":Pick buffers<CR>", { desc = ":Pick buffers" })
 vim.keymap.set("n", "<leader>gb", function()
-    -- local lineNum = vim.api.nvim_win_get_cursor(0)[1]
+    local lineNum = vim.api.nvim_win_get_cursor(0)[1]
+    local _bufnum, line, column, _off = unpack(vim.fn.getpos("."))
+    local output = os.capture(("git blame -L %d").format(line))
     -- TODO
+    -- local pos = vim.fn.screenpos(0,
+    -- vim.api.nvim_open_win(0, false, {
+    --     relative="win", row=, width=50,
+    -- })
 end, { desc = "Git blame" })
 vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "View diagnostic" })
 vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end,
@@ -215,4 +233,3 @@ vim.cmd("colorscheme vague")
 -- HIGHLIGHTING
 vim.cmd("highlight StatusLine guifg=#e8f3ff")
 vim.cmd("highlight StatusLineNC guifg=#544f61")
-
