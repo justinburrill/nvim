@@ -1,3 +1,4 @@
+package.path = "/home/justin/.config/nvim/?.lua" .. package.path
 vim.o.ignorecase = true
 vim.o.smartcase = true -- for case-insensitive finding/searching
 -- Directly setting format options doesn't work because it is overwritten later (default is jncroql)
@@ -41,16 +42,6 @@ vim.g.clipboard = {
     cache_enabled = 0,
 }
 
-function os.capture(cmd, raw)
-    local f = assert(io.popen(cmd, 'r'))
-    local s = assert(f:read('*a'))
-    f:close()
-    if raw then return s end
-    s = string.gsub(s, '^%s+', '')
-    s = string.gsub(s, '%s+$', '')
-    s = string.gsub(s, '[\n\r]+', ' ')
-    return s
-end
 
 -- PLUGINS PACKAGES
 vim.pack.add({
@@ -58,7 +49,7 @@ vim.pack.add({
     { src = "https://github.com/echasnovski/mini.extra" },
     { src = "https://github.com/echasnovski/mini.surround" },
     { src = "https://github.com/echasnovski/mini.pairs" },
-    { src = "https://github.com/folke/lazydev.nvim",             ft = "lua" },
+    { src = "https://github.com/folke/lazydev.nvim",                         ft = "lua" },
     { src = "https://github.com/folke/which-key.nvim" },
     { src = "https://github.com/mason-org/mason-lspconfig.nvim" },
     { src = "https://github.com/mason-org/mason.nvim" },
@@ -66,9 +57,10 @@ vim.pack.add({
     { src = "https://github.com/numToStr/Comment.nvim" },
     { src = "https://github.com/nvim-lua/plenary.nvim" },
     { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
+    { src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects" },
     { src = "https://github.com/nvimtools/none-ls.nvim" },
     { src = "https://github.com/stevearc/oil.nvim" },
-    { src = "https://github.com/vague2k/vague.nvim",             name = "vague" },
+    { src = "https://github.com/vague2k/vague.nvim",                         name = "vague" },
 })
 
 local null_ls = require("null-ls")
@@ -129,6 +121,28 @@ if treesitter_ok then
             max_file_lines = 10000,
             -- colors = {},
         },
+        textobjects = {
+            select = {
+                enable = true,
+                keymaps = {
+                    ["af"] = { query = "@function.outer", desc = "Select outer function" },
+                    ["if"] = { query = "@function.inner", desc = "Select inner function" },
+                }
+            },
+            move = {
+                enable = true,
+                set_jumps = true,
+                goto_next_start = {
+                    ["]f"] = { query = "@function.outer", desc = "Next function" },
+                    ["]c"] = { query = "@class.outer", desc = "Next class" },
+                },
+                goto_previous_start = {
+                    ["[f"] = { query = "@function.outer", desc = "Previous function" },
+                    ["[c"] = { query = "@class.outer", desc = "Previous class" },
+                }
+
+            }
+        }
     }
 end
 
@@ -171,64 +185,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 -- KEYBINDS KEYMAPS
-local commentapi = require("Comment.api")
-local escape_key = vim.api.nvim_replace_termcodes("<ESC>", true, false, true)
-vim.g.mapleader = " "
-vim.keymap.set("n", "<leader>cf", vim.lsp.buf.format, { desc = "Code format" })
-vim.keymap.set("n", "<C-Space>", vim.lsp.buf.hover)
-vim.keymap.set("i", "<C-Space>", "<C-x><C-o>") -- omnifunc autocomplete
-vim.keymap.set("i", "<C-z>", function()
-    -- TODO make this delete something i just pasted from "* or "+ with C-v
-    -- if the text before my cursor isn't from the clipboard, then delete
-    -- until punctuation or x many characters or something
-end)
-vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "Go to implementation" })
-vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { desc = "Go to type definition" })
-vim.keymap.set("n", "gs", vim.lsp.buf.signature_help, { desc = "Signature help" })
-vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "Signature help" })
-vim.keymap.set("n", "<leader>s", vim.lsp.buf.signature_help, { desc = "Show signature" })
-vim.keymap.set("n", "<leader>e", ":Oil<CR>")
-vim.keymap.set("n", "<leader><Space>", ":nohlsearch<CR>")
-vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename" })
-vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
-vim.keymap.set("n", "<leader>pf", ":Pick files<CR>", { desc = "Pick files" })
-vim.keymap.set("n", "<leader>ph", ":Pick help<CR>", { desc = "Pick help" })
-vim.keymap.set("n", "<leader>pb", ":Pick buffers<CR>", { desc = "Pick buffers" })
-vim.keymap.set("n", "<leader>pr", function() MiniExtra.pickers.lsp({ scope = "references" }) end,
-    { desc = "Pick references" })
-vim.keymap.set("n", "<leader>gb", function()
-    local lineNum = vim.api.nvim_win_get_cursor(0)[1]
-    local _bufnum, line, column, _off = unpack(vim.fn.getpos("."))
-    local output = os.capture(("git blame -L %d").format(line))
-    -- TODO
-    -- local pos = vim.fn.screenpos(0,
-    -- vim.api.nvim_open_win(0, false, {
-    --     relative="win", row=, width=50,
-    -- })
-end, { desc = "Git blame" })
-vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "View diagnostic" })
-vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end,
-    { desc = "Jump to previous diagnostic" })
-vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end,
-    { desc = "Jump to next diagnostic" })
-vim.keymap.set("i", "<C-H>", "<C-W>") -- delete word with ctrl+backspace
-
--- linewise COMMENTS with CTRL
--- TODO: cursor isn't placed correctly when I start a comment on an empty line
-vim.keymap.set({ "i", "n" }, "<C-_>", commentapi.toggle.linewise.current)
-vim.keymap.set("x", "<C-_>", function()
-    vim.api.nvim_feedkeys(escape_key, "nx", false)
-    commentapi.toggle.linewise(vim.fn.visualmode())
-end)
--- blockwise comment with ALT
-vim.keymap.set("n", "<M-/>", commentapi.toggle.blockwise.current)
-vim.keymap.set("x", "<M-/>", function()
-    vim.api.nvim_feedkeys(escape_key, "nx", false)
-    commentapi.toggle.blockwise(vim.fn.visualmode()) -- once upon a time there was a lazy brown dog that jumped over a quick fox or something
-end)
--- TODO: create comment at cursor if I do ALT while in insert mode
--- vim.keymap.set("i", "<M-/>", function() commentapi.
-
+require "keymaps"
 
 -- ACTIVATE COLOURSCHEME
 require "vague".setup({
