@@ -42,7 +42,6 @@ vim.g.clipboard = {
     cache_enabled = 0,
 }
 
-
 -- PLUGINS PACKAGES
 vim.pack.add({
     { src = "https://github.com/echasnovski/mini.pick" },
@@ -127,6 +126,10 @@ if treesitter_ok then
                 keymaps = {
                     ["af"] = { query = "@function.outer", desc = "Select outer function" },
                     ["if"] = { query = "@function.inner", desc = "Select inner function" },
+                    ["ac"] = { query = "@class.outer", desc = "Select outer class" },
+                    ["ic"] = { query = "@class.inner", desc = "Select inner class" },
+                    ["aa"] = { query = "@parameter.outer", desc = "Select outer argument" },
+                    ["ia"] = { query = "@parameter.inner", desc = "Select inner argument" },
                 }
             },
             move = {
@@ -135,12 +138,13 @@ if treesitter_ok then
                 goto_next_start = {
                     ["]f"] = { query = "@function.outer", desc = "Next function" },
                     ["]c"] = { query = "@class.outer", desc = "Next class" },
+                    ["]a"] = { query = "@parameter.outer", desc = "Next argument" },
                 },
                 goto_previous_start = {
                     ["[f"] = { query = "@function.outer", desc = "Previous function" },
                     ["[c"] = { query = "@class.outer", desc = "Previous class" },
+                    ["[a"] = { query = "@parameter.outer", desc = "Previous argument" },
                 }
-
             }
         }
     }
