@@ -18,7 +18,7 @@ vim.keymap.set("n", "gs", vim.lsp.buf.signature_help, { desc = "Signature help" 
 vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "Signature help" })
 vim.keymap.set("n", "<leader>s", vim.lsp.buf.signature_help, { desc = "Show signature" })
 vim.keymap.set("n", "<leader>e", ":Oil<CR>")
-vim.keymap.set("n", "<leader><Space>", ":nohlsearch<CR>")
+vim.keymap.set("n", "<leader>/", ":nohlsearch<CR>")
 vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename" })
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
 vim.keymap.set("n", "<leader>pf", ":Pick files<CR>", { desc = "Pick files" })

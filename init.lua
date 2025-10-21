@@ -13,6 +13,7 @@ vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.signcolumn = "yes"
 vim.opt.expandtab = true
+vim.opt.autoindent = true
 vim.opt.smartindent = true
 vim.opt.winborder = "rounded"
 vim.o.showbreak = '↪'
@@ -130,6 +131,9 @@ if treesitter_ok then
                     ["ic"] = { query = "@class.inner", desc = "Select inner class" },
                     ["aa"] = { query = "@parameter.outer", desc = "Select outer argument" },
                     ["ia"] = { query = "@parameter.inner", desc = "Select inner argument" },
+                },
+                selection_modes = {
+                    -- TODO
                 }
             },
             move = {
