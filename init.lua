@@ -135,7 +135,7 @@ if treesitter_ok then
                     ["ia"] = { query = "@parameter.inner", desc = "Select inner argument" },
                 },
                 selection_modes = {
-                    -- TODO
+                    -- TODO:
                 }
             },
             move = {
@@ -208,7 +208,7 @@ vim.cmd("colorscheme vague")
 
 -- REMEMBER WITH AUTO-VIEWS AND VIEWOPTIONS
 vim.o.viewoptions = "folds,cursor"
--- TODO
+-- TODO:
 -- vim.api.nvim_create_augroup
 
 -- HIGHLIGHTING

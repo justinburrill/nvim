@@ -5,7 +5,7 @@ vim.keymap.set("n", "<leader>cf", vim.lsp.buf.format, { desc = "Code format" })
 vim.keymap.set("n", "<C-Space>", vim.lsp.buf.hover)
 vim.keymap.set("i", "<C-Space>", "<C-x><C-o>") -- omnifunc autocomplete
 vim.keymap.set("i", "<C-z>", function()
-    -- TODO make this delete something i just pasted from "* or "+ with C-v
+    -- TODO:make this delete something i just pasted from "* or "+ with C-v
     -- if the text before my cursor isn't from the clipboard, then delete
     -- until punctuation or x many characters or something
 end)
@@ -33,7 +33,7 @@ vim.keymap.set("n", "<leader>gb", function()
     local lineNum = vim.api.nvim_win_get_cursor(0)[1]
     local _bufnum, line, column, _off = unpack(vim.fn.getpos("."))
     local output = os.capture(("git blame -L %d").format(line))
-    -- TODO
+    -- TODO:
     -- local pos = vim.fn.screenpos(0,
     -- vim.api.nvim_open_win(0, false, {
     --     relative="win", row=, width=50,
