@@ -51,6 +51,7 @@ vim.pack.add({
     { src = "https://github.com/echasnovski/mini.pairs" },
     { src = "https://github.com/folke/lazydev.nvim",                         ft = "lua" },
     { src = "https://github.com/folke/which-key.nvim" },
+    { src = "https://github.com/folke/todo-comments.nvim" },
     { src = "https://github.com/mason-org/mason-lspconfig.nvim" },
     { src = "https://github.com/mason-org/mason.nvim" },
     { src = "https://github.com/neovim/nvim-lspconfig" },
@@ -64,12 +65,12 @@ vim.pack.add({
 })
 
 local null_ls = require("null-ls")
-
 null_ls.setup({
     sources = {
         null_ls.builtins.formatting.black,
     }
 })
+
 require "lazydev".setup()
 require "mini.pick".setup()
 require "mini.extra".setup()
@@ -81,6 +82,7 @@ require "nvim-treesitter".setup()
 require "oil".setup()
 require "mason".setup()
 require "mason-lspconfig".setup()
+require "todo-comments".setup()
 require "which-key".setup({
     notify = true,
     preset = "helix",

@@ -1,4 +1,3 @@
-
 local commentapi = require("Comment.api")
 local escape_key = vim.api.nvim_replace_termcodes("<ESC>", true, false, true)
 vim.g.mapleader = " "
@@ -27,8 +26,9 @@ vim.keymap.set("n", "<leader>pH", ":Pick hl_groups<CR>", { desc = "Pick highligh
 vim.keymap.set("n", "<leader>pb", ":Pick buffers<CR>", { desc = "Pick buffers" })
 vim.keymap.set("n", "<leader>pd", ":Pick diagnostic<CR>", { desc = "Pick diagnostic" })
 vim.keymap.set("n", "<leader>pe", ":Pick explorer<CR>", { desc = "Pick explorer" })
-vim.keymap.set("n", "<leader>pr", function() MiniExtra.pickers.lsp({ scope = "references" }) end,
-    { desc = "Pick references" })
+vim.keymap.set("n", "<leader>pr", function()
+    MiniExtra.pickers.lsp({ scope = "references" })
+end, { desc = "Pick references" })
 vim.keymap.set("n", "<leader>gb", function()
     local lineNum = vim.api.nvim_win_get_cursor(0)[1]
     local _bufnum, line, column, _off = unpack(vim.fn.getpos("."))
@@ -40,10 +40,19 @@ vim.keymap.set("n", "<leader>gb", function()
     -- })
 end, { desc = "Git blame" })
 vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "View diagnostic" })
-vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end,
-    { desc = "Jump to previous diagnostic" })
-vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end,
-    { desc = "Jump to next diagnostic" })
+vim.keymap.set("n", "[d", function()
+    vim.diagnostic.jump({ count = -1, float = true })
+end, { desc = "Jump to previous diagnostic" })
+vim.keymap.set("n", "]d", function()
+    vim.diagnostic.jump({ count = 1, float = true })
+end, { desc = "Jump to next diagnostic" })
+vim.keymap.set("n", "]t", function()
+    require("todo-comments").jump_next()
+end, { desc = "Next todo comment" })
+
+vim.keymap.set("n", "[t", function()
+    require("todo-comments").jump_prev()
+end, { desc = "Previous todo comment" })
 vim.keymap.set("i", "<C-H>", "<C-W>") -- delete word with ctrl+backspace
 
 -- linewise COMMENTS with CTRL
