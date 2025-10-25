@@ -61,6 +61,7 @@ vim.pack.add({
     { src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects" },
     { src = "https://github.com/nvimtools/none-ls.nvim" },
     { src = "https://github.com/stevearc/oil.nvim" },
+    { src = "https://github.com/mawkler/demicolon.nvim" },
     { src = "https://github.com/vague2k/vague.nvim",                         name = "vague" },
 })
 
@@ -83,6 +84,7 @@ require "oil".setup()
 require "mason".setup()
 require "mason-lspconfig".setup()
 require "todo-comments".setup()
+require "demicolon".setup()
 require "which-key".setup({
     notify = true,
     preset = "helix",
