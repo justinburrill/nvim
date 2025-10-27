@@ -28,6 +28,7 @@ vim.keymap.set("n", "<leader>pb", ":Pick buffers<CR>", { desc = "Pick buffers" }
 vim.keymap.set("n", "<leader>pd", ":Pick diagnostic<CR>", { desc = "Pick diagnostic" })
 vim.keymap.set("n", "<leader>pe", ":Pick explorer<CR>", { desc = "Pick explorer" })
 vim.keymap.set("n", "<leader>pc", ":Pick commands<CR>", { desc = "Pick commands" })
+vim.keymap.set("n", "<leader>pg", ":Pick grep_live<CR>", { desc = "Pick grep_live" })
 vim.keymap.set("n", "<leader>pr", function()
     MiniExtra.pickers.lsp({ scope = "references" })
 end, { desc = "Pick references" })
