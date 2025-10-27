@@ -69,7 +69,10 @@ vim.pack.add({
 local null_ls = require("null-ls")
 null_ls.setup({
     sources = {
-        null_ls.builtins.formatting.black,
+        null_ls.builtins.formatting.black.with {
+            command = "black",
+            extra_args = { "--line-length", "120" }
+        }
     }
 })
 
@@ -85,7 +88,11 @@ require "oil".setup()
 require "mason".setup()
 require "mason-lspconfig".setup()
 require "todo-comments".setup()
-require "demicolon".setup()
+require "demicolon".setup({
+    keymaps = {
+        repeat_motions = "stateful"
+    }
+})
 require "refjump".setup()
 require "which-key".setup({
     notify = true,
@@ -181,6 +188,9 @@ vim.lsp.config("basedpyright", {
             }
         }
     }
+})
+vim.lsp.config("black", {
+
 })
 vim.lsp.config("denols", {
     --root_dir = vim.lsp.util.root_pattern("deno.json", "deno.jsonc"),
