@@ -185,6 +185,7 @@ vim.lsp.config("basedpyright", {
                     reportExplicitAny = false,
                     reportUnusedExpression = false,
                     reportMissingTypeArgument = false,
+                    reportUntypedFunctionDecorator = false,
                 }
             }
         }
