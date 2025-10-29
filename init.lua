@@ -28,20 +28,10 @@ vim.opt.foldcolumn = "0"
 vim.opt.foldtext = ""
 vim.opt.foldnestmax = 10 -- don't create folds after X levels deep
 
-local get_text_from_powershell =
-'powershell.exe -NoLogo -NoProfile -c [Console]::Out.Write($(Get-Clipboard -Raw -TextFormatType UnicodeText).tostring().replace("`r", ""))'
-vim.g.clipboard = {
-    name = 'WslClipboard',
-    copy = {
-        ['+'] = 'clip.exe',
-        ['*'] = 'clip.exe',
-    },
-    paste = {
-        ['+'] = get_text_from_powershell,
-        ['*'] = get_text_from_powershell,
-    },
-    cache_enabled = 0,
-}
+vim.g.clipboard = "osc52"
+local termfeatures = vim.g.termfeatures or {}
+termfeatures.osc52 = true
+vim.g.termfeatures = termfeatures
 
 -- PLUGINS PACKAGES
 vim.pack.add({
