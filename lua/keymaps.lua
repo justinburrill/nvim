@@ -2,6 +2,7 @@ local commentapi = require("Comment.api")
 local escape_key = vim.api.nvim_replace_termcodes("<ESC>", true, false, true)
 vim.g.mapleader = " "
 vim.keymap.set("n", "<leader>cf", vim.lsp.buf.format, { desc = "Code format" })
+vim.keymap.set("v", "<leader>cf", vim.lsp.buf.format, { desc = "Code format selection" })
 vim.keymap.set("n", "<C-Space>", vim.lsp.buf.hover)
 vim.keymap.set("i", "<C-Space>", "<C-x><C-o>") -- omnifunc autocomplete
 vim.keymap.set("i", "<C-z>", function()
