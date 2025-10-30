@@ -146,7 +146,10 @@ if treesitter_ok then
                     ["ia"] = { query = "@parameter.inner", desc = "Select inner argument" },
                 },
                 selection_modes = {
-                    -- TODO:
+                    ["@function.inner"] = "V",
+                    ["@class.inner"] = "V",
+                    ["@function.outer"] = "V",
+                    ["@class.outer"] = "V",
                 }
             },
             move = {
