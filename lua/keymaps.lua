@@ -42,6 +42,7 @@ vim.keymap.set("n", "<leader>gb", function()
     --     relative="win", row=, width=50,
     -- })
 end, { desc = "Git blame" })
+vim.keymap.set("n", "<leader>bq", ":bp|bd #<CR>", { desc = "Quit buffer" })
 vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "View diagnostic" })
 vim.keymap.set("n", "[d", function()
     vim.diagnostic.jump({ count = -1, float = true })
