@@ -1,4 +1,5 @@
-package.path = "/home/justin/.config/nvim/?.lua" .. package.path
+package.path = "/home/justin/.config/nvim/?.lua;" .. package.path
+package.path = "/home/justin/.config/nvim/?/?.lua;" .. package.path
 vim.o.ignorecase = true
 vim.o.smartcase = true -- for case-insensitive finding/searching
 -- Directly setting format options doesn't work because it is overwritten later (default is jncroql)
@@ -217,6 +218,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 -- KEYBINDS KEYMAPS
 require "keymaps"
+require "blamer-nvim.lua.blamer-nvim".setup()
 
 -- ACTIVATE COLOURSCHEME
 require "vague".setup({

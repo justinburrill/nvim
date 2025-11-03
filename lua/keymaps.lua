@@ -1,6 +1,9 @@
+require "utils"
+require "mini.extra"
 local commentapi = require("Comment.api")
 local escape_key = vim.api.nvim_replace_termcodes("<ESC>", true, false, true)
 vim.g.mapleader = " "
+vim.keymap.set("n", "<leader>m", ":messages<CR>", { desc = "Show messages" })
 vim.keymap.set("n", "<leader>cf", vim.lsp.buf.format, { desc = "Code format" })
 vim.keymap.set("v", "<leader>cf", vim.lsp.buf.format, { desc = "Code format selection" })
 vim.keymap.set("n", "<C-Space>", vim.lsp.buf.hover)
@@ -32,16 +35,6 @@ vim.keymap.set("n", "<leader>pg", ":Pick grep_live<CR>", { desc = "Pick grep_liv
 vim.keymap.set("n", "<leader>pr", function()
     MiniExtra.pickers.lsp({ scope = "references" })
 end, { desc = "Pick references" })
-vim.keymap.set("n", "<leader>gb", function()
-    local lineNum = vim.api.nvim_win_get_cursor(0)[1]
-    local _bufnum, line, column, _off = unpack(vim.fn.getpos("."))
-    local output = os.capture(("git blame -L %d").format(line))
-    -- TODO:
-    -- local pos = vim.fn.screenpos(0,
-    -- vim.api.nvim_open_win(0, false, {
-    --     relative="win", row=, width=50,
-    -- })
-end, { desc = "Git blame" })
 vim.keymap.set("n", "<leader>bq", ":bp|bd #<CR>", { desc = "Quit buffer" })
 vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "View diagnostic" })
 vim.keymap.set("n", "[d", function()
