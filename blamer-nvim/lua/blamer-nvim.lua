@@ -21,14 +21,14 @@ local function max_line_length(strings)
     return max
 end
 
-function focus_popup_window()
+function Focus_popup_window()
     if POPUP_WINDOW == nil then return end
     vim.api.nvim_set_current_win(POPUP_WINDOW)
     vim.api.nvim_win_set_cursor(0, { 1, 0 })
 end
 
 --- @param lines string[] The output
-function open_popup_window(lines)
+function Open_popup_window(lines)
     local cursor_pos = vim.api.nvim_get_current_win()
     local screen_row, screen_col = unpack(vim.api.nvim_win_get_cursor(cursor_pos))
 
@@ -51,7 +51,7 @@ function open_popup_window(lines)
 
     vim.api.nvim_buf_set_lines(newbuf, 0, -1, false, lines)
 
-    function close_blame_window()
+    function Close_blame_window()
         vim.api.nvim_buf_delete(newbuf, { force = true })
         POPUP_WINDOW = nil
     end
@@ -59,41 +59,49 @@ function open_popup_window(lines)
     local close_window_autocmd_id = vim.api.nvim_create_autocmd("CursorMoved", {
         -- TODO: uncomment?
         -- buffer = vim.api.nvim_get_current_buf(),
-        callback = close_blame_window,
+        callback = Close_blame_window,
         once = true,
     })
 
     vim.keymap.set("n", "q", function()
-        close_blame_window()
+        Close_blame_window()
         vim.api.nvim_del_autocmd(close_window_autocmd_id)
     end, { buffer = newbuf })
 
     vim.api.nvim_set_option_value("modifiable", false, { buf = newbuf })
 end
 
-function M.open_blame_window()
-    local _bufnum, line, _column, _off = unpack(vim.fn.getpos("."))
-
+---@param line integer Line number for blame
+---@return string[] | nil lines of output
+function Get_blame_text(line)
     local cmd = { "git", "blame", vim.fn.expand("%"), "--root", "-L", string.format("%d,%d", line, line) }
 
     local proc = vim.system(cmd):wait(500)
     if proc.code == 124 then
         log("GIT FAIL")
-        return
+        return nil
     end
     local output = vim.split(strip(proc.stdout) .. strip(proc.stderr), "\n")
+    return output
+end
+
+function Open_blame_window()
+    local _bufnum, line, _column, _off = unpack(vim.fn.getpos("."))
+
+    local output = Get_blame_text(line)
+    if output == nil then return end
     if POPUP_WINDOW == nil then
-        open_popup_window(output)
+        Open_popup_window(output)
     else
-        focus_popup_window()
+        Focus_popup_window()
     end
 end
 
 function M.setup(opts)
     opts = opts or {}
-    vim.api.nvim_create_user_command("Blame", M.open_blame_window, {})
+    vim.api.nvim_create_user_command("Blame", Open_blame_window, {})
     local keymap = opts.keymap or "<leader>gb"
-    vim.keymap.set("n", keymap, M.open_blame_window, {
+    vim.keymap.set("n", keymap, Open_blame_window, {
         desc = "Git blame",
         silent = true
     })
