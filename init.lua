@@ -172,7 +172,7 @@ if treesitter_ok then
 end
 
 -- LSPCONFIG
-vim.lsp.enable({ "lua_ls", "clangd", "basedpyright", "rust_analyzer", "denols", "ts_ls", "bashls" })
+vim.lsp.enable({ "lua_ls", "clangd", "basedpyright", "rust_analyzer", "denols", "ts_ls", "bashls", "jsonls" })
 vim.lsp.config("basedpyright", {
     settings = {
         basedpyright = {
