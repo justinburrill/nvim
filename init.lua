@@ -206,6 +206,12 @@ vim.lsp.config("ts_ls", {
     single_file_support = false
 })
 
+--- @return string
+function Abspath(path)
+    local lfs = require("lfs")
+    return lfs.currentdir() .. "/" .. path
+end
+
 -- tell autocomplete about neovim lsp completion
 vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(ev)
