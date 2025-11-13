@@ -241,5 +241,10 @@ vim.o.viewoptions = "folds,cursor"
 -- vim.api.nvim_create_augroup
 
 -- HIGHLIGHTING
+vim.o.cursorline = true
+vim.o.cursorlineopt = "number"
 vim.cmd("highlight StatusLine guifg=#e8f3ff")
+vim.cmd("highlight lineNrBelow guifg=#767850")
+vim.cmd("highlight lineNrAbove guifg=#705a5a")
+vim.cmd("highlight CursorLineNr cterm=bold guifg=#cdcdcd")
 vim.cmd("highlight StatusLineNC guifg=#544f61")
