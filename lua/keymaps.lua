@@ -10,6 +10,7 @@ vim.keymap.set("i", "<C-z>", function()
     -- if the text before my cursor isn't from the clipboard, then delete
     -- until punctuation or x many characters or something
 end)
+vim.keymap.set("i", "<C-H>", "<C-W>") -- delete word with ctrl+backspace
 vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "Go to implementation" })
 vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition" })
 vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "Go to declaration" })
@@ -19,6 +20,7 @@ vim.keymap.set("n", "gs", vim.lsp.buf.signature_help, { desc = "Show signature" 
 vim.keymap.set("i", "<C-s>", vim.lsp.buf.signature_help, { desc = "Show signature" })
 vim.keymap.set("n", "<leader>e", ":Oil<CR>")
 vim.keymap.set("n", "<leader>/", ":nohlsearch<CR>")
+vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "View diagnostic" })
 vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename" })
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
 vim.keymap.set("n", "<leader>pf", ":Pick files<CR>", { desc = "Pick files" })
@@ -44,21 +46,22 @@ vim.keymap.set("n", "<leader>gb", function()
     -- })
 end, { desc = "Git blame" })
 vim.keymap.set("n", "<leader>bq", ":bp|bd #<CR>", { desc = "Quit buffer" })
-vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "View diagnostic" })
 vim.keymap.set("n", "[d", function()
     vim.diagnostic.jump({ count = -1, float = true })
 end, { desc = "Jump to previous diagnostic" })
 vim.keymap.set("n", "]d", function()
     vim.diagnostic.jump({ count = 1, float = true })
 end, { desc = "Jump to next diagnostic" })
+
 vim.keymap.set("n", "]t", function()
     require("todo-comments").jump_next()
 end, { desc = "Next todo comment" })
-
 vim.keymap.set("n", "[t", function()
     require("todo-comments").jump_prev()
 end, { desc = "Previous todo comment" })
-vim.keymap.set("i", "<C-H>", "<C-W>") -- delete word with ctrl+backspace
+
+vim.keymap.set("n", "]T", ":tabNext<CR>", { desc = "Next tab" })
+vim.keymap.set("n", "[T", ":tabprevious<CR>", { desc = "Previous tab" })
 
 -- linewise COMMENTS with CTRL
 -- TODO: cursor isn't placed correctly when I start a comment on an empty line
