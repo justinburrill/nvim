@@ -39,7 +39,18 @@ vim.keymap.set("n", "<leader>pG", ":Pick buf_lines scope='current'<CR>", { desc 
 vim.keymap.set("n", "<leader>pr", function()
     MiniExtra.pickers.lsp({ scope = "references" })
 end, { desc = "Pick references" })
-vim.keymap.set("n", "<leader>bq", ":bp|bd #<CR>", { desc = "Quit buffer" })
+
+vim.keymap.set("n", "<leader>gb", function()
+    local lineNum = vim.api.nvim_win_get_cursor(0)[1]
+    local _bufnum, line, column, _off = unpack(vim.fn.getpos("."))
+    local output = os.capture(("git blame -L %d").format(line))
+    -- TODO:
+    -- local pos = vim.fn.screenpos(0,
+    -- vim.api.nvim_open_win(0, false, {
+    --     relative="win", row=, width=50,
+    -- })
+end, { desc = "Git blame" })
+vim.keymap.set("n", "<leader>q", ":bp|bd #<CR>", { desc = "Quit buffer" })
 vim.keymap.set("n", "[d", function()
     vim.diagnostic.jump({ count = -1, float = true })
 end, { desc = "Jump to previous diagnostic" })
