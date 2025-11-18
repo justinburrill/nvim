@@ -22,6 +22,7 @@ vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "Show all references"
 vim.keymap.set("n", "gs", vim.lsp.buf.signature_help, { desc = "Show signature" })
 vim.keymap.set("i", "<C-s>", vim.lsp.buf.signature_help, { desc = "Show signature" })
 vim.keymap.set("n", "<leader>e", ":Oil<CR>", {desc="Oil explorer"})
+vim.keymap.set("n", "<leader>s", ":w | so<CR>", {desc="Save and source"})
 vim.keymap.set("v", "<leader>o", ":Open<CR>", {desc="Open link"})
 vim.keymap.set("n", "<leader>/", ":nohlsearch<CR>", {desc="Hide / highlight"})
 vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "View diagnostic" })
