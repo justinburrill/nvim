@@ -244,7 +244,7 @@ vim.o.viewoptions = "folds,cursor"
 vim.o.cursorline = true
 vim.o.cursorlineopt = "number"
 vim.cmd("highlight StatusLine guifg=#e8f3ff")
-vim.cmd("highlight lineNrBelow guifg=#767850")
-vim.cmd("highlight lineNrAbove guifg=#705a5a")
+vim.cmd("highlight lineNrAbove guifg=#764646") -- red
+vim.cmd("highlight lineNrBelow guifg=#5c7351") -- green
 vim.cmd("highlight CursorLineNr cterm=bold guifg=#cdcdcd")
 vim.cmd("highlight StatusLineNC guifg=#544f61")
