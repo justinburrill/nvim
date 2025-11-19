@@ -240,6 +240,9 @@ vim.o.viewoptions = "folds,cursor"
 -- TODO:
 -- vim.api.nvim_create_augroup
 
+-- CUSTOM COMMANDS
+vim.api.nvim_create_user_command("Jq", ":%!jq", {})
+
 -- HIGHLIGHTING
 vim.o.cursorline = true
 vim.o.cursorlineopt = "number"
