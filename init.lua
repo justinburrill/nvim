@@ -1,5 +1,5 @@
-package.path = "/home/justin/.config/nvim/?.lua;" .. package.path
-package.path = "/home/justin/.config/nvim/?/?.lua;" .. package.path
+package.path = "/home/jburrill/.config/nvim/?.lua;" .. package.path
+package.path = "/home/jburrill/.config/nvim/?/?.lua;" .. package.path
 vim.o.ignorecase = true
 vim.o.smartcase = true -- for case-insensitive finding/searching
 -- Directly setting format options doesn't work because it is overwritten later (default is jncroql)
@@ -29,20 +29,10 @@ vim.opt.foldcolumn = "0"
 vim.opt.foldtext = ""
 vim.opt.foldnestmax = 10 -- don't create folds after X levels deep
 
-local get_text_from_powershell =
-'powershell.exe -NoLogo -NoProfile -c [Console]::Out.Write($(Get-Clipboard -Raw -TextFormatType UnicodeText).tostring().replace("`r", ""))'
-vim.g.clipboard = {
-    name = 'WslClipboard',
-    copy = {
-        ['+'] = 'clip.exe',
-        ['*'] = 'clip.exe',
-    },
-    paste = {
-        ['+'] = get_text_from_powershell,
-        ['*'] = get_text_from_powershell,
-    },
-    cache_enabled = 0,
-}
+vim.g.clipboard = "osc52"
+local termfeatures = vim.g.termfeatures or {}
+termfeatures.osc52 = true
+vim.g.termfeatures = termfeatures
 
 -- PLUGINS PACKAGES
 vim.pack.add({
@@ -72,7 +62,7 @@ null_ls.setup({
     sources = {
         null_ls.builtins.formatting.black.with {
             command = "black",
-            extra_args = { "--line-length", "100" }
+            extra_args = { "--line-length", "120" }
         }
     }
 })
@@ -195,9 +185,6 @@ vim.lsp.config("basedpyright", {
         }
     }
 })
-vim.lsp.config("black", {
-    args = { "--line-length", "120" }
-})
 vim.lsp.config("denols", {
     --root_dir = vim.lsp.util.root_pattern("deno.json", "deno.jsonc"),
 })
@@ -206,7 +193,7 @@ vim.lsp.config("ts_ls", {
     single_file_support = false
 })
 vim.lsp.config("rust_analyzer", {})
-vim.lsp.inlay_hint.enable(true)
+-- vim.lsp.inlay_hint.enable(true)
 
 
 -- tell autocomplete about neovim lsp completion
