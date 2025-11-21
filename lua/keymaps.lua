@@ -1,19 +1,19 @@
 require "utils"
 require "mini.extra"
+
 local commentapi = require("Comment.api")
 local escape_key = vim.api.nvim_replace_termcodes("<ESC>", true, false, true)
+
 vim.g.mapleader = " "
+
 vim.keymap.set("n", "<leader>m", ":messages<CR>", { desc = "Show messages" })
+
+-- basic LSP stuff
+
 vim.keymap.set("n", "<leader>cf", vim.lsp.buf.format, { desc = "Code format" })
 vim.keymap.set("v", "<leader>cf", vim.lsp.buf.format, { desc = "Code format selection" })
 vim.keymap.set("n", "<C-Space>", vim.lsp.buf.hover)
 vim.keymap.set("i", "<C-Space>", "<C-x><C-o>") -- omnifunc autocomplete
-vim.keymap.set("i", "<C-z>", function()
-    -- TODO:make this delete something i just pasted from "* or "+ with C-v
-    -- if the text before my cursor isn't from the clipboard, then delete
-    -- until punctuation or x many characters or something
-end)
-vim.keymap.set("i", "<C-H>", "<C-W>") -- delete word with ctrl+backspace
 vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "Go to implementation" })
 vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition" })
 vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "Go to declaration" })
@@ -21,6 +21,7 @@ vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { desc = "Go to type defi
 vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "Show all references" })
 vim.keymap.set("n", "gs", vim.lsp.buf.signature_help, { desc = "Show signature" })
 vim.keymap.set("i", "<C-s>", vim.lsp.buf.signature_help, { desc = "Show signature" })
+
 vim.keymap.set("n", "<leader>e", ":Oil<CR>", {desc="Oil explorer"})
 vim.keymap.set("n", "<leader>s", ":w | so<CR>", {desc="Save and source"})
 -- vim.keymap.set("v", "<leader>o", ":Open<CR>", {desc="Open link"}) -- TODO:
@@ -28,6 +29,9 @@ vim.keymap.set("n", "<leader>/", ":nohlsearch<CR>", {desc="Hide / highlight"})
 vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "View diagnostic" })
 vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename" })
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
+
+-- mini.pick pickers
+
 vim.keymap.set("n", "<leader>pf", ":Pick files<CR>", { desc = "Pick files" })
 vim.keymap.set("n", "<leader>ph", ":Pick help<CR>", { desc = "Pick help" })
 vim.keymap.set("n", "<leader>pH", ":Pick hl_groups<CR>", { desc = "Pick highlight groups" })
@@ -41,17 +45,18 @@ vim.keymap.set("n", "<leader>pr", function()
     MiniExtra.pickers.lsp({ scope = "references" })
 end, { desc = "Pick references" })
 
-vim.keymap.set("n", "<leader>gb", function()
-    local lineNum = vim.api.nvim_win_get_cursor(0)[1]
-    local _bufnum, line, column, _off = unpack(vim.fn.getpos("."))
-    local output = os.capture(("git blame -L %d").format(line))
-    -- TODO:
-    -- local pos = vim.fn.screenpos(0,
-    -- vim.api.nvim_open_win(0, false, {
-    --     relative="win", row=, width=50,
-    -- })
-end, { desc = "Git blame" })
+-- my keybinds !!
+
+vim.keymap.set("i", "<C-H>", "<C-W>") -- delete word with ctrl+backspace
 vim.keymap.set("n", "<leader>q", ":bp|bd #<CR>", { desc = "Quit buffer" })
+vim.keymap.set("i", "<C-z>", function()
+    -- TODO:make this delete something i just pasted from "* or "+ with C-v
+    -- if the text before my cursor isn't from the clipboard, then delete
+    -- until punctuation or x many characters or something
+end)
+
+-- jumping through
+
 vim.keymap.set("n", "[d", function()
     vim.diagnostic.jump({ count = -1, float = true })
 end, { desc = "Jump to previous diagnostic" })
@@ -68,6 +73,14 @@ end, { desc = "Previous todo comment" })
 
 vim.keymap.set("n", "]T", ":tabNext<CR>", { desc = "Next tab" })
 vim.keymap.set("n", "[T", ":tabprevious<CR>", { desc = "Previous tab" })
+
+-- comments
+
+vim.keymap.set("i", "<C-z>", function()
+    -- TODO:make this delete something i just pasted from "* or "+ with C-v
+    -- if the text before my cursor isn't from the clipboard, then delete
+    -- until punctuation or x many characters or something
+end)
 
 -- linewise COMMENTS with CTRL
 -- TODO: cursor isn't placed correctly when I start a comment on an empty line
