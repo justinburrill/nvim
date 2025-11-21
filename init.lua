@@ -72,7 +72,7 @@ null_ls.setup({
     sources = {
         null_ls.builtins.formatting.black.with {
             command = "black",
-            extra_args = { "--line-length", "100" }
+            extra_args = { "--line-length", "120" }
         }
     }
 })
@@ -194,9 +194,6 @@ vim.lsp.config("basedpyright", {
             }
         }
     }
-})
-vim.lsp.config("black", {
-    args = { "--line-length", "120" }
 })
 vim.lsp.config("denols", {
     --root_dir = vim.lsp.util.root_pattern("deno.json", "deno.jsonc"),
