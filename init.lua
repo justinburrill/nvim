@@ -72,7 +72,7 @@ null_ls.setup({
     sources = {
         null_ls.builtins.formatting.black.with {
             command = "black",
-            extra_args = { "--line-length", "120" }
+            extra_args = { "--line-length", "100" }
         }
     }
 })
@@ -205,12 +205,9 @@ vim.lsp.config("ts_ls", {
     --root_dir = vim.lsp.util.root_pattern("package.json"),
     single_file_support = false
 })
+vim.lsp.config("rust_analyzer", {})
+vim.lsp.inlay_hint.enable(true)
 
---- @return string
-function Abspath(path)
-    local lfs = require("lfs")
-    return lfs.currentdir() .. "/" .. path
-end
 
 -- tell autocomplete about neovim lsp completion
 vim.api.nvim_create_autocmd("LspAttach", {

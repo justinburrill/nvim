@@ -10,3 +10,11 @@
 --     s = string.gsub(s, '[\n\r]+', ' ')
 --     return s
 -- end
+
+
+
+-- --- @return string
+-- function Abspath(path)
+--     local lfs = require("lfs")
+--     return lfs.currentdir() .. "/" .. path
+-- end
