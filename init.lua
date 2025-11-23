@@ -235,3 +235,5 @@ vim.cmd("highlight lineNrAbove guifg=#764646") -- red
 vim.cmd("highlight lineNrBelow guifg=#5c7351") -- green
 vim.cmd("highlight CursorLineNr cterm=bold guifg=#cdcdcd")
 vim.cmd("highlight StatusLineNC guifg=#544f61")
+vim.cmd("highlight LspInlayHint gui=underline,italic guifg=#606079")
+

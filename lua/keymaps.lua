@@ -29,6 +29,7 @@ vim.keymap.set("n", "<leader>/", ":nohlsearch<CR>", {desc="Hide / highlight"})
 vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "View diagnostic" })
 vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename" })
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
+vim.keymap.set("n", "<leader>ch", function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end, {desc="Enable inlay hints"})
 
 -- mini.pick pickers
 
