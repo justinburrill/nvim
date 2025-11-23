@@ -203,7 +203,6 @@ vim.lsp.config("ts_ls", {
     single_file_support = false
 })
 vim.lsp.config("rust_analyzer", {})
-vim.lsp.inlay_hint.enable(true)
 
 
 -- tell autocomplete about neovim lsp completion
@@ -245,3 +244,5 @@ vim.cmd("highlight lineNrAbove guifg=#764646") -- red
 vim.cmd("highlight lineNrBelow guifg=#5c7351") -- green
 vim.cmd("highlight CursorLineNr cterm=bold guifg=#cdcdcd")
 vim.cmd("highlight StatusLineNC guifg=#544f61")
+vim.cmd("highlight LspInlayHint gui=underline,italic guifg=#606079")
+
