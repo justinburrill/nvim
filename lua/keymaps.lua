@@ -49,6 +49,7 @@ end, { desc = "Pick references" })
 -- my keybinds !!
 
 vim.keymap.set("i", "<C-H>", "<C-W>") -- delete word with ctrl+backspace
+vim.keymap.set("i", "<C-Del>", "<space><esc>ce") -- delete word with ctrl+backspace
 vim.keymap.set("n", "<leader>q", ":bp|bd #<CR>", { desc = "Quit buffer" })
 vim.keymap.set("i", "<C-z>", function()
     -- TODO:make this delete something i just pasted from "* or "+ with C-v
