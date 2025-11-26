@@ -61,6 +61,7 @@ vim.pack.add({
     { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
     { src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects" },
     { src = "https://github.com/nvimtools/none-ls.nvim" },
+    { src = "https://github.com/nvimtools/none-ls-extras.nvim" },
     { src = "https://github.com/stevearc/oil.nvim" },
     { src = "https://github.com/mawkler/demicolon.nvim" },
     { src = "https://github.com/mawkler/refjump.nvim" },
@@ -73,7 +74,8 @@ null_ls.setup({
         null_ls.builtins.formatting.black.with {
             command = "black",
             extra_args = { "--line-length", "120" }
-        }
+        },
+        require("none-ls.formatting.taplo"),
     }
 })
 
@@ -172,6 +174,7 @@ if treesitter_ok then
 end
 
 -- LSPCONFIG
+vim.lsp.buf.format({ timeout_ms = 2500 })
 vim.lsp.enable({ "lua_ls", "clangd", "basedpyright", "rust_analyzer", "denols", "ts_ls", "bashls", "jsonls" })
 vim.lsp.config("basedpyright", {
     settings = {
@@ -203,7 +206,6 @@ vim.lsp.config("ts_ls", {
     single_file_support = false
 })
 vim.lsp.config("rust_analyzer", {})
-
 
 -- tell autocomplete about neovim lsp completion
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -245,4 +247,3 @@ vim.cmd("highlight lineNrBelow guifg=#5c7351") -- green
 vim.cmd("highlight CursorLineNr cterm=bold guifg=#cdcdcd")
 vim.cmd("highlight StatusLineNC guifg=#544f61")
 vim.cmd("highlight LspInlayHint gui=underline,italic guifg=#606079")
-
