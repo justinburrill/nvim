@@ -13,6 +13,7 @@ vim.keymap.set("n", "<leader>m", ":messages<CR>", { desc = "Show messages" })
 vim.keymap.set("n", "<leader>cf", vim.lsp.buf.format, { desc = "Code format" })
 vim.keymap.set("v", "<leader>cf", vim.lsp.buf.format, { desc = "Code format selection" })
 vim.keymap.set("n", "<C-Space>", vim.lsp.buf.hover)
+vim.keymap.set("i", "<S-Tab>", "<Esc>")
 vim.keymap.set("i", "<C-Space>", "<C-x><C-o>") -- omnifunc autocomplete
 vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "Go to implementation" })
 vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition" })
