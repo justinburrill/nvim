@@ -193,7 +193,6 @@ vim.lsp.config("ts_ls", {
     single_file_support = false
 })
 vim.lsp.config("rust_analyzer", {})
--- vim.lsp.inlay_hint.enable(true)
 
 
 -- tell autocomplete about neovim lsp completion
