@@ -118,57 +118,9 @@ require "which-key".setup({
 
 -- TREESITTER
 local treesitter_ok, treesitter_configs = pcall(require, "nvim-treesitter.configs")
+local my_ts_config = require("treesitter-config")
 if treesitter_ok then
-    treesitter_configs.setup {
-        ensure_installed = { "c", "cpp", "lua", "python", "typescript",
-            "vim", "rust", "vue", "sql", "html", "css", "bash" },
-        sync_install = true,
-        ignore_install = {},
-        auto_install = true,
-        highlight = {
-            enable = true,
-        },
-        modules = {},
-        rainbow = {
-            enable = true,
-            extended_mode = true,
-            max_file_lines = 10000,
-            -- colors = {},
-        },
-        textobjects = {
-            select = {
-                enable = true,
-                keymaps = {
-                    ["af"] = { query = "@function.outer", desc = "Select outer function" },
-                    ["if"] = { query = "@function.inner", desc = "Select inner function" },
-                    ["ac"] = { query = "@class.outer", desc = "Select outer class" },
-                    ["ic"] = { query = "@class.inner", desc = "Select inner class" },
-                    ["aa"] = { query = "@parameter.outer", desc = "Select outer argument" },
-                    ["ia"] = { query = "@parameter.inner", desc = "Select inner argument" },
-                },
-                selection_modes = {
-                    ["@function.inner"] = "V",
-                    ["@class.inner"] = "V",
-                    ["@function.outer"] = "V",
-                    ["@class.outer"] = "V",
-                }
-            },
-            move = {
-                enable = true,
-                set_jumps = true,
-                goto_next_start = {
-                    ["]f"] = { query = "@function.outer", desc = "Next function" },
-                    ["]c"] = { query = "@class.outer", desc = "Next class" },
-                    ["]a"] = { query = "@parameter.outer", desc = "Next argument" },
-                },
-                goto_previous_start = {
-                    ["[f"] = { query = "@function.outer", desc = "Previous function" },
-                    ["[c"] = { query = "@class.outer", desc = "Previous class" },
-                    ["[a"] = { query = "@parameter.outer", desc = "Previous argument" },
-                }
-            }
-        }
-    }
+    treesitter_configs.setup(my_ts_config)
 end
 
 -- LSPCONFIG
@@ -204,7 +156,6 @@ vim.lsp.config("ts_ls", {
 })
 vim.lsp.config("rust_analyzer", {})
 
-
 -- tell autocomplete about neovim lsp completion
 vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(ev)
@@ -235,6 +186,7 @@ vim.o.viewoptions = "folds,cursor"
 
 -- CUSTOM COMMANDS
 vim.api.nvim_create_user_command("Jq", ":%!jq", {})
+vim.api.nvim_create_user_command("Diff", ":w !diff - %", {})
 
 -- HIGHLIGHTING
 vim.o.cursorline = true
@@ -245,4 +197,3 @@ vim.cmd("highlight lineNrBelow guifg=#5c7351") -- green
 vim.cmd("highlight CursorLineNr cterm=bold guifg=#cdcdcd")
 vim.cmd("highlight StatusLineNC guifg=#544f61")
 vim.cmd("highlight LspInlayHint gui=underline,italic guifg=#606079")
-
