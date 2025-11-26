@@ -61,6 +61,7 @@ vim.pack.add({
     { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
     { src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects" },
     { src = "https://github.com/nvimtools/none-ls.nvim" },
+    { src = "https://github.com/nvimtools/none-ls-extras.nvim" },
     { src = "https://github.com/stevearc/oil.nvim" },
     { src = "https://github.com/mawkler/demicolon.nvim" },
     { src = "https://github.com/mawkler/refjump.nvim" },
@@ -73,7 +74,8 @@ null_ls.setup({
         null_ls.builtins.formatting.black.with {
             command = "black",
             extra_args = { "--line-length", "120" }
-        }
+        },
+        require("none-ls.formatting.taplo"),
     }
 })
 
@@ -124,6 +126,7 @@ if treesitter_ok then
 end
 
 -- LSPCONFIG
+vim.lsp.buf.format({ timeout_ms = 2500 })
 vim.lsp.enable({ "lua_ls", "clangd", "basedpyright", "rust_analyzer", "denols", "ts_ls", "bashls", "jsonls" })
 vim.lsp.config("basedpyright", {
     settings = {
