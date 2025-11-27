@@ -7,6 +7,7 @@ local escape_key = vim.api.nvim_replace_termcodes("<ESC>", true, false, true)
 vim.g.mapleader = " "
 
 vim.keymap.set("n", "<leader>m", ":messages<CR>", { desc = "Show messages" })
+vim.keymap.set("n", "<leader>M", ":Mason<CR>", { desc = "Mason" })
 
 -- basic LSP stuff
 
@@ -23,14 +24,16 @@ vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "Show all references"
 vim.keymap.set("n", "gs", vim.lsp.buf.signature_help, { desc = "Show signature" })
 vim.keymap.set("i", "<C-s>", vim.lsp.buf.signature_help, { desc = "Show signature" })
 
-vim.keymap.set("n", "<leader>e", ":Oil<CR>", {desc="Oil explorer"})
-vim.keymap.set("n", "<leader>s", ":w | so<CR>", {desc="Save and source"})
+vim.keymap.set("n", "<leader>e", ":Oil<CR>", { desc = "Oil explorer" })
+vim.keymap.set("n", "<leader>E", ":Oil<CR>_", { desc = "Oil explorer at CWD" })
+vim.keymap.set("n", "<leader>s", ":w | so<CR>", { desc = "Save and source" })
 -- vim.keymap.set("v", "<leader>o", ":Open<CR>", {desc="Open link"}) -- TODO:
-vim.keymap.set("n", "<leader>/", ":nohlsearch<CR>", {desc="Hide / highlight"})
+vim.keymap.set("n", "<leader>/", ":nohlsearch<CR>", { desc = "Hide / highlight" })
 vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "View diagnostic" })
 vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename" })
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
-vim.keymap.set("n", "<leader>ch", function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end, {desc="Enable inlay hints"})
+vim.keymap.set("n", "<leader>ch", function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end,
+    { desc = "Enable inlay hints" })
 
 -- mini.pick pickers
 
@@ -49,8 +52,8 @@ end, { desc = "Pick references" })
 
 -- my keybinds !!
 
-vim.keymap.set("i", "<C-H>", "<C-W>") -- delete word with ctrl+backspace
-vim.keymap.set("i", "<C-Del>", "<space><esc>ce") -- delete word with ctrl+backspace
+vim.keymap.set("i", "<C-H>", "<C-W>")            -- delete word with ctrl+backspace
+vim.keymap.set("i", "<C-Del>", "<space><esc>ce") -- delete word with ctrl+del
 vim.keymap.set("n", "<leader>q", ":bp|bd #<CR>", { desc = "Quit buffer" })
 vim.keymap.set("i", "<C-z>", function()
     -- TODO:make this delete something i just pasted from "* or "+ with C-v
