@@ -11,8 +11,8 @@ vim.keymap.set("n", "<leader>M", ":Mason<CR>", { desc = "Mason" })
 
 -- basic LSP stuff
 
-vim.keymap.set("n", "<leader>cf", vim.lsp.buf.format, { desc = "Code format" })
-vim.keymap.set("v", "<leader>cf", vim.lsp.buf.format, { desc = "Code format selection" })
+vim.keymap.set("n", "<leader>cf", function() vim.lsp.buf.format({ timeout_ms = 2500 }) end, { desc = "Code format" })
+vim.keymap.set("v", "<leader>cf", function() vim.lsp.buf.format({ timeout_ms = 2500 }) end, { desc = "Code format selection" })
 vim.keymap.set("n", "<C-Space>", vim.lsp.buf.hover)
 vim.keymap.set({ "i", "v", }, "<S-Tab>", "<Esc>")
 vim.keymap.set("i", "<C-Space>", "<C-x><C-o>") -- omnifunc autocomplete

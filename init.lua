@@ -126,7 +126,6 @@ if treesitter_ok then
 end
 
 -- LSPCONFIG
-vim.lsp.buf.format({ timeout_ms = 2500 })
 vim.lsp.enable({ "lua_ls", "clangd", "basedpyright", "rust_analyzer", "denols", "ts_ls", "bashls", "jsonls" })
 vim.lsp.config("basedpyright", {
     settings = {
