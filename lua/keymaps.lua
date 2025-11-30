@@ -26,6 +26,7 @@ vim.keymap.set("i", "<C-s>", vim.lsp.buf.signature_help, { desc = "Show signatur
 
 vim.keymap.set("n", "<leader>e", ":Oil<CR>", { desc = "Oil explorer" })
 vim.keymap.set("n", "<leader>E", ":Oil<CR>_", { desc = "Oil explorer at CWD" })
+vim.keymap.set("n", "<leader>I", ":Inspect<CR>", { desc = "Inspect" })
 vim.keymap.set("n", "<leader>s", ":w | so<CR>", { desc = "Save and source" })
 vim.keymap.set("n", "<leader>/", ":nohlsearch<CR>", { desc = "Hide / highlight" })
 vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "View diagnostic" })
