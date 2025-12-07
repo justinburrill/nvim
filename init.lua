@@ -149,6 +149,11 @@ vim.lsp.config("basedpyright", {
         }
     }
 })
+vim.lsp.config("clangd", {
+    cmd = { "clangd", "--compile-commands-dir=/home/justin" },
+    filetypes = { "c", "cpp", "cc", "ixx", "cuda", "cu", "objcpp", "objc" },
+
+})
 vim.lsp.config("denols", {
     --root_dir = vim.lsp.util.root_pattern("deno.json", "deno.jsonc"),
 })
