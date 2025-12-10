@@ -13,27 +13,28 @@ vim.keymap.set("n", "<leader>M", ":Mason<CR>", { desc = "Mason" })
 vim.keymap.set("n", "<leader>cf", function() vim.lsp.buf.format({ timeout_ms = 2500 }) end, { desc = "Code format" })
 vim.keymap.set("v", "<leader>cf", function() vim.lsp.buf.format({ timeout_ms = 2500 }) end, { desc = "Code format selection" })
 vim.keymap.set("n", "<C-Space>", vim.lsp.buf.hover)
-vim.keymap.set("i", "<Tab>", function()
-    if vim.fn.pumvisible() then
-        return ""
-    else
-        return "<Tab>"
-    end
-end, { silent = true, expr = true })
-vim.keymap.set("i", "<S-Tab>", function()
-    if vim.fn.pumvisible() then
-        return ""
-    else
-        return "<S-Tab>"
-    end
-end, { silent = true, expr = true })
-vim.keymap.set("i", "<Esc>", function()
-    if vim.fn.pumvisible() then
-        return ""
-    else
-        return "<Esc>"
-    end
-end, { silent = true, expr = true })
+
+-- vim.keymap.set("i", "<Tab>", function()
+--     if vim.fn.pumvisible() then
+--         return ""
+--     else
+--         return "<Tab>"
+--     end
+-- end, { silent = true, expr = true })
+-- vim.keymap.set("i", "<S-Tab>", function()
+--     if vim.fn.pumvisible() then
+--         return ""
+--     else
+--         return "<S-Tab>"
+--     end
+-- end, { silent = true, expr = true })
+-- vim.keymap.set("i", "<Esc>", function()
+--     if vim.fn.pumvisible() then
+--         return ""
+--     else
+--         return "<Esc>"
+--     end
+-- end, { silent = true, expr = true })
 vim.keymap.set("i", "<C-Space>", "<C-x><C-o>") -- omnifunc autocomplete
 vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "Go to implementation" })
 vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition" })
@@ -47,7 +48,7 @@ vim.keymap.set("n", "<leader>e", ":Oil<CR>", { desc = "Oil explorer" })
 vim.keymap.set("n", "<leader>E", ":Oil<CR>_", { desc = "Oil explorer at CWD" })
 vim.keymap.set("n", "<leader>I", ":Inspect<CR>", { desc = "Inspect" })
 vim.keymap.set("n", "<leader>s", ":w | so<CR>", { desc = "Save and source" })
-vim.keymap.set("n", "<leader>/", ":nohlsearch<CR>", { desc = "Hide / highlight" })
+vim.keymap.set("n", "<leader>/", ":nohlsearch<CR>", { desc = "Hide / highlight", silent = true })
 vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "View diagnostic" })
 vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename" })
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })

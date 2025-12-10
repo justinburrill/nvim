@@ -4,7 +4,9 @@ package.path = "/home/jburrill/.config/nvim/?/?.lua;" .. package.path
 vim.o.ignorecase = true
 vim.o.smartcase = true -- for case-insensitive finding/searching
 vim.o.infercase = true -- for case-insensitive finding/searching
-vim.o.completeopt = "fuzzy,longest,popup,preinsert"
+-- vim.o.completeopt = "fuzzy,longest,popup,preinsert,menu" -- default = "menu,popup"
+vim.o.completeopt = "menu,popup,longest,fuzzy" -- default = "menu,popup"
+vim.o.completefuzzycollect = "keyword" -- default = ""
 
 -- Directly setting format options doesn't work because it is overwritten later (default is jncroql)
 vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead", "BufWinEnter" }, {
