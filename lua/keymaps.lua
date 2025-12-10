@@ -1,6 +1,5 @@
 require "utils"
 require "mini.extra"
-
 local commentapi = require("Comment.api")
 local escape_key = vim.api.nvim_replace_termcodes("<ESC>", true, false, true)
 
@@ -14,7 +13,27 @@ vim.keymap.set("n", "<leader>M", ":Mason<CR>", { desc = "Mason" })
 vim.keymap.set("n", "<leader>cf", function() vim.lsp.buf.format({ timeout_ms = 2500 }) end, { desc = "Code format" })
 vim.keymap.set("v", "<leader>cf", function() vim.lsp.buf.format({ timeout_ms = 2500 }) end, { desc = "Code format selection" })
 vim.keymap.set("n", "<C-Space>", vim.lsp.buf.hover)
-vim.keymap.set({ "i", "v", }, "<S-Tab>", "<Esc>")
+vim.keymap.set("i", "<Tab>", function()
+    if vim.fn.pumvisible() then
+        return ""
+    else
+        return "<Tab>"
+    end
+end, { silent = true, expr = true })
+vim.keymap.set("i", "<S-Tab>", function()
+    if vim.fn.pumvisible() then
+        return ""
+    else
+        return "<S-Tab>"
+    end
+end, { silent = true, expr = true })
+vim.keymap.set("i", "<Esc>", function()
+    if vim.fn.pumvisible() then
+        return ""
+    else
+        return "<Esc>"
+    end
+end, { silent = true, expr = true })
 vim.keymap.set("i", "<C-Space>", "<C-x><C-o>") -- omnifunc autocomplete
 vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "Go to implementation" })
 vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition" })

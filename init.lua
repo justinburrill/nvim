@@ -1,7 +1,11 @@
 package.path = "/home/jburrill/.config/nvim/?.lua;" .. package.path
 package.path = "/home/jburrill/.config/nvim/?/?.lua;" .. package.path
+
 vim.o.ignorecase = true
 vim.o.smartcase = true -- for case-insensitive finding/searching
+vim.o.infercase = true -- for case-insensitive finding/searching
+vim.o.completeopt = "fuzzy,longest,popup,preinsert"
+
 -- Directly setting format options doesn't work because it is overwritten later (default is jncroql)
 vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead", "BufWinEnter" }, {
     pattern = { "*" },
@@ -28,6 +32,7 @@ vim.opt.foldlevelstart = 10
 vim.opt.foldcolumn = "0"
 vim.opt.foldtext = ""
 vim.opt.foldnestmax = 10 -- don't create folds after X levels deep
+
 
 vim.g.clipboard = "osc52"
 local termfeatures = vim.g.termfeatures or {}
