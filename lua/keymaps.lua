@@ -8,19 +8,16 @@ vim.g.mapleader = " "
 vim.keymap.set("n", "<leader>m", ":messages<CR>", { desc = "Show messages" })
 vim.keymap.set("n", "<leader>M", ":Mason<CR>", { desc = "Mason" })
 
--- basic LSP stuff
 
-vim.keymap.set("n", "<leader>cf", function() vim.lsp.buf.format({ timeout_ms = 2500 }) end, { desc = "Code format" })
-vim.keymap.set("v", "<leader>cf", function() vim.lsp.buf.format({ timeout_ms = 2500 }) end,
-    { desc = "Code format selection" })
 vim.keymap.set("n", "<C-Space>", vim.lsp.buf.hover)
+vim.keymap.set("i", "<C-Space>", "<C-x><C-o>") -- omnifunc autocomplete
+-- completion popup interaction
 local function pumvisible()
     return tonumber(vim.fn.pumvisible()) ~= 0
 end
-vim.keymap.set({ "n", "i" }, "<C-b>", (":lua print(" .. tostring(pumvisible()) .. ")<CR>"))
 vim.keymap.set("i", "<Tab>", function()
     if pumvisible() then
-        return ""
+        return "<C-N>"
     else
         return "<Tab>"
     end
@@ -28,19 +25,31 @@ end, { silent = true, expr = true })
 
 vim.keymap.set("i", "<S-Tab>", function()
     if pumvisible() then
-        return ""
+        return "<C-P>"
     else
         return "<S-Tab>"
     end
 end, { silent = true, expr = true })
 vim.keymap.set("i", "<Esc>", function()
     if pumvisible() then
-        return ""
+        return "<C-E>"
     else
         return "<Esc>"
     end
 end, { silent = true, expr = true })
-vim.keymap.set("i", "<C-Space>", "<C-x><C-o>") -- omnifunc autocomplete
+vim.keymap.set("i", "<C-Enter>", function()
+    if pumvisible() then
+        return "<C-Y>"
+    else
+        return "<C-Enter>"
+    end
+end, { silent = true, expr = true })
+
+-- basic LSP stuff
+
+vim.keymap.set("n", "<leader>cf", function() vim.lsp.buf.format({ timeout_ms = 2500 }) end, { desc = "Code format" })
+vim.keymap.set("v", "<leader>cf", function() vim.lsp.buf.format({ timeout_ms = 2500 }) end,
+    { desc = "Code format selection" })
 vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "Go to implementation" })
 vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition" })
 vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "Go to declaration" })
