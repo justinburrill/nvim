@@ -2,11 +2,9 @@ package.path = "/home/jburrill/.config/nvim/?.lua;" .. package.path
 package.path = "/home/jburrill/.config/nvim/?/?.lua;" .. package.path
 
 vim.o.ignorecase = true
-vim.o.smartcase = true -- for case-insensitive finding/searching
-vim.o.infercase = true -- for case-insensitive finding/searching
--- vim.o.completeopt = "fuzzy,longest,popup,preinsert,menu" -- default = "menu,popup"
-vim.o.completeopt = "menu,popup,longest,fuzzy" -- default = "menu,popup"
-vim.o.completefuzzycollect = "keyword" -- default = ""
+vim.o.smartcase = true                   -- for case-insensitive finding/searching
+vim.o.infercase = true
+vim.o.completeopt = "menu,popup,longest" -- default = "menu,popup"
 
 -- Directly setting format options doesn't work because it is overwritten later (default is jncroql)
 vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead", "BufWinEnter" }, {
@@ -94,7 +92,8 @@ require "demicolon".setup({
     }
 })
 require "refjump".setup()
-require "which-key".setup({
+local whichkey = require "which-key"
+whichkey.setup({
     notify = true,
     preset = "helix",
     delay = 500,
@@ -114,7 +113,10 @@ require "which-key".setup({
         width = { max = 50 }
     }
 })
-
+whichkey.add({
+    {"<leader>c", group = "code"},
+    {"<leader>p", group = "Pick"},
+})
 -- TREESITTER
 local treesitter_ok, treesitter_configs = pcall(require, "nvim-treesitter.configs")
 local my_ts_config = require("treesitter-config")
@@ -150,8 +152,9 @@ vim.lsp.config("denols", {
     --root_dir = vim.lsp.util.root_pattern("deno.json", "deno.jsonc"),
 })
 vim.lsp.config("ts_ls", {
-    --root_dir = vim.lsp.util.root_pattern("package.json"),
-    single_file_support = false
+    single_file_support = false,
+    maxPreload = 1000,
+    preloadFileSize = 10000,
 })
 vim.lsp.config("rust_analyzer", {})
 
@@ -169,14 +172,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 require "keymaps"
 require "blamer-nvim.lua.blamer-nvim".setup()
 
--- ACTIVATE COLOURSCHEME
-require "vague".setup({
-    style = {
-        strings = "none",
-        keywords = "bold",
-    },
-})
-vim.cmd("colorscheme vague")
 
 -- REMEMBER WITH AUTO-VIEWS AND VIEWOPTIONS
 vim.o.viewoptions = "folds,cursor"
@@ -186,6 +181,15 @@ vim.o.viewoptions = "folds,cursor"
 -- CUSTOM COMMANDS
 vim.api.nvim_create_user_command("Jq", ":%!jq", {})
 vim.api.nvim_create_user_command("Diff", ":w !diff - %", {})
+
+-- ACTIVATE COLOURSCHEME
+require "vague".setup({
+    style = {
+        strings = "none",
+        keywords = "bold",
+    },
+})
+vim.cmd("colorscheme vague")
 
 -- HIGHLIGHTING
 vim.o.cursorline = true

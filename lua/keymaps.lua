@@ -11,30 +11,35 @@ vim.keymap.set("n", "<leader>M", ":Mason<CR>", { desc = "Mason" })
 -- basic LSP stuff
 
 vim.keymap.set("n", "<leader>cf", function() vim.lsp.buf.format({ timeout_ms = 2500 }) end, { desc = "Code format" })
-vim.keymap.set("v", "<leader>cf", function() vim.lsp.buf.format({ timeout_ms = 2500 }) end, { desc = "Code format selection" })
+vim.keymap.set("v", "<leader>cf", function() vim.lsp.buf.format({ timeout_ms = 2500 }) end,
+    { desc = "Code format selection" })
 vim.keymap.set("n", "<C-Space>", vim.lsp.buf.hover)
+local function pumvisible()
+    return tonumber(vim.fn.pumvisible()) ~= 0
+end
+vim.keymap.set({ "n", "i" }, "<C-b>", (":lua print(" .. tostring(pumvisible()) .. ")<CR>"))
+vim.keymap.set("i", "<Tab>", function()
+    if pumvisible() then
+        return ""
+    else
+        return "<Tab>"
+    end
+end, { silent = true, expr = true })
 
--- vim.keymap.set("i", "<Tab>", function()
---     if vim.fn.pumvisible() then
---         return ""
---     else
---         return "<Tab>"
---     end
--- end, { silent = true, expr = true })
--- vim.keymap.set("i", "<S-Tab>", function()
---     if vim.fn.pumvisible() then
---         return ""
---     else
---         return "<S-Tab>"
---     end
--- end, { silent = true, expr = true })
--- vim.keymap.set("i", "<Esc>", function()
---     if vim.fn.pumvisible() then
---         return ""
---     else
---         return "<Esc>"
---     end
--- end, { silent = true, expr = true })
+vim.keymap.set("i", "<S-Tab>", function()
+    if pumvisible() then
+        return ""
+    else
+        return "<S-Tab>"
+    end
+end, { silent = true, expr = true })
+vim.keymap.set("i", "<Esc>", function()
+    if pumvisible() then
+        return ""
+    else
+        return "<Esc>"
+    end
+end, { silent = true, expr = true })
 vim.keymap.set("i", "<C-Space>", "<C-x><C-o>") -- omnifunc autocomplete
 vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "Go to implementation" })
 vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition" })
@@ -44,6 +49,7 @@ vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "Show all references"
 vim.keymap.set("n", "gs", vim.lsp.buf.signature_help, { desc = "Show signature" })
 vim.keymap.set("i", "<C-s>", vim.lsp.buf.signature_help, { desc = "Show signature" })
 
+vim.keymap.set("n", "gp", "`[v`]", { desc = "Reselect paste" })
 vim.keymap.set("n", "<leader>e", ":Oil<CR>", { desc = "Oil explorer" })
 vim.keymap.set("n", "<leader>E", ":Oil<CR>_", { desc = "Oil explorer at CWD" })
 vim.keymap.set("n", "<leader>I", ":Inspect<CR>", { desc = "Inspect" })
@@ -123,3 +129,10 @@ vim.keymap.set("x", "<M-/>", function()
 end)
 -- TODO: create comment at cursor if I do ALT while in insert mode
 -- vim.keymap.set("i", "<M-/>", function() commentapi.
+vim.keymap.set({ "i", "n" }, "<S-Up>", "Vk") -- vscode motions
+vim.keymap.set({ "i", "n" }, "<S-Down>", "Vj")
+
+vim.keymap.set("x", "<M-Up>", function() vim.cmd("normal! dkP`[V`]") end)
+vim.keymap.set("x", "<M-Down>", function() vim.cmd("normal! dp`[V`]") end)
+vim.keymap.set({ "i", "n" }, "<M-Up>", function() vim.cmd("normal! ddkP") end)
+vim.keymap.set({ "i", "n" }, "<M-Down>", function() vim.cmd("normal! ddp") end)
