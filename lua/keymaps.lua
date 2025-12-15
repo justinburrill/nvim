@@ -37,11 +37,11 @@ vim.keymap.set("i", "<Esc>", function()
         return "<Esc>"
     end
 end, { silent = true, expr = true })
-vim.keymap.set("i", "<C-Enter>", function()
+vim.keymap.set("i", "<CR>", function()
     if pumvisible() then
         return "<C-Y>"
     else
-        return "<C-Enter>"
+        return "<CR>"
     end
 end, { silent = true, expr = true })
 
