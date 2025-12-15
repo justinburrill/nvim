@@ -10,11 +10,17 @@ vim.keymap.set("n", "<leader>M", ":Mason<CR>", { desc = "Mason" })
 
 
 vim.keymap.set("n", "<C-Space>", vim.lsp.buf.hover)
-vim.keymap.set("i", "<C-Space>", "<C-x><C-o>") -- omnifunc autocomplete
 -- completion popup interaction
 local function pumvisible()
     return tonumber(vim.fn.pumvisible()) ~= 0
 end
+vim.keymap.set("i", "<C-Space>", function()
+    if pumvisible() then
+        return "<C-E>"
+    else
+        return "<C-x><C-o>"
+    end
+end, { desc = "omnifunc autocomplete", silent = true, expr = true })
 vim.keymap.set("i", "<Tab>", function()
     if pumvisible() then
         return "<C-N>"
@@ -22,7 +28,6 @@ vim.keymap.set("i", "<Tab>", function()
         return "<Tab>"
     end
 end, { silent = true, expr = true })
-
 vim.keymap.set("i", "<S-Tab>", function()
     if pumvisible() then
         return "<C-P>"
@@ -32,7 +37,7 @@ vim.keymap.set("i", "<S-Tab>", function()
 end, { silent = true, expr = true })
 vim.keymap.set("i", "<Esc>", function()
     if pumvisible() then
-        return "<C-E>"
+        return "<C-Y>"
     else
         return "<Esc>"
     end
