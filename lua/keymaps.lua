@@ -33,7 +33,7 @@ local function accept_current_complete()
     end
 end
 
-vim.keymap.set("i", "<C-Space>", function() return popupaction("<C-E>", "<C-x><C-o>") end, { desc = "omnifunc autocomplete", silent = true, expr = true })
+vim.keymap.set("i", "<C-Space>", "<C-X><C-O>", { desc = "omnifunc autocomplete", silent = true })
 vim.keymap.set("i", "<Tab>", function() return popupaction("<C-N>", "<Tab>") end, { silent = true, expr = true })
 vim.keymap.set("i", "<S-Tab>", function() return popupaction("<C-P>", "<S-Tab>") end, { silent = true, expr = true })
 vim.keymap.set("i", "<Esc>", function() return popupaction(accept_current_complete() .. "<Esc>", "<Esc>") end, { silent = true, expr = true })
