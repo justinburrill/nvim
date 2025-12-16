@@ -11,23 +11,33 @@ vim.keymap.set("n", "<leader>M", ":Mason<CR>", { desc = "Mason" })
 
 vim.keymap.set("n", "<C-Space>", vim.lsp.buf.hover)
 -- completion popup interaction
-local function pumvisible()
+local function is_pumvisible()
     return tonumber(vim.fn.pumvisible()) ~= 0
 end
+local function is_preinserted()
+    return vim.fn.preinserted() ~= 0
+end
 local function popupaction(visible, not_visible)
-    if pumvisible() then
+    if is_pumvisible() then
         return visible
     else
         return not_visible
     end
 end
+local function accept_current_complete()
+    -- <C-X><C-Z> is like <C-Y> but it works even if no completion choices were selected
+    if is_preinserted() then
+        return "<C-Y>"
+    else
+        return "<C-X><C-Z>"
+    end
+end
 
--- <C-X><C-Z> is like <C-Y> but it works even if no completion choices were collected
 vim.keymap.set("i", "<C-Space>", function() return popupaction("<C-E>", "<C-x><C-o>") end, { desc = "omnifunc autocomplete", silent = true, expr = true })
 vim.keymap.set("i", "<Tab>", function() return popupaction("<C-N>", "<Tab>") end, { silent = true, expr = true })
 vim.keymap.set("i", "<S-Tab>", function() return popupaction("<C-P>", "<S-Tab>") end, { silent = true, expr = true })
-vim.keymap.set("i", "<Esc>", function() return popupaction("<C-X><C-Z><Esc>", "<Esc>") end, {  expr = true, remap = false })
-vim.keymap.set("i", "<CR>", function() return popupaction("<C-X><C-Z>", "<CR>") end, { silent = true, expr = true, remap = false })
+vim.keymap.set("i", "<Esc>", function() return popupaction(accept_current_complete() .. "<Esc>", "<Esc>") end, { silent = true, expr = true })
+vim.keymap.set("i", "<CR>", function() return popupaction(accept_current_complete(), "<CR>") end, { silent = true, expr = true })
 
 -- basic LSP stuff
 
