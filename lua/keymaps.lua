@@ -37,7 +37,7 @@ vim.keymap.set("i", "<S-Tab>", function()
 end, { silent = true, expr = true })
 vim.keymap.set("i", "<Esc>", function()
     if pumvisible() then
-        return "<C-Y>"
+        return "<C-Y><Esc>"
     else
         return "<Esc>"
     end
