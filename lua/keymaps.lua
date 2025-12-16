@@ -14,41 +14,20 @@ vim.keymap.set("n", "<C-Space>", vim.lsp.buf.hover)
 local function pumvisible()
     return tonumber(vim.fn.pumvisible()) ~= 0
 end
-vim.keymap.set("i", "<C-Space>", function()
+local function popupaction(visible, not_visible)
     if pumvisible() then
-        return "<C-E>"
+        return visible
     else
-        return "<C-x><C-o>"
+        return not_visible
     end
-end, { desc = "omnifunc autocomplete", silent = true, expr = true })
-vim.keymap.set("i", "<Tab>", function()
-    if pumvisible() then
-        return "<C-N>"
-    else
-        return "<Tab>"
-    end
-end, { silent = true, expr = true })
-vim.keymap.set("i", "<S-Tab>", function()
-    if pumvisible() then
-        return "<C-P>"
-    else
-        return "<S-Tab>"
-    end
-end, { silent = true, expr = true })
-vim.keymap.set("i", "<Esc>", function()
-    if pumvisible() then
-        return "<C-Y><Esc>"
-    else
-        return "<Esc>"
-    end
-end, { silent = true, expr = true })
-vim.keymap.set("i", "<CR>", function()
-    if pumvisible() then
-        return "<C-Y>"
-    else
-        return "<CR>"
-    end
-end, { silent = true, expr = true })
+end
+
+-- <C-X><C-Z> is like <C-Y> but it works even if no completion choices were collected
+vim.keymap.set("i", "<C-Space>", function() return popupaction("<C-E>", "<C-x><C-o>") end, { desc = "omnifunc autocomplete", silent = true, expr = true })
+vim.keymap.set("i", "<Tab>", function() return popupaction("<C-N>", "<Tab>") end, { silent = true, expr = true })
+vim.keymap.set("i", "<S-Tab>", function() return popupaction("<C-P>", "<S-Tab>") end, { silent = true, expr = true })
+vim.keymap.set("i", "<Esc>", function() return popupaction("<C-X><C-Z><Esc>", "<Esc>") end, {  expr = true, remap = false })
+vim.keymap.set("i", "<CR>", function() return popupaction("<C-X><C-Z>", "<CR>") end, { silent = true, expr = true, remap = false })
 
 -- basic LSP stuff
 
