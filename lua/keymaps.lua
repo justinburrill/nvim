@@ -75,6 +75,7 @@ vim.keymap.set("n", "<leader>pe", ":Pick explorer<CR>", { desc = "Pick explorer"
 vim.keymap.set("n", "<leader>pc", ":Pick commands<CR>", { desc = "Pick commands" })
 vim.keymap.set("n", "<leader>pg", ":Pick grep_live<CR>", { desc = "Pick grep" })
 vim.keymap.set("n", "<leader>pG", ":Pick buf_lines scope='current'<CR>", { desc = "Pick grep in current buf" })
+vim.keymap.set("n", "<leader>P", ":Pick resume<CR>", { desc = "Resume Pick"})
 vim.keymap.set("n", "<leader>pr", function()
     MiniExtra.pickers.lsp({ scope = "references" })
 end, { desc = "Pick references" })
@@ -84,11 +85,11 @@ end, { desc = "Pick references" })
 vim.keymap.set("i", "<C-H>", "<C-W>")            -- delete word with ctrl+backspace
 vim.keymap.set("i", "<C-Del>", "<space><esc>ce") -- delete word with ctrl+del
 vim.keymap.set("n", "<leader>q", ":bp|bd #<CR>", { desc = "Quit buffer" })
-vim.keymap.set("i", "<C-z>", function()
+--[[ vim.keymap.set("i", "<C-z>", function()
     -- TODO:make this delete something i just pasted from "* or "+ with C-v
     -- if the text before my cursor isn't from the clipboard, then delete
     -- until punctuation or x many characters or something
-end)
+end) ]]
 
 -- jumping through
 
@@ -111,11 +112,6 @@ vim.keymap.set("n", "[T", ":tabprevious<CR>", { desc = "Previous tab" })
 
 -- comments
 
-vim.keymap.set("i", "<C-z>", function()
-    -- TODO:make this delete something i just pasted from "* or "+ with C-v
-    -- if the text before my cursor isn't from the clipboard, then delete
-    -- until punctuation or x many characters or something
-end)
 
 -- linewise COMMENTS with CTRL
 -- TODO: cursor isn't placed correctly when I start a comment on an empty line
