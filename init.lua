@@ -2,7 +2,7 @@ package.path = "/home/jburrill/.config/nvim/?.lua;" .. package.path
 package.path = "/home/jburrill/.config/nvim/?/?.lua;" .. package.path
 
 vim.o.ignorecase = true
-vim.o.smartcase = true                   -- for case-insensitive finding/searching
+vim.o.smartcase = true                                -- for case-insensitive finding/searching
 vim.o.infercase = true
 vim.o.completeopt = "menuone,popup,longest,preinsert" -- default = "menu,popup"
 
@@ -63,6 +63,8 @@ vim.pack.add({
     { src = "https://github.com/vague2k/vague.nvim",                         name = "vague" },
 })
 
+
+
 local null_ls = require("null-ls")
 null_ls.setup({
     sources = {
@@ -85,7 +87,12 @@ require "nvim-treesitter".setup()
 require "oil".setup()
 require "mason".setup()
 require "mason-lspconfig".setup()
-require "todo-comments".setup()
+require "todo-comments".setup({
+    keywords = {
+        IMPROVE = { icon = " ", color = "ok", alt = { "IMPROVE", "IMPROVEME" } },
+    },
+    colors = { ok = { "DiagnosticOk", "Added" } }
+})
 require "demicolon".setup({
     keymaps = {
         repeat_motions = "stateful"
@@ -114,8 +121,8 @@ whichkey.setup({
     }
 })
 whichkey.add({
-    {"<leader>c", group = "code"},
-    {"<leader>p", group = "Pick"},
+    { "<leader>c", group = "code" },
+    { "<leader>p", group = "Pick" },
 })
 -- TREESITTER
 local treesitter_ok, treesitter_configs = pcall(require, "nvim-treesitter.configs")
@@ -194,10 +201,4 @@ vim.cmd("colorscheme vague")
 -- HIGHLIGHTING
 vim.o.cursorline = true
 vim.o.cursorlineopt = "number"
-vim.cmd("highlight StatusLine guifg=#e8f3ff")
-vim.cmd("highlight lineNrAbove guifg=#764646") -- red
-vim.cmd("highlight lineNrBelow guifg=#5c7351") -- green
-vim.cmd("highlight CursorLineNr cterm=bold guifg=#cdcdcd")
-vim.cmd("highlight StatusLineNC guifg=#544f61")
-vim.cmd("highlight LspInlayHint gui=underline,italic guifg=#606079")
--- TODO: need to set lsp.type.parameter different from lsp.type.function
+require "highlights"
