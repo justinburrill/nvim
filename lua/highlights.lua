@@ -11,6 +11,6 @@ vim.cmd("highlight StatusLine guifg=#e8f3ff")
 vim.cmd("highlight StatusLineNC guifg=#544f61")
 vim.cmd("highlight lineNrAbove guifg=#764646") -- red
 vim.cmd("highlight lineNrBelow guifg=#5c7351") -- green
-vim.cmd("highlight! link @lsp.type.function @lsp.function")
 vim.cmd("highlight! link @lsp.type.macro Macro")
+vim.cmd("highlight! link @lsp.type.function @lsp.function")
 vim.cmd("highlight! link @lsp.typemod.function @lsp.function")
