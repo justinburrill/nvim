@@ -61,6 +61,7 @@ vim.pack.add({
     { src = "https://github.com/mawkler/demicolon.nvim" },
     { src = "https://github.com/mawkler/refjump.nvim" },
     { src = "https://github.com/vague2k/vague.nvim",                         name = "vague" },
+    { src = "https://github.com/windwp/nvim-ts-autotag" },
 })
 
 
@@ -125,6 +126,9 @@ whichkey.add({
     { "<leader>c", group = "code" },
     { "<leader>p", group = "Pick" },
 })
+require("nvim-ts-autotag").setup()
+
+
 -- TREESITTER
 local treesitter_ok, treesitter_configs = pcall(require, "nvim-treesitter.configs")
 local my_ts_config = require("treesitter-config")
@@ -133,48 +137,7 @@ if treesitter_ok then
 end
 
 -- LSPCONFIG
-vim.lsp.enable({ "lua_ls", "clangd", "basedpyright", "rust_analyzer", "denols", "ts_ls", "bashls", "jsonls" })
-vim.lsp.config("basedpyright", {
-    settings = {
-        basedpyright = {
-            analysis = {
-                diagnosticSeverityOverrides = {
-                    reportUnknownParameterType = false,
-                    reportUnknownVariableType = false,
-                    reportUnknownLambdaType = false,
-                    reportUnknownMemberType = false,
-                    reportUnknownArgumentType = false,
-                    reportMissingParameterType = false,
-                    reportUnusedCallResult = false,
-                    reportAny = false,
-                    reportExplicitAny = false,
-                    reportUnusedExpression = false,
-                    reportMissingTypeArgument = false,
-                    reportUntypedFunctionDecorator = false,
-                }
-            }
-        }
-    }
-})
-vim.lsp.config("denols", {
-    --root_dir = vim.lsp.util.root_pattern("deno.json", "deno.jsonc"),
-})
-vim.lsp.config("ts_ls", {
-    single_file_support = false,
-    maxPreload = 1000,
-    preloadFileSize = 10000,
-})
-vim.lsp.config("rust_analyzer", {})
-
--- tell autocomplete about neovim lsp completion
-vim.api.nvim_create_autocmd("LspAttach", {
-    callback = function(ev)
-        local client = vim.lsp.get_client_by_id(ev.data.client_id)
-        if client ~= nil and client:supports_method("textDocument/completion") then
-            vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = false })
-        end
-    end,
-})
+require "lspsettings"
 
 -- KEYBINDS KEYMAPS
 require "keymaps"
