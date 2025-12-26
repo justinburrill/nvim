@@ -1,3 +1,4 @@
+require "utils"
 package.path = "/home/jburrill/.config/nvim/?.lua;" .. package.path
 package.path = "/home/jburrill/.config/nvim/?/?.lua;" .. package.path
 
