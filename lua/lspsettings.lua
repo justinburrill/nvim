@@ -1,6 +1,6 @@
 
 require "utils"
-local lspconfig = require("lspconfig")
+local lspconfig_util = require("lspconfig.util")
 vim.lsp.enable({ "lua_ls", "clangd", "basedpyright", "rust_analyzer", "ts_ls", "bashls", "jsonls", "vue_ls" })
 vim.lsp.config("basedpyright", {
     settings = {
@@ -31,7 +31,7 @@ vim.lsp.config("clangd", {
 vim.lsp.config("rust_analyzer", {})
 
 
-lspconfig.ts_ls.setup({
+vim.lsp.config("ts_ls", {
     root_dir = Root_pattern_exclude({
         root = { "package.json" },
         exclude = { "deno.json", "deno.jsonc" }
@@ -59,8 +59,8 @@ lspconfig.ts_ls.setup({
 })
 
 
-lspconfig.denols.setup({
-    root_dir = lspconfig.util.root_pattern("deno.json", "deno.jsonc", "deno.lock"),
+vim.lsp.config("denols", {
+    root_dir = lspconfig_util.root_pattern("deno.json", "deno.jsonc", "deno.lock"),
     init_options = {
         lint = true,
         suggest = {
