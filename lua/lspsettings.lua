@@ -1,7 +1,6 @@
-
 require "utils"
 local lspconfig_util = require("lspconfig.util")
-vim.lsp.enable({ "lua_ls", "clangd", "basedpyright", "rust_analyzer", "ts_ls", "bashls", "jsonls", "vue_ls" })
+vim.lsp.enable({ "lua_ls", "clangd", "basedpyright", "rust_analyzer", "ts_ls", "bashls", "jsonls", "vue_ls", "hls" })
 vim.lsp.config("basedpyright", {
     settings = {
         basedpyright = {
@@ -43,7 +42,7 @@ vim.lsp.config("ts_ls", {
                 autoImports = true,
             },
             diagnostics = {
-                ignore = {"[Deno]"},
+                ignore = { "[Deno]" },
             },
         },
         typescript = {
@@ -51,7 +50,7 @@ vim.lsp.config("ts_ls", {
                 autoImports = true,
             },
             diagnostics = {
-                ignore = {"[Deno]"},
+                ignore = { "[Deno]" },
             },
             tsserverFilePaths = { "path/to/deno" },
         },
