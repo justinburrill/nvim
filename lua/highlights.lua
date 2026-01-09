@@ -17,3 +17,5 @@ vim.cmd("highlight! link @lsp.type.function @function")
 vim.cmd("highlight! link @lsp.typemod.function @function")
 vim.cmd("highlight! link @function.call @function")
 vim.cmd("highlight! link @lsp.typemod.function.builtin @function.builtin")
+-- copied from DiagnosticUnderlineInfo
+vim.cmd("highlight! DiagnosticUnnecessary cterm=underline gui=undercurl guisp=#aeaed1 guifg=#606079")

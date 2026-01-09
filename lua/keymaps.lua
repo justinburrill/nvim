@@ -6,9 +6,8 @@ vim.g.mapleader = " "
 
 vim.keymap.set("n", "<leader>m", ":messages<CR>", { desc = "Show messages" })
 vim.keymap.set("n", "<leader>M", ":Mason<CR>", { desc = "Mason" })
-
-
 vim.keymap.set("n", "<C-Space>", vim.lsp.buf.hover)
+
 -- completion popup interaction
 local function is_pumvisible()
     return tonumber(vim.fn.pumvisible()) ~= 0
@@ -24,25 +23,28 @@ local function popupaction(visible, not_visible)
     end
 end
 local function accept_current_complete()
-    -- <C-X><C-Z> is like <C-Y> but it works even if no completion choices were selected
     if is_preinserted() then
         return "<C-Y>"
     else
+        -- <C-X><C-Z> is like <C-Y> but it works even if no completion choices were selected
         return "<C-X><C-Z>"
     end
 end
 
 -- completion interaction
-
--- TODO: figure out why I can't jump in snippets
-
-vim.keymap.set("i", "<C-Space>", "<C-X><C-O>", { desc = "omnifunc autocomplete", silent = true })
-vim.keymap.set("i", "<Tab>", function() return popupaction("<C-N>", "<Tab>") end, { silent = true, expr = true, remap=true })
-vim.keymap.set("i", "<S-Tab>", function() return popupaction("<C-P>", "<S-Tab>") end, { silent = true, expr = true, remap=true })
+vim.keymap.set("i", "<C-Space>", "<C-X><C-O>", { desc = "omnifunc completion", silent = true })
+vim.keymap.set("i", "<Tab>", function() return popupaction("<C-N>", "<Tab>") end,
+    { silent = true, expr = true, remap = true })
+vim.keymap.set("i", "<S-Tab>", function() return popupaction("<C-P>", "<S-Tab>") end,
+    { silent = true, expr = true, remap = true })
 vim.keymap.set("i", "<Down>", function() return popupaction("<C-N>", "<Down>") end, { silent = true, expr = true })
 vim.keymap.set("i", "<Up>", function() return popupaction("<C-P>", "<Up>") end, { silent = true, expr = true })
-vim.keymap.set("i", "<Esc>", function() return popupaction(accept_current_complete() .. "<Esc>", "<Esc>") end, { silent = true, expr = true })
-vim.keymap.set("i", "<CR>", function() return popupaction(accept_current_complete(), "<CR>") end, { silent = true, expr = true })
+vim.keymap.set("i", "<Esc>", function() return popupaction(accept_current_complete() .. "<Esc>", "<Esc>") end,
+    { silent = true, expr = true })
+vim.keymap.set("i", "<CR>", function() return popupaction(accept_current_complete(), "<CR>") end,
+    { silent = true, expr = true })
+
+-- TODO: figure out why I can't jump in snippets
 
 -- basic LSP stuff
 
@@ -80,7 +82,7 @@ vim.keymap.set("n", "<leader>pe", ":Pick explorer<CR>", { desc = "Pick explorer"
 vim.keymap.set("n", "<leader>pc", ":Pick commands<CR>", { desc = "Pick commands" })
 vim.keymap.set("n", "<leader>pg", ":Pick grep_live<CR>", { desc = "Pick grep" })
 vim.keymap.set("n", "<leader>pG", ":Pick buf_lines scope='current'<CR>", { desc = "Pick grep in current buf" })
-vim.keymap.set("n", "<leader>P", ":Pick resume<CR>", { desc = "Resume Pick"})
+vim.keymap.set("n", "<leader>P", ":Pick resume<CR>", { desc = "Resume Pick" })
 vim.keymap.set("n", "<leader>pr", function()
     MiniExtra.pickers.lsp({ scope = "references" })
 end, { desc = "Pick references" })
@@ -134,7 +136,7 @@ end)
 -- TODO: create comment at cursor if I do ALT while in insert mode
 -- vim.keymap.set("i", "<M-/>", function() commentapi.
 
- -- vscode motions
+-- vscode motions
 vim.keymap.set({ "i", "n" }, "<S-Up>", "Vk")
 vim.keymap.set({ "i", "n" }, "<S-Down>", "Vj")
 vim.keymap.set("x", "<S-Up>", "k")

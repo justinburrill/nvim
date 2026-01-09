@@ -6,11 +6,12 @@ vim.o.ignorecase = true
 vim.o.smartcase = true                                -- for case-insensitive finding/searching
 vim.o.infercase = true
 vim.o.completeopt = "menuone,popup,longest,preinsert" -- default = "menu,popup"
+vim.o.completefuzzycollect = "keyword,files,whole_line"
 
--- Directly setting format options doesn't work because it is overwritten later (default is jncroql)
+-- Directly setting format options doesn't work because it is overwritten later
 vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead", "BufWinEnter" }, {
     pattern = { "*" },
-    callback = function() vim.o.formatoptions = "tjn" end,
+    callback = function() vim.o.formatoptions = "tjn" end, -- default = jncroql
 })
 vim.opt.number = true
 vim.opt.relativenumber = true
@@ -62,7 +63,6 @@ vim.pack.add({
     { src = "https://github.com/mawkler/demicolon.nvim" },
     { src = "https://github.com/mawkler/refjump.nvim" },
     { src = "https://github.com/vague2k/vague.nvim",                         name = "vague" },
-    { src = "https://github.com/windwp/nvim-ts-autotag" },
 })
 
 
@@ -72,7 +72,7 @@ null_ls.setup({
     sources = {
         null_ls.builtins.formatting.black.with {
             command = "black",
-            extra_args = { "--line-length", "120" }
+            extra_args = { "--line-length", "110" }
         },
         require("none-ls.formatting.taplo"),
     }
@@ -127,7 +127,6 @@ whichkey.add({
     { "<leader>c", group = "code" },
     { "<leader>p", group = "Pick" },
 })
-require("nvim-ts-autotag").setup()
 
 
 -- TREESITTER
