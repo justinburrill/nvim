@@ -41,12 +41,13 @@ local termfeatures = vim.g.termfeatures or {}
 termfeatures.osc52 = true
 vim.g.termfeatures = termfeatures
 
--- PLUGINS PACKAGES
+-- PLUGINS PACKAGES vim.pack
 vim.pack.add({
     { src = "https://github.com/echasnovski/mini.pick" },
     { src = "https://github.com/echasnovski/mini.extra" },
     { src = "https://github.com/echasnovski/mini.surround" },
     { src = "https://github.com/echasnovski/mini.pairs" },
+    { src = "https://github.com/Saghen/blink.cmp",                           version = vim.version.range("*") },
     { src = "https://github.com/folke/lazydev.nvim",                         ft = "lua" },
     { src = "https://github.com/folke/which-key.nvim" },
     { src = "https://github.com/folke/todo-comments.nvim" },
@@ -128,7 +129,6 @@ whichkey.add({
     { "<leader>p", group = "Pick" },
 })
 
-
 -- TREESITTER
 local treesitter_ok, treesitter_configs = pcall(require, "nvim-treesitter.configs")
 local my_ts_config = require("treesitter-config")
@@ -142,6 +142,9 @@ require "lspsettings"
 -- KEYBINDS KEYMAPS
 require "keymaps"
 require "blamer-nvim.lua.blamer-nvim".setup()
+
+-- BLINK COMPLETION
+require "completion"
 
 
 -- REMEMBER WITH AUTO-VIEWS AND VIEWOPTIONS
