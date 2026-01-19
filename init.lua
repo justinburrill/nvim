@@ -8,6 +8,7 @@ vim.o.infercase = true
 vim.o.completeopt = "menuone,popup,longest,preinsert" -- default = "menu,popup"
 -- vim.o.completefuzzycollect = "keyword,files,whole_line" -- removed?
 
+
 -- Directly setting format options doesn't work because it is overwritten later
 vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead", "BufWinEnter" }, {
     pattern = { "*" },
