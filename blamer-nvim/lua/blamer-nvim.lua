@@ -16,7 +16,7 @@ end
 local function max_line_length(strings)
     local max = 10
     for _i, s in ipairs(strings) do
-        if s:len() > max then max = s:len() end
+        if #s > max then max = #s end
     end
     return max
 end
@@ -27,24 +27,31 @@ function Focus_popup_window()
     vim.api.nvim_win_set_cursor(0, { 1, 0 })
 end
 
---- @param lines string[] The output
+--- @param lines string[] The text to place in the window
 function Open_popup_window(lines)
-    local cursor_pos = vim.api.nvim_get_current_win()
-    local screen_row, screen_col = unpack(vim.api.nvim_win_get_cursor(cursor_pos))
+    local current_window_id = vim.api.nvim_get_current_win()
+    local _bufnum, bufline, bufcol, _offset = unpack(vim.fn.getpos("."))
+    local screenpos = vim.fn.screenpos(current_window_id, bufline, bufcol)
+    if #screenpos == 0 then
+        log(("Failed to get screenpos (invalid winid %s)"):format(current_window_id))
+        return
+    end
+    local screenrow = screenpos["row"];
+    local screencol = screenpos["col"]; -- first screen col (not "curscol")
 
     local newbuf = vim.api.nvim_create_buf(false, true)
 
     local win = vim.api.nvim_open_win(newbuf, false, {
         relative = "editor",
-        row = screen_row,
-        col = screen_col + 5,
+        row = screenrow,
+        col = screencol,
         width = max_line_length(lines),
         height = #lines,
         style = "minimal",
         border = "rounded"
     })
     if 0 == win then
-        log("WINDOW FAIL")
+        log("Failed to create window")
         return
     end
     POPUP_WINDOW = win
@@ -74,11 +81,11 @@ end
 ---@param line integer Line number for blame
 ---@return string[] | nil lines of output
 function Get_blame_text(line)
-    local cmd = { "git", "blame", vim.fn.expand("%"), "--root", "-L", string.format("%d,%d", line, line) }
+    local cmd = { "git", "blame", vim.fn.expand("%"), "--color-lines", "--root", "-L", string.format("%d,%d", line, line) }
 
     local proc = vim.system(cmd):wait(500)
     if proc.code == 124 then
-        log("GIT FAIL")
+        log("Timeout waiting for command: " .. cmd)
         return nil
     end
     local output = vim.split(strip(proc.stdout) .. strip(proc.stderr), "\n")
@@ -86,9 +93,9 @@ function Get_blame_text(line)
 end
 
 function Open_blame_window()
-    local _bufnum, line, _column, _off = unpack(vim.fn.getpos("."))
+    local _bufnum, bufline, _bufcol, _offset = unpack(vim.fn.getpos("."))
 
-    local output = Get_blame_text(line)
+    local output = Get_blame_text(bufline)
     if output == nil then return end
     if POPUP_WINDOW == nil then
         Open_popup_window(output)
