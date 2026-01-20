@@ -153,18 +153,6 @@ require "lspsettings"
 require "keymaps"
 require "blamer-nvim.lua.blamer-nvim".setup()
 
--- BLINK COMPLETION
-require "completion"
-
-
--- REMEMBER WITH AUTO-VIEWS AND VIEWOPTIONS
-vim.o.viewoptions = "folds,cursor"
--- TODO:
--- vim.api.nvim_create_augroup
-
--- CUSTOM COMMANDS
-vim.api.nvim_create_user_command("Jq", ":%!jq", {})
-vim.api.nvim_create_user_command("Diff", ":w !diff - %", {})
 
 -- ACTIVATE COLOURSCHEME
 require "vague".setup({
@@ -179,3 +167,18 @@ vim.cmd("colorscheme vague")
 vim.o.cursorline = true
 vim.o.cursorlineopt = "number"
 require "highlights"
+
+
+-- BLINK COMPLETION
+require "completion"
+
+
+-- REMEMBER WITH AUTO-VIEWS AND VIEWOPTIONS
+vim.o.viewoptions = "folds,cursor"
+-- TODO:
+-- vim.api.nvim_create_augroup
+
+-- CUSTOM COMMANDS
+vim.api.nvim_create_user_command("Jq", ":%!jq", {})
+vim.api.nvim_create_user_command("Diff", ":w !diff - %", {})
+
