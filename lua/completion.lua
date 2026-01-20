@@ -16,7 +16,7 @@ require "blink.cmp".setup({
         ghost_text = { enabled = true, show_with_selection = true, show_without_menu = false },
         list = {
             -- preselect doesn't matter because C-Space is bound to select the first menu item
-            selection = { auto_insert = false, preselect = false },
+            selection = { auto_insert = true, preselect = false },
             max_items = 100,
         }
     },

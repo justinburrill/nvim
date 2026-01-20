@@ -1,81 +1,9 @@
 local M = {}
 
---- @type integer | nil
-local POPUP_WINDOW = nil
 
-local function log(s)
-    vim.api.nvim_echo({ { s } }, true, {})
-end
+require "blamer-nvim.lua.popups"
+require "blamer-nvim.lua.blamer-utils"
 
-local function strip(s)
-    return s:gsub("^%s+", ""):gsub("%s+$", "")
-end
-
---- @param strings string[] Strings
---- @return integer
-local function max_line_length(strings)
-    local max = 10
-    for _i, s in ipairs(strings) do
-        if #s > max then max = #s end
-    end
-    return max
-end
-
-function Focus_popup_window()
-    if POPUP_WINDOW == nil then return end
-    vim.api.nvim_set_current_win(POPUP_WINDOW)
-    vim.api.nvim_win_set_cursor(0, { 1, 0 })
-end
-
---- @param text string[] The text to place in the window
-function Open_popup_window(text)
-    local current_window_id = vim.api.nvim_get_current_win()
-    local _bufnum, bufline, bufcol, _offset = unpack(vim.fn.getpos("."))
-    local screenpos = vim.fn.screenpos(current_window_id, bufline, bufcol)
-    if screenpos == {} then
-        log(("Failed to get screenpos (invalid winid %s)"):format(current_window_id))
-        return
-    end
-    local screenrow = screenpos["row"];
-
-    local newbuf = vim.api.nvim_create_buf(false, true)
-
-    local win = vim.api.nvim_open_win(newbuf, false, {
-        relative = "editor",
-        row = screenrow,
-        col = 5,
-        width = max_line_length(text),
-        height = #text,
-        style = "minimal",
-        border = "rounded"
-    })
-    if 0 == win then
-        log("Failed to create window")
-        return
-    end
-    POPUP_WINDOW = win
-
-    vim.api.nvim_buf_set_lines(newbuf, 0, -1, false, text)
-
-    function Close_blame_window()
-        vim.api.nvim_buf_delete(newbuf, { force = true })
-        POPUP_WINDOW = nil
-    end
-
-    local close_window_autocmd_id = vim.api.nvim_create_autocmd("CursorMoved", {
-        -- TODO: uncomment?
-        -- buffer = vim.api.nvim_get_current_buf(),
-        callback = Close_blame_window,
-        once = true,
-    })
-
-    vim.keymap.set("n", "q", function()
-        Close_blame_window()
-        vim.api.nvim_del_autocmd(close_window_autocmd_id)
-    end, { buffer = newbuf })
-
-    vim.api.nvim_set_option_value("modifiable", false, { buf = newbuf })
-end
 
 ---@param line integer Line number for blame
 ---@return string[] | nil lines of output
@@ -84,10 +12,10 @@ function Get_blame_text(line)
 
     local proc = vim.system(cmd):wait(500)
     if proc.code == 124 then
-        log("Timeout waiting for command: " .. cmd)
+        Log("Timeout waiting for command: " .. cmd)
         return nil
     end
-    local output = vim.split(strip(proc.stdout) .. strip(proc.stderr), "\n")
+    local output = vim.split(Strip(proc.stdout) .. Strip(proc.stderr), "\n")
     return output
 end
 
