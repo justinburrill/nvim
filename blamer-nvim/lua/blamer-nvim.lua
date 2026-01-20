@@ -27,26 +27,25 @@ function Focus_popup_window()
     vim.api.nvim_win_set_cursor(0, { 1, 0 })
 end
 
---- @param lines string[] The text to place in the window
-function Open_popup_window(lines)
+--- @param text string[] The text to place in the window
+function Open_popup_window(text)
     local current_window_id = vim.api.nvim_get_current_win()
     local _bufnum, bufline, bufcol, _offset = unpack(vim.fn.getpos("."))
     local screenpos = vim.fn.screenpos(current_window_id, bufline, bufcol)
-    if #screenpos == 0 then
+    if screenpos == {} then
         log(("Failed to get screenpos (invalid winid %s)"):format(current_window_id))
         return
     end
     local screenrow = screenpos["row"];
-    local screencol = screenpos["col"]; -- first screen col (not "curscol")
 
     local newbuf = vim.api.nvim_create_buf(false, true)
 
     local win = vim.api.nvim_open_win(newbuf, false, {
         relative = "editor",
         row = screenrow,
-        col = screencol,
-        width = max_line_length(lines),
-        height = #lines,
+        col = 5,
+        width = max_line_length(text),
+        height = #text,
         style = "minimal",
         border = "rounded"
     })
@@ -56,7 +55,7 @@ function Open_popup_window(lines)
     end
     POPUP_WINDOW = win
 
-    vim.api.nvim_buf_set_lines(newbuf, 0, -1, false, lines)
+    vim.api.nvim_buf_set_lines(newbuf, 0, -1, false, text)
 
     function Close_blame_window()
         vim.api.nvim_buf_delete(newbuf, { force = true })
