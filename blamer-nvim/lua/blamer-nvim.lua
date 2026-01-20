@@ -76,11 +76,16 @@ function Get_blame_text(line_num)
         "--", vim.fn.expand("%"),
     }
     local blame_output_lines = Run_command(first_blame_cmd)
+    local errmsg = Get_line_containing(blame_output_lines, "error") or Get_line_containing(blame_output_lines, "fatal")
+    if  errmsg ~= nil then
+        error(errmsg)
+        return
+    end
     local blame_info = Extract_data_from_blame(blame_output_lines)
 
     -- Log("got blame info: " .. Stringit(blame_info))
     local author_line
-    if tonumber(blame_info.hash) then
+    if tonumber(blame_info.hash) ~= 0 then
         author_line = ("%s by %s"):format(blame_info.hash and "<no hash>", blame_info.author or "<no author>")
     else
         author_line = "~~~ Not yet committed ~~~"
@@ -110,8 +115,6 @@ function Get_blame_text(line_num)
                 previous_blame_info.author or "<no author>"))
         table.insert(display_text, Strip(previous_blame_info.summary) or "<no summary>")
         table.insert(display_text, Strip(previous_blame_info.new_text) or "<no text>")
-        green_line_count = green_line_count + 3
-        green_line_count = #display_text
     else
         table.insert(display_text, "No previous commit")
     end
