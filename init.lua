@@ -8,7 +8,6 @@ vim.o.infercase = true
 vim.o.completeopt = "menuone,popup,longest,preinsert" -- default = "menu,popup"
 -- vim.o.completefuzzycollect = "keyword,files,whole_line" -- removed?
 
-
 -- Directly setting format options doesn't work because it is overwritten later
 vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead", "BufWinEnter" }, {
     pattern = { "*" },
@@ -75,8 +74,6 @@ vim.pack.add({
     { src = "https://github.com/mawkler/refjump.nvim" },
     { src = "https://github.com/vague2k/vague.nvim",                         name = "vague" },
 })
-
-
 
 local null_ls = require("null-ls")
 null_ls.setup({
@@ -153,7 +150,6 @@ require "lspsettings"
 require "keymaps"
 require "blamer-nvim.lua.blamer-nvim".setup()
 
-
 -- ACTIVATE COLOURSCHEME
 require "vague".setup({
     style = {
@@ -168,7 +164,6 @@ vim.o.cursorline = true
 vim.o.cursorlineopt = "number"
 require "highlights"
 
-
 -- BLINK COMPLETION
 require "completion"
 
@@ -181,4 +176,3 @@ vim.o.viewoptions = "folds,cursor"
 -- CUSTOM COMMANDS
 vim.api.nvim_create_user_command("Jq", ":%!jq", {})
 vim.api.nvim_create_user_command("Diff", ":w !diff - %", {})
-
