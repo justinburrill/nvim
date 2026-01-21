@@ -77,16 +77,15 @@ function Get_blame_text(line_num)
     }
     local blame_output_lines = Run_command(first_blame_cmd)
     local errmsg = Get_line_containing(blame_output_lines, "error") or Get_line_containing(blame_output_lines, "fatal")
-    if  errmsg ~= nil then
+    if errmsg ~= nil then
         error(errmsg)
-        return
     end
     local blame_info = Extract_data_from_blame(blame_output_lines)
 
-    -- Log("got blame info: " .. Stringit(blame_info))
+    Log("got blame info: " .. Stringit(blame_info))
     local author_line
     if tonumber(blame_info.hash) ~= 0 then
-        author_line = ("%s by %s"):format(blame_info.hash and "<no hash>", blame_info.author or "<no author>")
+        author_line = ("%s by %s"):format(blame_info.hash or "<no hash>", blame_info.author or "<no author>")
     else
         author_line = "~~~ Not yet committed ~~~"
     end
@@ -97,7 +96,7 @@ function Get_blame_text(line_num)
     --- @type string[]
     local display_text = {
         author_line,
-        blame_info.summary or "<no summary>",
+        ('"' .. blame_info.summary .. '"') or "<no summary>",
         blame_info.new_text or "<no text>",
     }
     local green_line_count = #display_text
@@ -113,7 +112,7 @@ function Get_blame_text(line_num)
         table.insert(display_text,
             ("%s %s"):format(previous_blame_info.hash or "<no hash>",
                 previous_blame_info.author or "<no author>"))
-        table.insert(display_text, Strip(previous_blame_info.summary) or "<no summary>")
+        table.insert(display_text, Strip('"' .. previous_blame_info.summary .. '"') or "<no summary>")
         table.insert(display_text, Strip(previous_blame_info.new_text) or "<no text>")
     else
         table.insert(display_text, "No previous commit")
@@ -136,7 +135,6 @@ function Open_blame_window()
 
     local blame_data = Get_blame_text(bufline)
     if blame_data == nil then return end
-    Log("got blame data: " .. Stringit(blame_data))
     if POPUP_WINDOW == nil then
         local buf_id = Open_popup_window(blame_data.lines)
         if buf_id == nil then
