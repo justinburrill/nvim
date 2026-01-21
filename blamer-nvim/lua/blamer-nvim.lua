@@ -70,6 +70,9 @@ end
 ---@param line_num integer Line number for blame
 ---@return BlameTextDisplayData
 function Get_blame_text(line_num)
+    local function format_author_line(hash, author)
+        -- TODO: ...
+    end
     local first_blame_cmd = {
         "git", "blame", "--porcelain", "--abbrev=6", "--root",
         "-L", string.format("%d,%d", line_num, line_num),
@@ -82,7 +85,7 @@ function Get_blame_text(line_num)
     end
     local blame_info = Extract_data_from_blame(blame_output_lines)
 
-    Log("got blame info: " .. Stringit(blame_info))
+    -- Log("got blame info: " .. Stringit(blame_info))
     local author_line
     if tonumber(blame_info.hash) ~= 0 then
         author_line = ("%s by %s"):format(blame_info.hash or "<no hash>", blame_info.author or "<no author>")
