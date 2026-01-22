@@ -73,7 +73,8 @@ require "blink.cmp".setup({
             preset = "inherit",
             ["<Tab>"] = { "show_and_insert", "select_next", "snippet_forward", "fallback" },
             ["<S-Tab>"] = { "select_prev", "snippet_backward", "fallback" },
-            ["<Enter>"] = { "accept_and_enter", "fallback" }
+            ["<Enter>"] = { "accept_and_enter", "fallback" },
+            ["<Esc>"] = { "fallback" },
         }
     },
     term = { keymap = { preset = "inherit" } }
