@@ -44,7 +44,7 @@ function Extract_data_from_blame(blame_output_lines)
             auto_extracted_data[key_name] = nil
         else
             local parts = Split_count(line, nil, 1)
-            auto_extracted_data[key_name] = parts[#parts]
+            auto_extracted_data[key_name] = parts[#parts] or ("<no " .. key_name .. ">")
         end
     end
     for _, key_name in ipairs(auto_copy_keys) do
@@ -115,7 +115,11 @@ function Get_blame_text(line_num)
         table.insert(display_text,
             ("%s %s"):format(previous_blame_info.hash or "<no hash>",
                 previous_blame_info.author or "<no author>"))
-        table.insert(display_text, Strip('"' .. previous_blame_info.summary .. '"') or "<no summary>")
+        if previous_blame_info.summary ~= nil then
+            table.insert(display_text, Strip('"' .. previous_blame_info.summary .. '"'))
+        else
+            table.insert(display_text, "<no summary>")
+        end
         table.insert(display_text, Strip(previous_blame_info.new_text) or "<no text>")
     else
         table.insert(display_text, "No previous commit")
