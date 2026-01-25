@@ -13,7 +13,7 @@ require "blink.cmp".setup({
         },
         documentation = { auto_show = true, auto_show_delay_ms = 500 },
         -- not used if completion.list.selection.auto_insert = true
-        ghost_text = { enabled = true, show_with_selection = true, show_without_menu = false },
+        ghost_text = { enabled = false, show_with_selection = false, show_without_menu = false },
         list = {
             -- preselect doesn't matter because C-Space is bound to select the first menu item
             selection = { auto_insert = true, preselect = false },
@@ -36,8 +36,7 @@ require "blink.cmp".setup({
         ["<Tab>"] = { "select_next", "snippet_forward", "fallback" },
         ["<S-Tab>"] = { "select_prev", "snippet_backward", "fallback" },
 
-        -- "show" or "show_and_insert"?
-        ["<C-Space>"] = { "show_and_insert", "show_documentation", "hide_documentation", "fallback" },
+        ["<C-Space>"] = { "show_and_insert", "select_and_accept", "fallback" },
         -- no return true in the function so the fallback behaviour is used as well (exit to normal mode)
         ["<Esc>"] = { function(cmp)
             cmp.hide()
