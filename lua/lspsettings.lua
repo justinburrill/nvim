@@ -1,6 +1,16 @@
 require "utils"
 local lspconfig_util = require("lspconfig.util")
 vim.lsp.enable({ "lua_ls", "clangd", "basedpyright", "rust_analyzer", "ts_ls", "bashls", "jsonls", "vue_ls", "hls" })
+
+local lspconfig = require("lspconfig")
+lspconfig.opts = {
+    servers = {
+        clangd = {
+            mason = false
+        }
+    }
+}
+
 vim.lsp.config("basedpyright", {
     settings = {
         basedpyright = {
@@ -23,12 +33,13 @@ vim.lsp.config("basedpyright", {
         }
     }
 })
+
 vim.lsp.config("clangd", {
-    cmd = { "clangd", "--compile-commands-dir=/home/justin" },
+    cmd = { "clangd", "--background-index" },
     filetypes = { "c", "cpp", "cc", "ixx", "cuda", "cu", "objcpp", "objc" },
 })
-vim.lsp.config("rust_analyzer", {})
 
+vim.lsp.config("rust_analyzer", {})
 
 vim.lsp.config("ts_ls", {
     root_dir = Root_pattern_exclude({
@@ -56,7 +67,6 @@ vim.lsp.config("ts_ls", {
         },
     },
 })
-
 
 vim.lsp.config("denols", {
     root_dir = lspconfig_util.root_pattern("deno.json", "deno.jsonc", "deno.lock"),
