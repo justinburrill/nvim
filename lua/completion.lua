@@ -36,7 +36,7 @@ require "blink.cmp".setup({
         ["<Tab>"] = { "select_next", "snippet_forward", "fallback" },
         ["<S-Tab>"] = { "select_prev", "snippet_backward", "fallback" },
 
-        ["<C-Space>"] = { "show_and_insert", "select_and_accept", "fallback" },
+        ["<C-Space>"] = { "show_and_insert", "select_and_accept",  }, -- "fallback" #TODO: readd?
         -- no return true in the function so the fallback behaviour is used as well (exit to normal mode)
         ["<Esc>"] = { function(cmp)
             cmp.hide()
