@@ -125,6 +125,7 @@ whichkey.setup({
 whichkey.add({
     { "<leader>c", group = "code" },
     { "<leader>p", group = "Pick" },
+    { "<leader>L", group = "LSP commands" },
 })
 
 -- TREESITTER
