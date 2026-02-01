@@ -8,6 +8,10 @@ vim.keymap.set("n", "<leader>m", ":messages<CR>", { desc = "Show messages" })
 vim.keymap.set("n", "<leader>M", ":Mason<CR>", { desc = "Mason" })
 vim.keymap.set("n", "<C-Space>", vim.lsp.buf.hover)
 
+vim.keymap.set("n", "<leader>Ll", ":LspLog<CR>")
+vim.keymap.set("n", "<leader>Li", ":LspInfo<CR>")
+vim.keymap.set("n", "<leader>Lr", ":LspRestart<CR>")
+
 vim.keymap.set("n", "<C-J>", "<C-W>j")
 vim.keymap.set("n", "<C-K>", "<C-W>k")
 vim.keymap.set("n", "<C-H>", "<C-W>h")
@@ -85,7 +89,6 @@ vim.keymap.set("n", "]T", ":tabNext<CR>", { desc = "Next tab" })
 vim.keymap.set("n", "[T", ":tabprevious<CR>", { desc = "Previous tab" })
 
 -- comments
-
 
 -- linewise COMMENTS with CTRL
 -- TODO: cursor isn't placed correctly when I start a comment on an empty line

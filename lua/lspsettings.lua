@@ -1,6 +1,7 @@
 require "utils"
 local lspconfig_util = require("lspconfig.util")
-vim.lsp.enable({ "lua_ls", "clangd", "basedpyright", "rust_analyzer", "ts_ls", "bashls", "jsonls", "vue_ls", "hls" })
+vim.lsp.enable({ "lua_ls", "clangd", "basedpyright", "rust_analyzer", "ts_ls", "bashls", "jsonls", "vue_ls", "hls",
+    "neocmake" })
 
 local lspconfig = require("lspconfig")
 lspconfig.opts = {
@@ -10,6 +11,10 @@ lspconfig.opts = {
         }
     }
 }
+
+vim.lsp.config("neocmake", {
+    cmd = { "neocmakelsp", "stdio" }
+})
 
 vim.lsp.config("basedpyright", {
     settings = {
@@ -36,7 +41,7 @@ vim.lsp.config("basedpyright", {
 
 vim.lsp.config("clangd", {
     cmd = { "clangd", "--background-index" },
-    filetypes = { "c", "cpp", "cc", "ixx", "cuda", "cu", "objcpp", "objc" },
+    filetypes = { "c", "cpp", "cc", "cxx", "ixx", "cuda", "cu", "objcpp", "objc" },
 })
 
 vim.lsp.config("rust_analyzer", {})
