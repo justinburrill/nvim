@@ -8,9 +8,9 @@ vim.keymap.set("n", "<leader>m", ":messages<CR>", { desc = "Show messages" })
 vim.keymap.set("n", "<leader>M", ":Mason<CR>", { desc = "Mason" })
 vim.keymap.set("n", "<C-Space>", vim.lsp.buf.hover)
 
-vim.keymap.set("n", "<leader>Ll", ":LspLog<CR>")
-vim.keymap.set("n", "<leader>Li", ":LspInfo<CR>")
-vim.keymap.set("n", "<leader>Lr", ":LspRestart<CR>")
+vim.keymap.set("n", "<leader>LL", ":LspLog<CR>")
+vim.keymap.set("n", "<leader>LI", ":LspInfo<CR>")
+vim.keymap.set("n", "<leader>LR", ":LspRestart<CR>")
 
 vim.keymap.set("n", "<C-J>", "<C-W>j")
 vim.keymap.set("n", "<C-K>", "<C-W>k")
@@ -31,6 +31,7 @@ vim.keymap.set("n", "gs", vim.lsp.buf.signature_help, { desc = "Show signature" 
 vim.keymap.set("i", "<C-s>", vim.lsp.buf.signature_help, { desc = "Show signature" })
 
 vim.keymap.set("n", "gp", "`[v`]", { desc = "Reselect paste" })
+vim.keymap.set("n", "<leader>t", ":term<CR>", { desc = "Terminal"})
 vim.keymap.set("n", "<leader>e", ":Oil<CR>", { desc = "Oil explorer" })
 vim.keymap.set("n", "<leader>E", ":Oil<CR>_", { desc = "Oil explorer at CWD" })
 vim.keymap.set("n", "<leader>I", ":Inspect<CR>", { desc = "Inspect" })
@@ -62,7 +63,8 @@ end, { desc = "Pick references" })
 
 vim.keymap.set("i", "<C-H>", "<C-W>")            -- delete word with ctrl+backspace
 vim.keymap.set("i", "<C-Del>", "<space><esc>ce") -- delete word with ctrl+del
-vim.keymap.set("n", "<leader>q", ":bp|bd #<CR>", { desc = "Quit buffer" })
+vim.keymap.set("n", "<leader>q", ":bp|bd #<CR>", { desc = "Quit buffer" }) -- IMPROVE: 'bp' isn't what i want here...
+
 --[[ vim.keymap.set("i", "<C-z>", function()
     -- TODO:make this delete something i just pasted from "* or "+ with C-v
     -- if the text before my cursor isn't from the clipboard, then delete
@@ -85,14 +87,18 @@ vim.keymap.set("n", "[t", function()
     require("todo-comments").jump_prev()
 end, { desc = "Previous todo comment" })
 
-vim.keymap.set("n", "]T", ":tabNext<CR>", { desc = "Next tab" })
+vim.keymap.set("n", "]T", ":tabnext<CR>", { desc = "Next tab" })
 vim.keymap.set("n", "[T", ":tabprevious<CR>", { desc = "Previous tab" })
+vim.keymap.set("n", "<leader>T", ":tabnext #<CR>", { desc = "Previous tab" })
 
 -- comments
 
--- linewise COMMENTS with CTRL
+-- linewise COMMENTS with CTRL (C-_ for CTRL+/, don't know why)
 -- TODO: cursor isn't placed correctly when I start a comment on an empty line
-vim.keymap.set({ "i", "n" }, "<C-_>", commentapi.toggle.linewise.current)
+vim.keymap.set({ "i", "n" }, "<C-_>", function()
+    -- local line_txt
+    commentapi.toggle.linewise.current()
+end)
 vim.keymap.set("x", "<C-_>", function()
     vim.api.nvim_feedkeys(escape_key, "nx", false)
     commentapi.toggle.linewise(vim.fn.visualmode())
