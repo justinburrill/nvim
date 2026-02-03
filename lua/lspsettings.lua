@@ -41,7 +41,7 @@ vim.lsp.config("basedpyright", {
 
 vim.lsp.config("clangd", {
     cmd = { "clangd", "--background-index" },
-    filetypes = { "c", "cpp", "cc", "cxx", "ixx", "cuda", "cu", "objcpp", "objc" },
+    filetypes = { "c", "cpp", "cuda", "objcpp", "objc" },
 })
 
 vim.lsp.config("rust_analyzer", {})
