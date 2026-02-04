@@ -2,6 +2,7 @@ require "utils"
 require "mini.extra"
 local commentapi = require("Comment.api")
 local escape_key = vim.api.nvim_replace_termcodes("<ESC>", true, false, true)
+local oA_space_keys = vim.api.nvim_replace_termcodes("<C-o>A ", true, false, true)
 vim.g.mapleader = " "
 
 vim.keymap.set("n", "<leader>m", ":messages<CR>", { desc = "Show messages" })
@@ -31,7 +32,7 @@ vim.keymap.set("n", "gs", vim.lsp.buf.signature_help, { desc = "Show signature" 
 vim.keymap.set("i", "<C-s>", vim.lsp.buf.signature_help, { desc = "Show signature" })
 
 vim.keymap.set("n", "gp", "`[v`]", { desc = "Reselect paste" })
-vim.keymap.set("n", "<leader>t", ":term<CR>", { desc = "Terminal"})
+vim.keymap.set("n", "<leader>t", ":term<CR>", { desc = "Terminal" })
 vim.keymap.set("n", "<leader>e", ":Oil<CR>", { desc = "Oil explorer" })
 vim.keymap.set("n", "<leader>E", ":Oil<CR>_", { desc = "Oil explorer at CWD" })
 vim.keymap.set("n", "<leader>I", ":Inspect<CR>", { desc = "Inspect" })
@@ -61,8 +62,8 @@ end, { desc = "Pick references" })
 
 -- my keybinds !!
 
-vim.keymap.set("i", "<C-H>", "<C-W>")            -- delete word with ctrl+backspace
-vim.keymap.set("i", "<C-Del>", "<space><esc>ce") -- delete word with ctrl+del
+vim.keymap.set("i", "<C-H>", "<C-W>")                                      -- delete word with ctrl+backspace
+vim.keymap.set("i", "<C-Del>", "<space><esc>ce")                           -- delete word with ctrl+del
 vim.keymap.set("n", "<leader>q", ":bp|bd #<CR>", { desc = "Quit buffer" }) -- IMPROVE: 'bp' isn't what i want here...
 
 --[[ vim.keymap.set("i", "<C-z>", function()
@@ -92,13 +93,19 @@ vim.keymap.set("n", "[T", ":tabprevious<CR>", { desc = "Previous tab" })
 vim.keymap.set("n", "<leader>T", ":tabnext #<CR>", { desc = "Previous tab" })
 
 -- comments
-
+--
 -- linewise COMMENTS with CTRL (C-_ for CTRL+/, don't know why)
--- TODO: cursor isn't placed correctly when I start a comment on an empty line
-vim.keymap.set({ "i", "n" }, "<C-_>", function()
-    -- local line_txt
-    commentapi.toggle.linewise.current()
+vim.keymap.set("n", "<C-_>", commentapi.toggle.linewise.current, { desc = "Toggle line comment" })
+vim.keymap.set("i", "<C-_>", function()
+    local line_txt = vim.api.nvim_get_current_line()
+    if #line_txt ~= 0 then
+        commentapi.toggle.linewise.current()
+    else
+        commentapi.toggle.linewise.current()
+        vim.api.nvim_feedkeys(oA_space_keys, "n", false)
+    end
 end)
+
 vim.keymap.set("x", "<C-_>", function()
     vim.api.nvim_feedkeys(escape_key, "nx", false)
     commentapi.toggle.linewise(vim.fn.visualmode())
@@ -112,6 +119,7 @@ end)
 -- TODO: create comment at cursor if I do ALT while in insert mode
 -- vim.keymap.set("i", "<M-/>", function() commentapi.
 
+--
 -- vscode motions
 vim.keymap.set({ "i", "n" }, "<S-Up>", "Vk")
 vim.keymap.set({ "i", "n" }, "<S-Down>", "Vj")
