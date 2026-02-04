@@ -1,6 +1,13 @@
 require "blink.cmp".setup({
     sources = {
-        default = { "lsp", "path", "snippets", "buffer" }
+        default = { "lazydev", "lsp", "path", "snippets", "buffer" },
+        providers = {
+            lazydev = {
+                name = "LazyDev",
+                module = "lazydev.integrations.blink",
+                score_offset = 100
+            }
+        }
     },
     completion = {
         keyword = { range = "full" },
@@ -36,7 +43,8 @@ require "blink.cmp".setup({
         ["<Tab>"] = { "select_next", "snippet_forward", "fallback" },
         ["<S-Tab>"] = { "select_prev", "snippet_backward", "fallback" },
 
-        ["<C-Space>"] = { "show_and_insert", "select_and_accept",  }, -- "fallback" #TODO: readd?
+        ["<C-Space>"] = { "show_and_insert", "select_and_accept", }, -- "fallback" TODO: readd?
+
         -- no return true in the function so the fallback behaviour is used as well (exit to normal mode)
         ["<Esc>"] = { function(cmp)
             cmp.hide()
