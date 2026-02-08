@@ -32,12 +32,11 @@ vim.keymap.set("n", "gs", vim.lsp.buf.signature_help, { desc = "Show signature" 
 vim.keymap.set("i", "<C-s>", vim.lsp.buf.signature_help, { desc = "Show signature" })
 
 vim.keymap.set("n", "gp", "`[v`]", { desc = "Reselect paste" })
-vim.keymap.set("n", "<leader>t", ":term<CR>", { desc = "Terminal" })
 vim.keymap.set("n", "<leader>e", ":Oil<CR>", { desc = "Oil explorer" })
 vim.keymap.set("n", "<leader>E", ":Oil<CR>_", { desc = "Oil explorer at CWD" })
 vim.keymap.set("n", "<leader>I", ":Inspect<CR>", { desc = "Inspect" })
 vim.keymap.set("n", "<leader>s", ":w | so<CR>", { desc = "Save and source" })
-vim.keymap.set("n", "<leader>/", ":nohlsearch<CR>", { desc = "Hide / highlight", silent = true })
+vim.keymap.set("n", "<leader>/", ":nohlsearch<CR>:<CR>", { desc = "Hide / highlight" })
 vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "View diagnostic" })
 vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename" })
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
@@ -90,7 +89,7 @@ end, { desc = "Previous todo comment" })
 
 vim.keymap.set("n", "]T", ":tabnext<CR>", { desc = "Next tab" })
 vim.keymap.set("n", "[T", ":tabprevious<CR>", { desc = "Previous tab" })
-vim.keymap.set("n", "<leader>T", ":tabnext #<CR>", { desc = "Previous tab" })
+vim.keymap.set("n", "<leader>T", ":tabnext #<CR>", { desc = "Last tab" })
 
 -- comments
 --
@@ -130,3 +129,8 @@ vim.keymap.set("x", "<M-Up>", function() vim.cmd("normal! dkP`[V`]") end)
 vim.keymap.set("x", "<M-Down>", function() vim.cmd("normal! dp`[V`]") end)
 vim.keymap.set({ "i", "n" }, "<M-Up>", function() vim.cmd("normal! ddkP") end)
 vim.keymap.set({ "i", "n" }, "<M-Down>", function() vim.cmd("normal! ddp") end)
+
+
+-- terminal
+vim.keymap.set("n", "<leader>t", ":tabnew<CR>:term<CR>A", { desc = "Terminal" })
+vim.keymap.set("t", "<C-[>", "<C-\\><C-n>", {desc="Esc"})
