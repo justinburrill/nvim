@@ -7,7 +7,7 @@ vim.g.mapleader = " "
 
 vim.keymap.set("n", "<leader>m", ":messages<CR>", { desc = "Show messages" })
 vim.keymap.set("n", "<leader>M", ":Mason<CR>", { desc = "Mason" })
-vim.keymap.set("n", "<C-Space>", vim.lsp.buf.hover)
+vim.keymap.set({ "n", "x" }, "<C-Space>", vim.lsp.buf.hover)
 
 vim.keymap.set("n", "<leader>LL", ":LspLog<CR>")
 vim.keymap.set("n", "<leader>LI", ":LspInfo<CR>")
