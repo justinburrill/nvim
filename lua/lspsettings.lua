@@ -1,7 +1,7 @@
 require "utils"
 local lspconfig_util = require("lspconfig.util")
 vim.lsp.enable({ "lua_ls", "clangd", "basedpyright", "rust_analyzer", "ts_ls", "bashls", "jsonls", "vue_ls", "hls",
-    "neocmake" })
+    "neocmake", "zls" })
 
 
 local lspconfig = require("lspconfig")
