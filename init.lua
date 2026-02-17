@@ -33,6 +33,8 @@ vim.opt.foldlevelstart = 10
 vim.opt.foldcolumn = "0"
 vim.opt.foldtext = ""
 vim.opt.foldnestmax = 10 -- don't create folds after X levels deep
+vim.o.undofile = true
+vim.o.cinoptions = (vim.o.cinoptions or "") .. "L0"
 
 local get_text_from_powershell =
 'powershell.exe -NoLogo -NoProfile -c [Console]::Out.Write($(Get-Clipboard -Raw -TextFormatType UnicodeText).tostring().replace("`r", ""))'
