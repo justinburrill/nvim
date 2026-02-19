@@ -92,11 +92,11 @@ vim.keymap.set("n", "[T", ":tabprevious<CR>", { desc = "Previous tab" })
 vim.keymap.set("n", "<leader>T", ":tabnext #<CR>", { desc = "Last tab" })
 
 -- comments
---
+
 -- linewise COMMENTS with CTRL (C-_ for CTRL+/, don't know why)
 vim.keymap.set("n", "<C-_>", commentapi.toggle.linewise.current, { desc = "Toggle line comment" })
 vim.keymap.set("i", "<C-_>", function()
-    local line_txt = vim.api.nvim_get_current_line()
+    local line_txt = vim.api.nvim_get_current_line():gsub("%s+.*", "")
     if #line_txt ~= 0 then
         commentapi.toggle.linewise.current()
     else
@@ -113,12 +113,11 @@ end)
 vim.keymap.set("n", "<M-/>", commentapi.toggle.blockwise.current)
 vim.keymap.set("x", "<M-/>", function()
     vim.api.nvim_feedkeys(escape_key, "nx", false)
-    commentapi.toggle.blockwise(vim.fn.visualmode()) -- once upon a time there was a lazy brown dog that jumped over a quick fox or something
+    commentapi.toggle.blockwise(vim.fn.visualmode())
 end)
 -- TODO: create comment at cursor if I do ALT while in insert mode
 -- vim.keymap.set("i", "<M-/>", function() commentapi.
 
---
 -- vscode motions
 vim.keymap.set({ "i", "n" }, "<S-Up>", "Vk")
 vim.keymap.set({ "i", "n" }, "<S-Down>", "Vj")
