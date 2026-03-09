@@ -89,7 +89,7 @@ end, { desc = "Previous todo comment" })
 
 vim.keymap.set("n", "]T", ":tabnext<CR>", { desc = "Next tab" })
 vim.keymap.set("n", "[T", ":tabprevious<CR>", { desc = "Previous tab" })
-vim.keymap.set("n", "<leader>T", ":tabnext #<CR>", { desc = "Last tab" })
+vim.keymap.set("n", "<leader>t", ":tabnext #<CR>", { desc = "Last tab" })
 
 -- comments
 
@@ -131,5 +131,5 @@ vim.keymap.set({ "i", "n" }, "<M-Down>", function() vim.cmd("normal! ddp") end)
 
 
 -- terminal
-vim.keymap.set("n", "<leader>t", ":tabnew<CR>:term<CR>A", { desc = "Terminal" })
+vim.keymap.set("n", "<leader>T", ":tabnew<CR>:term<CR>A", { desc = "Terminal" })
 vim.keymap.set("t", "<C-[>", "<C-\\><C-n>", {desc="Esc"})
