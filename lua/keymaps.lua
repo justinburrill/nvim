@@ -53,6 +53,8 @@ vim.keymap.set("n", "<leader>pd", ":Pick diagnostic<CR>", { desc = "Pick diagnos
 vim.keymap.set("n", "<leader>pe", ":Pick explorer<CR>", { desc = "Pick explorer" })
 vim.keymap.set("n", "<leader>pc", ":Pick commands<CR>", { desc = "Pick commands" })
 vim.keymap.set("n", "<leader>pg", ":Pick grep_live<CR>", { desc = "Pick grep" })
+vim.keymap.set("n", "<leader>ps", ":Pick lsp scope='document_symbol'<CR>", { desc = "Pick document symbols" })
+vim.keymap.set("n", "<leader>pS", ":Pick lsp scope='workspace_symbol'<CR>", { desc = "Pick workspace symbols" })
 vim.keymap.set("n", "<leader>pG", ":Pick buf_lines scope='current'<CR>", { desc = "Pick grep in current buf" })
 vim.keymap.set("n", "<leader>P", ":Pick resume<CR>", { desc = "Resume Pick" })
 vim.keymap.set("n", "<leader>pr", function()
@@ -64,12 +66,6 @@ end, { desc = "Pick references" })
 vim.keymap.set("i", "<C-H>", "<C-W>")                                      -- delete word with ctrl+backspace
 vim.keymap.set("i", "<C-Del>", "<space><esc>ce")                           -- delete word with ctrl+del
 vim.keymap.set("n", "<leader>q", ":bp|bd #<CR>", { desc = "Quit buffer" }) -- IMPROVE: 'bp' isn't what i want here...
-
---[[ vim.keymap.set("i", "<C-z>", function()
-    -- TODO:make this delete something i just pasted from "* or "+ with C-v
-    -- if the text before my cursor isn't from the clipboard, then delete
-    -- until punctuation or x many characters or something
-end) ]]
 
 -- jumping through
 
