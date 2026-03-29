@@ -88,7 +88,12 @@ null_ls.setup({
 })
 
 require "lazydev".setup()
-require "mini.pick".setup()
+require "mini.pick".setup({
+    mappings = {
+        move_down = "<C-j>",
+        move_up = "<C-k>"
+    }
+})
 require "mini.extra".setup()
 require "mini.pairs".setup()
 require "mini.surround".setup({
