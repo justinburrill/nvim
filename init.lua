@@ -96,8 +96,9 @@ require "mason".setup()
 require "mason-lspconfig".setup()
 require "todo-comments".setup({
     keywords = {
-        IMPROVE = { icon = "", color = "ok", alt = { "IMPROVE", "IMPROVEME" } },
+        IMPROVE = { icon = "", color = "hint", alt = { "IMPROVE", "IMPROVEME" } },
         DELETE = { icon = "X", color = "error", alt = { "DEL", "DELETE", "DELETEME" } },
+        DONE = { icon = "✓", color = "ok", alt = { "DONE" } }
     },
     colors = { ok = { "DiagnosticOk", "Added" } }
 })
