@@ -8,7 +8,7 @@ vim.cmd("highlight @function.builtin gui=bold")
 vim.cmd("highlight CursorLineNr cterm=bold guifg=#cdcdcd")
 vim.cmd("highlight CursorLine guibg=#353540")
 vim.cmd("highlight LspInlayHint gui=underline,italic guifg=#606079")
-vim.cmd("highlight Macro guifg=#783f8e")
+vim.cmd("highlight Macro guifg=#8c6eb2")
 vim.cmd("highlight StatusLine guifg=#e8f3ff")
 vim.cmd("highlight StatusLineNC guifg=#544f61")
 vim.cmd("highlight lineNrAbove guifg=#764646") -- red
