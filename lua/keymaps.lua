@@ -41,7 +41,7 @@ vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "View diagn
 vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename" })
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
 vim.keymap.set("n", "<leader>ch", function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end,
-    { desc = "Enable inlay hints" })
+    { desc = "Enable inlay hints", silent = false })
 
 -- mini.pick pickers
 
@@ -128,4 +128,4 @@ vim.keymap.set({ "i", "n" }, "<M-Down>", function() vim.cmd("normal! ddp") end)
 
 -- terminal
 vim.keymap.set("n", "<leader>T", ":tabnew<CR>:term<CR>A", { desc = "Terminal" })
-vim.keymap.set("t", "<C-[>", "<C-\\><C-n>", {desc="Esc"})
+vim.keymap.set("t", "<C-[>", "<C-\\><C-n>", { desc = "Esc" })
