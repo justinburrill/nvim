@@ -79,7 +79,12 @@ null_ls.setup({
 })
 
 require "lazydev".setup()
-require "mini.pick".setup()
+require "mini.pick".setup({
+    mappings = {
+        move_down = "<C-j>",
+        move_up = "<C-k>"
+    }
+})
 require "mini.extra".setup()
 require "mini.pairs".setup()
 require "mini.surround".setup({
@@ -91,8 +96,9 @@ require "mason".setup()
 require "mason-lspconfig".setup()
 require "todo-comments".setup({
     keywords = {
-        IMPROVE = { icon = "", color = "ok", alt = { "IMPROVE", "IMPROVEME" } },
+        IMPROVE = { icon = "", color = "hint", alt = { "IMPROVE", "IMPROVEME" } },
         DELETE = { icon = "X", color = "error", alt = { "DEL", "DELETE", "DELETEME" } },
+        DONE = { icon = "✓", color = "ok", alt = { "DONE" } }
     },
     colors = { ok = { "DiagnosticOk", "Added" } }
 })
