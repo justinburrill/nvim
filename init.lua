@@ -163,8 +163,21 @@ require "completion"
 
 -- REMEMBER WITH AUTO-VIEWS AND VIEWOPTIONS
 vim.o.viewoptions = "folds,cursor"
--- TODO:
--- vim.api.nvim_create_augroup
+vim.api.nvim_create_augroup("auto_views", { clear = false })
+vim.api.nvim_create_autocmd('BufWinEnter', {
+    pattern = "?*",
+    group = "auto_views",
+    callback = function()
+        vim.cmd("silent! loadview 1")
+    end,
+})
+vim.api.nvim_create_autocmd('BufWinLeave', {
+    pattern = "?*",
+    group = "auto_views",
+    callback = function()
+        vim.cmd("silent! mkview 1")
+    end,
+})
 
 -- CUSTOM COMMANDS
 vim.api.nvim_create_user_command("Jq", ":%!jq", {})
