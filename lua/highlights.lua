@@ -1,6 +1,6 @@
 vim.cmd("highlight @keyword.exception gui=bold")
 vim.cmd("highlight @lsp.type.enum guifg=#3e9f75")
-vim.cmd("highlight @lsp.type.interface guifg=#4a4063")
+vim.cmd("highlight @lsp.type.interface guifg=#d1adad")
 vim.cmd("highlight @lsp.type.namespace guifg=#4f7ea5")
 vim.cmd("highlight @lsp.type.typeparameter gui=bold")
 vim.cmd("highlight @variable guifg=#aeaed1")
