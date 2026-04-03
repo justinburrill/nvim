@@ -91,7 +91,9 @@ require "mini.surround".setup({
     n_lines = 50,
 })
 require "nvim-treesitter".setup()
-require "oil".setup()
+require "oil".setup({
+    delete_to_trash = true,
+})
 require "mason".setup()
 require "mason-lspconfig".setup()
 require "todo-comments".setup({
