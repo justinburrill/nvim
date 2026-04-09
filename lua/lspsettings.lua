@@ -84,6 +84,16 @@ vim.lsp.config("basedpyright", {
     }
 })
 
+vim.lsp.config("hls", {
+    filetypes = { "haskell", "lhaskell", "cabal" },
+    settings = {
+        haskell = {
+            cabalFormattingProvider = "cabal-gild",
+            formattingProvider = "ormolu"
+        }
+    }
+})
+
 vim.lsp.config("clangd", {
     cmd = { "clangd", "--background-index" },
     filetypes = { "c", "cpp", "cuda", "objcpp", "objc" },
