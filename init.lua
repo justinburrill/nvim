@@ -111,7 +111,11 @@ require "todo-comments".setup({
         DELETE = { icon = "X", color = "error", alt = { "DEL", "DELETE", "DELETEME" } },
         DONE = { icon = "✓", color = "ok", alt = { "DONE" } }
     },
-    colors = { ok = { "DiagnosticOk", "Added" } }
+    merge_keywords=true,
+    colors = { ok = { "DiagnosticOk", "Added" } },
+    search = {
+        pattern = [[\b(KEYWORDS)\[:!\]\b]]
+    }
 })
 require "demicolon".setup({
     keymaps = {
