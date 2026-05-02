@@ -13,6 +13,8 @@ vim.cmd("highlight StatusLine guifg=#e8f3ff")
 vim.cmd("highlight StatusLineNC guifg=#544f61")
 vim.cmd("highlight lineNrAbove guifg=#764646") -- red
 vim.cmd("highlight lineNrBelow guifg=#5c7351") -- green
+vim.cmd("highlight lineNrBelow guifg=#5c7351")
+vim.cmd("highlight String cterm=NONE gui=NONE guifg=#e8b589")
 
 vim.cmd("highlight! link @variable @variable")
 vim.cmd("highlight! link @lsp.type.macro Macro")
@@ -20,5 +22,6 @@ vim.cmd("highlight! link @lsp.type.function @function")
 vim.cmd("highlight! link @lsp.typemod.function @function")
 vim.cmd("highlight! link @function.call @function")
 vim.cmd("highlight! link @lsp.typemod.function.builtin @function.builtin")
+vim.cmd("highlight! link pythonConstant @constant.builtin")
 -- copied from DiagnosticUnderlineInfo
 vim.cmd("highlight! DiagnosticUnnecessary cterm=underline gui=undercurl guisp=#aeaed1 guifg=#606079")
