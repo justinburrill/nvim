@@ -57,8 +57,8 @@ vim.pack.add({
     { src = "https://github.com/echasnovski/mini.extra" },
     { src = "https://github.com/echasnovski/mini.surround" },
     { src = "https://github.com/echasnovski/mini.pairs" },
-    { src = "https://github.com/Saghen/blink.cmp",                           version = vim.version.range("*") },
-    { src = "https://github.com/folke/lazydev.nvim",                         ft = "lua" },
+    { src = "https://github.com/Saghen/blink.cmp",                            version = vim.version.range("*") },
+    { src = "https://github.com/folke/lazydev.nvim",                          ft = "lua" },
     { src = "https://github.com/folke/which-key.nvim" },
     { src = "https://github.com/folke/todo-comments.nvim" },
     { src = "https://github.com/mason-org/mason-lspconfig.nvim" },
@@ -66,14 +66,14 @@ vim.pack.add({
     { src = "https://github.com/neovim/nvim-lspconfig" },
     { src = "https://github.com/numToStr/Comment.nvim" },
     { src = "https://github.com/nvim-lua/plenary.nvim" },
-    { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
-    { src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects" },
+    { src = "https://github.com/nvim-treesitter/nvim-treesitter",             version = "main" },
+    { src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects", version = "main" },
     { src = "https://github.com/nvimtools/none-ls.nvim" },
     { src = "https://github.com/nvimtools/none-ls-extras.nvim" },
     { src = "https://github.com/stevearc/oil.nvim" },
     { src = "https://github.com/mawkler/demicolon.nvim" },
     { src = "https://github.com/mawkler/refjump.nvim" },
-    { src = "https://github.com/vague2k/vague.nvim",                         name = "vague" },
+    { src = "https://github.com/vague2k/vague.nvim",                          name = "vague" },
 })
 
 local null_ls = require("null-ls")
@@ -111,7 +111,7 @@ require "todo-comments".setup({
         DELETE = { icon = "X", color = "error", alt = { "DEL", "DELETE", "DELETEME" } },
         DONE = { icon = "✓", color = "ok", alt = { "DONE" } }
     },
-    merge_keywords=true,
+    merge_keywords = true,
     colors = { ok = { "DiagnosticOk", "Added" } },
     search = {
         pattern = [[\b(KEYWORDS)\[:!\]\b]]
@@ -166,10 +166,11 @@ require "blamer-nvim.lua.blamer-nvim".setup()
 
 -- ACTIVATE COLOURSCHEME
 require "vague".setup({
-    style = {
-        strings = "none",
-        keywords = "bold",
-    },
+    -- old style configuration
+    -- style = {
+    --     strings = "none",
+    --     keywords = "bold",
+    -- },
 })
 vim.cmd("colorscheme vague")
 
