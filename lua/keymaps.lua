@@ -10,7 +10,7 @@ vim.keymap.set("n", "<leader>M", ":Mason<CR>", { desc = "Mason" })
 vim.keymap.set({ "n", "x" }, "<C-Space>", vim.lsp.buf.hover)
 
 vim.keymap.set("n", "<leader>LL", ":LspLog<CR>")
-vim.keymap.set("n", "<leader>LI", ":LspInfo<CR>")
+vim.keymap.set("n", "<leader>LI", ":checkhealth vim.lsp<CR>")
 vim.keymap.set("n", "<leader>LR", ":LspRestart<CR>")
 
 vim.keymap.set("n", "<C-J>", "<C-W>j")
