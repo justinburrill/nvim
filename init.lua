@@ -26,6 +26,17 @@ vim.o.showbreak = '↪'
 vim.o.fillchars = "stl: ,stlnc: "
 vim.o.listchars = 'trail:·,nbsp:+,tab:⟶ ,leadmultispace:\u{258F}   ,extends:▶,precedes:◀,nbsp:⏑'
 vim.o.list = true
+-- use treesitter folds if available
+-- vim.api.nvim_create_autocmd({ 'FileType' }, {
+--     callback = function()
+--         if require("nvim-treesitter.parsers").has_parser() then
+--             vim.opt.foldmethod = "expr"
+--             vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+--         else
+--             vim.opt.foldmethod = "syntax"
+--         end
+--     end
+-- })
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.opt.foldlevel = 99
