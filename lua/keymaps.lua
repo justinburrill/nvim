@@ -9,14 +9,18 @@ vim.keymap.set("n", "<leader>m", ":messages<CR>", { desc = "Show messages" })
 vim.keymap.set("n", "<leader>M", ":Mason<CR>", { desc = "Mason" })
 vim.keymap.set({ "n", "x" }, "<C-Space>", vim.lsp.buf.hover)
 
-vim.keymap.set("n", "<leader>LL", ":LspLog<CR>")
+vim.keymap.set("n", "<leader>LL", ":LspLog<CR>") -- TODO: what's the new version of this?
 vim.keymap.set("n", "<leader>LI", ":checkhealth vim.lsp<CR>")
 vim.keymap.set("n", "<leader>LR", ":LspRestart<CR>")
 
+-- Jump between splits
 vim.keymap.set("n", "<C-J>", "<C-W>j")
 vim.keymap.set("n", "<C-K>", "<C-W>k")
 vim.keymap.set("n", "<C-H>", "<C-W>h")
 vim.keymap.set("n", "<C-L>", "<C-W>l")
+
+vim.keymap.set({ "i", "n" }, "<M-J>", "<C-E>", { desc = "Scroll down one line" })
+vim.keymap.set({ "i", "n" }, "<M-J>", "<C-Y>", { desc = "Scroll up one line" })
 
 -- basic LSP stuff
 
