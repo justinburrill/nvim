@@ -19,8 +19,10 @@ vim.keymap.set("n", "<C-K>", "<C-W>k")
 vim.keymap.set("n", "<C-H>", "<C-W>h")
 vim.keymap.set("n", "<C-L>", "<C-W>l")
 
-vim.keymap.set({ "i", "n" }, "<M-J>", "<C-E>", { desc = "Scroll down one line" })
-vim.keymap.set({ "i", "n" }, "<M-J>", "<C-Y>", { desc = "Scroll up one line" })
+vim.keymap.set("n", "<M-j>", "<C-E>", { desc = "Scroll down one line" })
+vim.keymap.set("n", "<M-k>", "<C-Y>", { desc = "Scroll up one line" })
+vim.keymap.set("i", "<M-j>", "<C-o><C-E>", { desc = "Scroll down one line" })
+vim.keymap.set("i", "<M-k>", "<C-o><C-Y>", { desc = "Scroll up one line" })
 
 -- basic LSP stuff
 
