@@ -34,7 +34,7 @@ end
 --- @return string[]
 function Run_command(cmd, timeout)
     if timeout == nil then
-        timeout = 500
+        timeout = 2000
     end
     local proc = vim.system(cmd):wait(timeout)
     if proc.code == 124 then
