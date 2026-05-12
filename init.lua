@@ -159,6 +159,7 @@ whichkey.add({
     { "<leader>c", group = "code" },
     { "<leader>p", group = "Pick" },
     { "<leader>L", group = "LSP commands" },
+    { "<leader>pC", group = "Git changes" },
 })
 
 -- TREESITTER
