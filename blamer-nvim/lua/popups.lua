@@ -44,19 +44,21 @@ function Open_popup_window(text_lines)
     -- Log("Creating window with lines: " .. Stringit(text_lines))
     vim.api.nvim_buf_set_lines(newbuf, 0, -1, false, text_lines)
 
-    function Close_blame_window()
-        vim.api.nvim_buf_delete(newbuf, { force = true })
-        POPUP_WINDOW = nil
+    function Close_blame_buffer()
+        if vim.api.nvim_buf_is_loaded(newbuf) then
+            vim.api.nvim_buf_delete(newbuf, { force = true })
+            POPUP_WINDOW = nil
+        end
     end
 
-    local close_window_autocmd_id = vim.api.nvim_create_autocmd("CursorMoved", {
+    local close_window_autocmd_id = vim.api.nvim_create_autocmd({ "CursorMoved", "BufLeave" }, {
         buffer = vim.api.nvim_get_current_buf(),
-        callback = Close_blame_window,
+        callback = Close_blame_buffer,
         once = true,
     })
 
     vim.keymap.set("n", "q", function()
-        Close_blame_window()
+        Close_blame_buffer()
         vim.api.nvim_del_autocmd(close_window_autocmd_id)
     end, { buffer = newbuf })
 

@@ -102,7 +102,7 @@ function Get_blame_text(line_num)
         ('"' .. blame_info.summary .. '"') or "<no summary>",
         blame_info.new_text or "<no text>",
     }
-    local green_line_count = #display_text
+    local number_of_Before_lines = #display_text
     if blame_info.previous_hash ~= nil then
         local previous_blame_cmd = {
             "git", "blame", "--porcelain", "--abbrev=6", "--root",
@@ -129,9 +129,9 @@ function Get_blame_text(line_num)
     local out = {
         lines = display_text,
         green_hl_line_start = 1,
-        green_hl_line_end = green_line_count,
-        red_hl_line_start = green_line_count + 1,
-        red_hl_line_end = #display_text,
+        green_hl_line_end = 2,
+        red_hl_line_start = number_of_Before_lines + 1,
+        red_hl_line_end = number_of_Before_lines + 2,
     }
 
     return out
