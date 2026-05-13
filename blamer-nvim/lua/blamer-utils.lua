@@ -38,7 +38,7 @@ function Run_command(cmd, timeout)
     end
     local proc = vim.system(cmd):wait(timeout)
     if proc.code == 124 then
-        error("Timeout waiting for command: " .. table.concat(cmd))
+        error("Timeout waiting for command: " .. table.concat(cmd, " "))
     else
         return Split_fast(Strip(proc.stdout) .. Strip(proc.stderr), "\n")
     end

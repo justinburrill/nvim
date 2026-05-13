@@ -103,6 +103,11 @@ require "mini.pick".setup({
     mappings = {
         move_down = "<M-j>",
         move_up = "<M-k>"
+    },
+    source = {
+        preview = function(buf_id, item) MiniPick.default_preview(buf_id, item, {
+            line_position = "center"
+        }) end,
     }
 })
 require "mini.extra".setup()
