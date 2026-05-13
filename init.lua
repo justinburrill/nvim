@@ -115,6 +115,7 @@ require "mini.pairs".setup()
 require "mini.surround".setup({
     n_lines = 50,
 })
+-- TODO: fix this according to new docs
 require "nvim-treesitter".setup()
 require "oil".setup({
     delete_to_trash = true,
