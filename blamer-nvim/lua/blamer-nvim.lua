@@ -79,9 +79,9 @@ function Get_blame_text(line_num)
         "--", vim.fn.expand("%"),
     }
     local blame_output_lines = Run_command(first_blame_cmd)
-    local errmsg = Get_line_containing(blame_output_lines, "error") or Get_line_containing(blame_output_lines, "fatal")
+    local errmsg = Get_line_containing(blame_output_lines, "error: ") or Get_line_containing(blame_output_lines, "fatal: ")
     if errmsg ~= nil then
-        error(errmsg)
+        error("Got error message from git: '" .. errmsg .. "'" .. ", with command: " .. table.concat(first_blame_cmd, " "))
     end
     local blame_info = Extract_data_from_blame(blame_output_lines)
 
