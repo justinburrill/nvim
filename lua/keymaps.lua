@@ -11,7 +11,7 @@ vim.keymap.set({ "n", "x" }, "<C-Space>", vim.lsp.buf.hover)
 
 vim.keymap.set("n", "<leader>LL", ":LspLog<CR>") -- TODO: what's the new version of this?
 vim.keymap.set("n", "<leader>LI", ":checkhealth vim.lsp<CR>")
-vim.keymap.set("n", "<leader>LR", ":LspRestart<CR>")
+vim.keymap.set("n", "<leader>LR", ":lsp restart<CR>")
 
 -- Jump between splits
 vim.keymap.set("n", "<C-J>", "<C-W>j")
