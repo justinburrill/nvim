@@ -34,11 +34,11 @@ end
 --- @return string[]
 function Run_command(cmd, timeout)
     if timeout == nil then
-        timeout = 2000
+        timeout = 10000
     end
     local proc = vim.system(cmd):wait(timeout)
     if proc.code == 124 then
-        error("Timeout waiting for command: " .. table.concat(cmd, " "))
+        error("Timeout waiting for command (10s): " .. table.concat(cmd, " "))
     else
         return Split_fast(Strip(proc.stdout) .. Strip(proc.stderr), "\n")
     end
