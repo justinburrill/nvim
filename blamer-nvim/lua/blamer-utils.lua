@@ -31,7 +31,7 @@ end
 
 --- @param cmd string[]
 --- @param timeout number | nil
---- @return string[]
+--- @return string[], number
 function Run_command(cmd, timeout)
     if timeout == nil then
         timeout = 10000
@@ -40,7 +40,7 @@ function Run_command(cmd, timeout)
     if proc.code == 124 then
         error("Timeout waiting for command (10s): " .. table.concat(cmd, " "))
     else
-        return Split_fast(Strip(proc.stdout) .. Strip(proc.stderr), "\n")
+        return Split_fast(Strip(proc.stdout) .. Strip(proc.stderr), "\n"), proc.code
     end
 end
 
