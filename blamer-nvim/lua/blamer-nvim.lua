@@ -60,6 +60,11 @@ function Extract_data_from_blame(blame_output_lines)
     return commit_data
 end
 
+
+-- TODO: fix the blame function to remove duplicated code
+-- function Run_git_blame(line_num)
+-- end
+
 ---@class BlameTextDisplayData
 ---@field lines string[]
 ---@field green_hl_line_start number
@@ -78,9 +83,10 @@ function Get_blame_text(line_num)
         "-L", string.format("%d,%d", line_num, line_num),
         "--", vim.fn.expand("%"),
     }
-    local blame_output_lines = Run_command(first_blame_cmd)
+    local blame_result = Run_command(first_blame_cmd)
+    local blame_output_lines, blame_rc = unpack(blame_result)
     local errmsg = Get_line_containing(blame_output_lines, "error: ") or Get_line_containing(blame_output_lines, "fatal: ")
-    if errmsg ~= nil then
+    if errmsg ~= nil and blame_rc ~= 0 then
         error("Got error message from git: '" .. errmsg .. "'" .. ", with command: " .. table.concat(first_blame_cmd, " "))
     end
     local blame_info = Extract_data_from_blame(blame_output_lines)
@@ -110,7 +116,8 @@ function Get_blame_text(line_num)
             blame_info.previous_hash,
             "--", blame_info.previous_filename,
         }
-        local prev_blame_output = Run_command(previous_blame_cmd)
+        local prev_blame_result = Run_command(previous_blame_cmd)
+        local prev_blame_output, prev_blame_rc = unpack(prev_blame_result)
         local previous_blame_info = Extract_data_from_blame(prev_blame_output)
         table.insert(display_text,
             ("%s %s"):format(previous_blame_info.hash or "<no hash>",
