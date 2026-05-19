@@ -29,6 +29,7 @@ vim.cmd("highlight! link @lsp.typemod.function.builtin @function.builtin")
 vim.cmd("highlight! link pythonConstant @constant.builtin")
 vim.cmd("highlight! link pythonEscape Keyword")
 vim.cmd("highlight! link pythonFStringDelimiter Keyword")
+vim.cmd("highlight! link pythonEllipsis Keyword")
 
 -- copied from DiagnosticUnderlineInfo
 vim.cmd("highlight! DiagnosticUnnecessary cterm=underline gui=undercurl guisp=#aeaed1 guifg=#606079")
