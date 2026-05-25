@@ -26,19 +26,8 @@ vim.o.showbreak = '↪'
 vim.o.fillchars = "stl: ,stlnc: "
 vim.o.listchars = 'trail:·,nbsp:+,tab:⟶ ,leadmultispace:\u{258F}   ,extends:▶,precedes:◀,nbsp:⏑'
 vim.o.list = true
--- use treesitter folds if available
--- vim.api.nvim_create_autocmd({ 'FileType' }, {
---     callback = function()
---         if require("nvim-treesitter.parsers").has_parser() then
---             vim.opt.foldmethod = "expr"
---             vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
---         else
---             vim.opt.foldmethod = "syntax"
---         end
---     end
--- })
 vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.opt.foldexpr = "syntax"
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 8 -- fold X levels when opening a new file
 vim.opt.foldcolumn = "0"
@@ -107,7 +96,53 @@ require "mini.surround".setup({
     n_lines = 50,
 })
 -- TODO: Fix config according to new docs
+-- TREESITTER SETTINGS
 require "nvim-treesitter".setup()
+vim.api.nvim_create_autocmd("FileType", {
+    callback = function()
+        pcall(vim.treesitter.start)
+        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    end
+})
+require "nvim-treesitter-textobjects".setup({
+    select = {
+        enable = true,
+        keymaps = {
+            ["af"] = { query = "@function.outer", desc = "Select outer function" },
+            ["if"] = { query = "@function.inner", desc = "Select inner function" },
+            ["ac"] = { query = "@class.outer", desc = "Select outer class" },
+            ["ic"] = { query = "@class.inner", desc = "Select inner class" },
+            ["aa"] = { query = "@parameter.outer", desc = "Select outer argument" },
+            ["ia"] = { query = "@parameter.inner", desc = "Select inner argument" },
+            ["ai"] = { query = "@conditional.outer", desc = "Select outer conditional" },
+            ["ii"] = { query = "@conditional.inner", desc = "Select inner conditional" },
+        },
+        selection_modes = {
+            ["@function.inner"] = "V",
+            ["@function.outer"] = "V",
+            ["@class.inner"] = "V",
+            ["@class.outer"] = "V",
+            ["@conditional.inner"] = "v",
+            ["@conditional.outer"] = "V",
+        }
+    },
+    move = {
+        enable = true,
+        set_jumps = true,
+        goto_next_start = {
+            ["]f"] = { query = "@function.outer", desc = "Next function" },
+            ["]c"] = { query = "@class.outer", desc = "Next class" },
+            ["]a"] = { query = "@parameter.outer", desc = "Next argument" },
+            ["]i"] = { query = "@conditional.outer", desc = "Next conditional" },
+        },
+        goto_previous_start = {
+            ["[f"] = { query = "@function.outer", desc = "Previous function" },
+            ["[c"] = { query = "@class.outer", desc = "Previous class" },
+            ["[a"] = { query = "@parameter.outer", desc = "Previous argument" },
+            ["[i"] = { query = "@conditional.outer", desc = "Previous conditional" },
+        }
+    }
+})
 require "oil".setup({
     delete_to_trash = true,
 })
@@ -158,13 +193,6 @@ whichkey.add({
     { "<leader>L", group = "LSP commands" },
     { "<leader>pC", group = "Git changes" },
 })
-
--- TREESITTER
-local treesitter_ok, treesitter_configs = pcall(require, "nvim-treesitter.configs")
-local my_ts_config = require("treesitter-config")
-if treesitter_ok then
-    treesitter_configs.setup(my_ts_config)
-end
 
 -- LSPCONFIG
 require "lspsettings"
