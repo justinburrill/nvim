@@ -26,8 +26,8 @@ vim.o.showbreak = '↪'
 vim.o.fillchars = "stl: ,stlnc: "
 vim.o.listchars = 'trail:·,nbsp:+,tab:⟶ ,leadmultispace:\u{258F}   ,extends:▶,precedes:◀,nbsp:⏑'
 vim.o.list = true
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "syntax"
+vim.opt.foldmethod = "syntax"
+vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 8 -- fold X levels when opening a new file
 vim.opt.foldcolumn = "0"
@@ -109,8 +109,13 @@ require "mini.surround".setup({
 require "nvim-treesitter".setup()
 vim.api.nvim_create_autocmd("FileType", {
     callback = function()
-        pcall(vim.treesitter.start)
+        local ok, _ = pcall(vim.treesitter.start)
+        if ok == false then
+            return
+        end
         vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        vim.wo[0][0].foldmethod = 'expr'
+        vim.wo[0][0].foldexpr = 'v:lua.vim.treesitter.foldexpr()'
     end
 })
 require "nvim-treesitter-textobjects".setup({
