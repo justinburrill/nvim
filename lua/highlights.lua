@@ -28,6 +28,16 @@ vim.cmd("highlight! link pythonConstant @constant.builtin")
 vim.cmd("highlight! link pythonEscape Keyword")
 vim.cmd("highlight! link pythonFStringDelimiter Keyword")
 vim.cmd("highlight! link pythonEllipsis Keyword")
+vim.cmd("highlight! link @lsp.type.class.c Type")
 
 -- copied from DiagnosticUnderlineInfo
 vim.cmd("highlight! DiagnosticUnnecessary cterm=underline gui=undercurl guisp=#aeaed1 guifg=#606079")
+
+
+-- TODO:
+-- adjust priorities for LSP tokens
+-- vim.api.nvim_create_autocmd("LspTokenUpdate", {
+--     callback = function(args)
+--         local token = args.data.token
+--     end
+-- })
