@@ -16,10 +16,8 @@ vim.cmd("highlight StatusLineNC guifg=#544f61")
 vim.cmd("highlight lineNrAbove guifg=#764646") -- red
 vim.cmd("highlight lineNrBelow guifg=#5c7351")
 vim.cmd("highlight lineNrBelow guifg=#5c7351") -- green
+vim.cmd("highlight @keyword.exception gui=bold guifg=#6e94b2")
 
---  TODO: wrong syntax?
-
--- vim.cmd("highlight! link @variable @variable") -- what is this?
 vim.cmd("highlight! link String @string")
 vim.cmd("highlight! link @lsp.type.macro Macro")
 vim.cmd("highlight! link @lsp.type.function @function")
