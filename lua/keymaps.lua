@@ -138,3 +138,64 @@ vim.keymap.set({ "i", "n" }, "<M-Down>", function() vim.cmd("normal! ddp") end)
 -- terminal
 vim.keymap.set("n", "<leader>T", ":tabnew<CR>:term<CR>A", { desc = "Terminal" })
 vim.keymap.set("t", "<C-[>", "<C-\\><C-n>", { desc = "Esc" })
+
+
+-- treesitter textobjects
+local ts_select = require "nvim-treesitter-textobjects.select"
+local ts_move = require "nvim-treesitter-textobjects.move"
+local ts_swap = require "nvim-treesitter-textobjects.swap"
+
+vim.keymap.set({ "x", "o" }, "af", function() ts_select.select_textobject("@function.outer", "textobjects") end,
+    { desc = "Select around function" })
+vim.keymap.set({ "x", "o", }, "af", function() ts_select.select_textobject("@function.outer", "textobjects") end,
+    { desc = "Select outer function" })
+vim.keymap.set({ "x", "o" }, "if", function() ts_select.select_textobject("@function.inner", "textobjects") end,
+    { desc = "Select inside function" })
+vim.keymap.set({ "x", "o" }, "ac", function() ts_select.select_textobject("@class.outer", "textobjects") end,
+    { desc = "Select around class" })
+vim.keymap.set({ "x", "o" }, "ic", function() ts_select.select_textobject("@class.inner", "textobjects") end,
+    { desc = "Select inside class" })
+vim.keymap.set({ "x", "o" }, "aa", function() ts_select.select_textobject("@parameter.outer", "textobjects") end,
+    { desc = "Select around argument" })
+vim.keymap.set({ "x", "o" }, "ia", function() ts_select.select_textobject("@parameter.inner", "textobjects") end,
+    { desc = "Select inside argument" })
+vim.keymap.set({ "x", "o" }, "ai", function() ts_select.select_textobject("@conditional.outer", "textobjects") end,
+    { desc = "Select around conditional" })
+vim.keymap.set({ "x", "o" }, "ii", function() ts_select.select_textobject("@conditional.inner", "textobjects") end,
+    { desc = "Select inside conditional" })
+
+vim.keymap.set({ "n", "x", "o" }, "]f", function() ts_move.goto_next_start("@function.outer", "textobjects") end,
+    { desc = "Next function" })
+vim.keymap.set({ "n", "x", "o" }, "]c", function() ts_move.goto_next_start("@class.outer", "textobjects") end,
+    { desc = "Next class" })
+vim.keymap.set({ "n", "x", "o" }, "]a", function() ts_move.goto_next_start("@parameter.outer", "textobjects") end,
+    { desc = "Next parameter" })
+vim.keymap.set({ "n", "x", "o" }, "]i", function() ts_move.goto_next_start("@conditional.outer", "textobjects") end,
+    { desc = "Next conditional" })
+
+vim.keymap.set({ "n", "x", "o" }, "[f", function() ts_move.goto_previous_start("@function.outer", "textobjects") end,
+    { desc = "Previous function" })
+vim.keymap.set({ "n", "x", "o" }, "[c", function() ts_move.goto_previous_start("@class.outer", "textobjects") end,
+    { desc = "Previous class" })
+vim.keymap.set({ "n", "x", "o" }, "[a", function() ts_move.goto_previous_start("@parameter.outer", "textobjects") end,
+    { desc = "Previous parameter" })
+vim.keymap.set({ "n", "x", "o" }, "[i", function() ts_move.goto_previous_start("@conditional.outer", "textobjects") end,
+    { desc = "Previous conditional" })
+
+vim.keymap.set({ "n", "x", "o" }, "]F", function() ts_swap.swap_next("@function.outer", "textobjects") end,
+    { desc = "Swap next function" })
+vim.keymap.set({ "n", "x", "o" }, "]C", function() ts_swap.swap_next("@class.outer", "textobjects") end,
+    { desc = "Swap next class" })
+vim.keymap.set({ "n", "x", "o" }, "]A", function() ts_swap.swap_next("@parameter.outer", "textobjects") end,
+    { desc = "Swap next parameter" })
+vim.keymap.set({ "n", "x", "o" }, "]I", function() ts_swap.swap_next("@conditional.outer", "textobjects") end,
+    { desc = "Swap next conditional" })
+
+vim.keymap.set({ "n", "x", "o" }, "[F", function() ts_swap.swap_previous("@function.outer", "textobjects") end,
+    { desc = "Swap prev function" })
+vim.keymap.set({ "n", "x", "o" }, "[C", function() ts_swap.swap_previous("@class.outer", "textobjects") end,
+    { desc = "Swap prev class" })
+vim.keymap.set({ "n", "x", "o" }, "[A", function() ts_swap.swap_previous("@parameter.outer", "textobjects") end,
+    { desc = "Swap prev parameter" })
+vim.keymap.set({ "n", "x", "o" }, "[I", function() ts_swap.swap_previous("@conditional.outer", "textobjects") end,
+    { desc = "Swap prev conditional" })
