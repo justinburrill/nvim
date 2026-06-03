@@ -28,6 +28,8 @@ vim.cmd("highlight! link pythonConstant @constant.builtin")
 vim.cmd("highlight! link pythonEscape Keyword")
 vim.cmd("highlight! link pythonFStringDelimiter Keyword")
 vim.cmd("highlight! link pythonEllipsis Keyword")
+vim.cmd("highlight! link @keyword.import.python Keyword")
+vim.cmd("highlight! link @lsp.type.class.python Type")
 vim.cmd("highlight! link @lsp.type.class.c Type")
 
 -- copied from DiagnosticUnderlineInfo
