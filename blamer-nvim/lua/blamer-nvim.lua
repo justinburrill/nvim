@@ -22,7 +22,6 @@ require "blamer-nvim.lua.blamer-utils"
 
 --- @param blame_output_lines string[]
 --- @return BlameData
--- TODO: fix this func
 function Extract_data_from_blame(blame_output_lines)
     --- @type BlameData
     local commit_data = {}
@@ -53,7 +52,7 @@ function Extract_data_from_blame(blame_output_lines)
     if auto_extracted_data.previous ~= nil then
         local prev_hash, prev_filename = table.unpack(Split_fast(auto_extracted_data.previous))
         commit_data.previous_hash = prev_hash
-        commit_data.previous_filename = prev_filename
+        commit_data.previous_filename = Join_paths(Get_git_root_path(prev_filename), prev_filename)
     end
 
     -- Log("from lines: " .. Stringit(blame_output_lines) .. "\nmade this data: " .. Stringit(commit_data))
@@ -65,17 +64,18 @@ end
 ---@param filename string
 ---@return string[]
 function Run_git_blame(line_start, line_end, filename)
+    -- Log("Running git blame on file " .. filename)
     local cmd = {
         "git", "blame", "--porcelain", "--abbrev=6", "--root",
         "-L", string.format("%d,%d", line_start, line_end),
-        "--", filename,
+        "--", Get_abspath(filename),
     }
-    local blame_output_lines, blame_rc = Run_command(cmd)
+    local blame_output_lines, blame_rc = Run_command(cmd, Get_dirname(filename))
     local errmsg = Get_line_containing(blame_output_lines, "error: ") or
         Get_line_containing(blame_output_lines, "fatal: ")
     if errmsg ~= nil and blame_rc ~= 0 then
-        error("Got error message from git: '" ..
-            errmsg .. "'" .. ", with command: " .. table.concat(cmd, " "))
+        error("Got error message from git: \n'" ..
+            errmsg .. "'\nCommand used: " .. table.concat(cmd, " "))
     end
     return blame_output_lines
 end
@@ -103,7 +103,8 @@ function Format_blame_popup(line_num)
         end
         return author_line
     end
-    local blame_output_lines = Run_git_blame(line_num, line_num, vim.fn.expand("%"))
+    local abspath = Get_abspath(vim.fn.expand("%"))
+    local blame_output_lines = Run_git_blame(line_num, line_num, abspath)
     local blame_info = Extract_data_from_blame(blame_output_lines)
 
     local latest_commit_author_line = format_author_line(blame_info)
@@ -116,7 +117,8 @@ function Format_blame_popup(line_num)
     local number_of_Before_lines = #display_text
     local red_hl_line_end = number_of_Before_lines + 2
     if blame_info.previous_hash ~= nil then
-        local prev_blame_output = Run_git_blame(blame_info.original_line_num, blame_info.original_line_num, blame_info.previous_filename)
+        local prev_blame_output = Run_git_blame(blame_info.original_line_num, blame_info.original_line_num,
+            blame_info.previous_filename)
         local previous_blame_info = Extract_data_from_blame(prev_blame_output)
         table.insert(display_text,
             ("%s %s"):format(previous_blame_info.hash or "<no hash>",
