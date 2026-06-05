@@ -38,7 +38,7 @@ function Run_command(cmd, timeout)
     end
     local proc = vim.system(cmd):wait(timeout)
     if proc.code == 124 then
-        error("Timeout waiting for command (10s): " .. table.concat(cmd, " "))
+        error("Timeout waiting for command (" .. tostring(timeout) .. "ms): " .. table.concat(cmd, " "))
     else
         return Split_fast(Strip(proc.stdout) .. Strip(proc.stderr), "\n"), proc.code
     end
@@ -169,10 +169,13 @@ end
 --- @param buffer_id number
 --- @param line_num number
 --- @param namespace_name string
---- @param highlight string
+--- @param highlight_group string
 --- @param end_line_num number
-function Highlight_line(buffer_id, line_num, end_line_num, namespace_name, highlight)
+function Highlight_line(buffer_id, line_num, end_line_num, namespace_name, highlight_group)
     local namespace_id = vim.api.nvim_create_namespace(namespace_name)
+    Log("Highlighting: " ..
+    Stringit(buffer_id) ..
+    " " .. Stringit(line_num) .. " " .. Stringit(end_line_num) .. " " .. namespace_name .. " " .. highlight_group)
     vim.api.nvim_buf_set_extmark(
-        buffer_id, namespace_id, line_num - 1, 0, { hl_group = highlight, end_row = end_line_num })
+        buffer_id, namespace_id, line_num - 1, 0, { hl_group = highlight_group, end_row = end_line_num })
 end
