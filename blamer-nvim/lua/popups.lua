@@ -11,6 +11,9 @@ end
 --- @param text_lines string[] The text to place in the window
 --- @return number | nil newbuf The buffer id
 function Open_popup_window(text_lines)
+    if text_lines == nil then
+        error("Passed nil instead of string[] for param text_lines")
+    end
     local current_window_id = vim.api.nvim_get_current_win()
     local _, bufline, bufcol, _ = table.unpack(vim.fn.getpos("."))
     local screenpos = vim.fn.screenpos(current_window_id, bufline, bufcol)
