@@ -1,3 +1,9 @@
+--- @param p1 string
+--- @param p2 string
+function Join_paths(p1, p2)
+    return vim.fn.resolve(p1 .. "/" .. p2)
+end
+
 --- @param t any[]
 --- @return string
 local function table_to_str(t)
@@ -30,13 +36,14 @@ function Stringit(e)
 end
 
 --- @param cmd string[]
+--- @param cwd string | nil
 --- @param timeout number | nil
 --- @return string[], number
-function Run_command(cmd, timeout)
+function Run_command(cmd, cwd, timeout)
     if timeout == nil then
         timeout = 10000
     end
-    local proc = vim.system(cmd):wait(timeout)
+    local proc = vim.system(cmd, { text = true, cwd = cwd }):wait(timeout)
     if proc.code == 124 then
         error("Timeout waiting for command (" .. tostring(timeout) .. "ms): " .. table.concat(cmd, " "))
     else
@@ -173,9 +180,39 @@ end
 --- @param end_line_num number
 function Highlight_line(buffer_id, line_num, end_line_num, namespace_name, highlight_group)
     local namespace_id = vim.api.nvim_create_namespace(namespace_name)
-    Log("Highlighting: " ..
-    Stringit(buffer_id) ..
-    " " .. Stringit(line_num) .. " " .. Stringit(end_line_num) .. " " .. namespace_name .. " " .. highlight_group)
+    -- Log("Highlighting: " ..
+    --     Stringit(buffer_id) ..
+    --     " " .. Stringit(line_num) .. " " .. Stringit(end_line_num) .. " " .. namespace_name .. " " .. highlight_group)
     vim.api.nvim_buf_set_extmark(
         buffer_id, namespace_id, line_num - 1, 0, { hl_group = highlight_group, end_row = end_line_num })
+end
+
+--- @param filename string The file in the git repo
+--- @return string
+function Get_git_root_path(filename)
+    local cmd = { "git", "rev-parse", "--show-toplevel" }
+    local output, rc = Run_command(cmd, Get_dirname(filename))
+    if rc ~= 0 then
+        error("Failed to get git root path with cmd: " .. Stringit(cmd) .. "\nGot output: " .. output)
+    end
+    local path = table.remove(cmd, 1)
+    return path
+end
+
+--- @param filepath string
+--- @return string
+function Get_dirname(filepath)
+    local ret = Get_abspath(filepath):match("(.*[/\\])")
+    -- Log("Dirname of ".. filepath .. " is " .. ret)
+    return ret
+end
+
+
+-- TODO: fixme
+--- @param filepath string
+--- @return string
+function Get_abspath(filepath)
+    local ret = vim.fn.resolve(Join_paths(vim.fn.getcwd(), filepath))
+    -- Log("Abspath of ".. filepath .. " is " .. ret)
+    return ret
 end
