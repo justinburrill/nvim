@@ -1,7 +1,11 @@
 --- @param p1 string
 --- @param p2 string
 function Join_paths(p1, p2)
-    return vim.fn.resolve(p1 .. "/" .. p2)
+    if #p1 > 0 then
+        return vim.fn.resolve(p1 .. "/" .. p2)
+    else
+        return p2
+    end
 end
 
 --- @param t any[]
@@ -63,6 +67,14 @@ function Has_prefix(s, prefix)
     return s:sub(1, #prefix) == prefix
 end
 
+
+--- @param s string
+--- @param suffix string
+--- @return boolean
+function Has_suffix(s, suffix)
+    return s:sub(#s - #suffix, #s) == suffix
+end
+
 --- @param lines string[] Lines to search
 --- @param prefix string Prefix to search for
 --- @return string | nil
@@ -100,6 +112,25 @@ function Remove_prefix(s, prefix, force)
     else
         if force == true then
             error("Tried to remove prefix '" .. prefix .. "' from string '" .. s .. "' when force=true")
+        end
+        return s
+    end
+end
+
+
+--- @param s string
+--- @param suffix string
+--- @param force boolean | nil
+--- @return string
+function Remove_suffix(s, suffix, force)
+    if force == nil then
+        force = false
+    end
+    if Has_suffix(s, suffix) then
+        return s:sub(1, #s - #suffix)
+    else
+        if force == true then
+            error("Tried to remove suffix '" .. suffix .. "' from string '" .. s .. "' when force=true")
         end
         return s
     end
@@ -195,7 +226,8 @@ function Get_git_root_path(filename)
     if rc ~= 0 then
         error("Failed to get git root path with cmd: " .. Stringit(cmd) .. "\nGot output: " .. output)
     end
-    local path = table.remove(cmd, 1)
+    local path = Remove_prefix(Remove_suffix(table.remove(cmd, 1), "git"), "/")
+    -- Log("Returned git root path: ".. path)
     return path
 end
 
@@ -207,12 +239,13 @@ function Get_dirname(filepath)
     return ret
 end
 
-
 -- TODO: fixme
 --- @param filepath string
 --- @return string
 function Get_abspath(filepath)
-    local ret = vim.fn.resolve(Join_paths(vim.fn.getcwd(), filepath))
-    -- Log("Abspath of ".. filepath .. " is " .. ret)
-    return ret
+    if Has_prefix(filepath, "/") then
+        return filepath
+    else
+        return vim.fn.resolve(Join_paths(vim.fn.getcwd(), filepath))
+    end
 end
