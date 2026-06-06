@@ -54,15 +54,23 @@ function Open_popup_window(text_lines)
         end
     end
 
-    local close_window_autocmd_id = vim.api.nvim_create_autocmd({ "CursorMoved", "BufLeave" }, {
+    local cursor_move_autocmd = vim.api.nvim_create_autocmd({ "CursorMoved" }, {
         buffer = vim.api.nvim_get_current_buf(),
         callback = Close_blame_buffer,
         once = true,
     })
 
+    -- IMPROVE: 
+    -- local buf_leave_autocmd = vim.api.nvim_create_autocmd({ "BufLeave" }, {
+    --     buffer = newbuf,
+    --     callback = Close_blame_buffer,
+    --     once = true,
+    -- })
+
     vim.keymap.set("n", "q", function()
         Close_blame_buffer()
-        vim.api.nvim_del_autocmd(close_window_autocmd_id)
+        vim.api.nvim_del_autocmd(cursor_move_autocmd)
+        -- vim.api.nvim_del_autocmd(buf_leave_autocmd)
     end, { buffer = newbuf })
 
     vim.api.nvim_set_option_value("modifiable", false, { buf = newbuf })
