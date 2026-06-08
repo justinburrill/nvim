@@ -35,12 +35,26 @@ vim.opt.foldtext = ""
 vim.opt.foldnestmax = 10 -- don't create folds after X levels deep
 vim.o.undofile = true
 vim.o.cinoptions = (vim.o.cinoptions or "") .. "L0"
+vim.o.clipboard = "unnamedplus"
 
+local function paste()
+    return {
+        vim.fn.split(vim.fn.getreg(""), "\n"),
+        vim.fn.getregtype(""),
+    }
+end
 
-vim.g.clipboard = "osc52"
-local termfeatures = vim.g.termfeatures or {}
-termfeatures.osc52 = true
-vim.g.termfeatures = termfeatures
+vim.g.clipboard = {
+    name = "OSC 52",
+    copy = {
+        ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+        ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+    },
+    paste = {
+        ["+"] = paste,
+        ["*"] = paste,
+    }
+}
 
 -- PLUGINS PACKAGES vim.pack
 vim.pack.add({
