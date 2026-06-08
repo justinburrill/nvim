@@ -111,7 +111,7 @@ require "mini.pairs".setup()
 require "mini.surround".setup({
     n_lines = 50,
 })
--- TODO: Fix config according to new docs
+
 -- TREESITTER SETTINGS
 require "nvim-treesitter".setup()
 vim.api.nvim_create_autocmd("FileType", {

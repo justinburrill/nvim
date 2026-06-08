@@ -48,15 +48,6 @@ vim.lsp.config('lua_ls', {
     },
 })
 
--- TODO: merge with above
--- vim.lsp.config("lua_ls", {
---     settings = {
---         -- diagnostics = { globals = { "vim" }, },
---         -- workspace = { library = vim.api.nvim_get_runtime_file("", true), },
---         telemetry = { enable = false }
---     }
--- })
-
 vim.lsp.config("neocmake", {
     cmd = { "neocmakelsp", "stdio" }
 })
