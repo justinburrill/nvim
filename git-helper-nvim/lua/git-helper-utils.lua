@@ -199,9 +199,34 @@ function Get_git_root_path(filename)
     local dirname = vim.fs.dirname(abspath)
     local cmd = { "git", "rev-parse", "--show-toplevel" }
     local output, rc = Run_command(cmd, dirname)
-    if rc ~= 0 then
-        error("Failed to get git root path with cmd: " .. Stringit(cmd) .. "\nGot output: " .. output)
-    end
+    Handle_git_error({cmd=cmd, lines=output, msg="Failed to get git root path", code=rc})
     local path = table.remove(output, 1)
     return path
 end
+
+--- @class HandleGitErrorOpts
+--- @field msg string | nil
+--- @field lines string[]
+--- @field code integer
+--- @field cmd string[]
+
+--- @param opts HandleGitErrorOpts
+function Handle_git_error(opts)
+    local raw_msg = Get_line_containing(opts.lines, "error: ") or Get_line_containing(opts.lines, "fatal: ")
+    if raw_msg == nil and opts.code == 0 then
+        return
+    end
+    --- @type string
+    local err_msg
+    if opts.msg == nil then
+        err_msg = "Got error message from git:\n" .. raw_msg
+    else
+        err_msg = opts.msg .. ":" .. "\n" .. raw_msg
+    end
+
+    if opts.cmd ~= nil then
+        err_msg = err_msg .. "\nCommand used: " .. table.concat(opts.cmd, " ")
+    end
+    error(err_msg)
+end
+

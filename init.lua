@@ -197,7 +197,7 @@ require "lspsettings"
 
 -- KEYBINDS KEYMAPS
 require "keymaps"
-require "blamer-nvim.lua.blamer-nvim".setup()
+require "git-helper-nvim.lua.git-helper-nvim".setup()
 
 -- ACTIVATE COLOURSCHEME
 require "vague".setup({
