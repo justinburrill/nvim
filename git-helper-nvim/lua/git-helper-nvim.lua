@@ -3,8 +3,8 @@ local M = {}
 -- deprecation fix
 table.unpack = table.unpack or unpack
 
-require "blamer-nvim.lua.popups"
-require "blamer-nvim.lua.blamer-utils"
+require "git-helper-nvim.lua.popups"
+require "git-helper-nvim.lua.git-helper-utils"
 
 --- @class BlameData
 --- @field author string?
@@ -72,12 +72,7 @@ function Run_git_blame(line_start, line_end, filename)
         "--", vim.fs.abspath(filename),
     }
     local blame_output_lines, blame_rc = Run_command(cmd, vim.fs.dirname(filename))
-    local errmsg = Get_line_containing(blame_output_lines, "error: ") or
-        Get_line_containing(blame_output_lines, "fatal: ")
-    if errmsg ~= nil and blame_rc ~= 0 then
-        error("Got error message from git: \n'" ..
-            errmsg .. "'\nCommand used: " .. table.concat(cmd, " "))
-    end
+    Handle_git_error({cmd=cmd, code=blame_rc, lines=blame_output_lines})
     return blame_output_lines
 end
 
@@ -148,7 +143,7 @@ function Format_blame_popup(line_num)
     return out
 end
 
-function Open_blame_window()
+function Handle_blame()
     local _, bufline, _, _ = table.unpack(vim.fn.getpos("."))
 
     local blame_data = Format_blame_popup(bufline)
@@ -168,16 +163,41 @@ function Open_blame_window()
     end
 end
 
---- @class (exact) BlamerOpts
---- @field keymap string
+---@param filepath string
+function Git_add(filepath)
+    local cmd = {"git", "add", filepath}
+    local lines, rc = Run_command(cmd, vim.fs.dirname(filepath))
+    Handle_git_error({cmd=cmd, lines=lines, code=rc, msg="Failed to run git add"})
+end
 
----@param opts BlamerOpts | nil
+
+function Handle_add()
+    local filepath = vim.api.nvim_buf_get_name(0)
+    Git_add(filepath)
+end
+
+--- @class (exact) GitHelperKeymaps
+--- @field blame string
+--- @field add string
+
+
+--- @class (exact) GitHelperOps
+--- @field keymaps GitHelperKeymaps
+
+---@param opts GitHelperOps | nil
 function M.setup(opts)
     opts = opts or {}
-    vim.api.nvim_create_user_command("Blame", Open_blame_window, {})
-    local keymap = opts.keymap or "<leader>gb"
-    vim.keymap.set("n", keymap, Open_blame_window, {
+    ---@type GitHelperKeymaps
+    local default_keymaps = { blame = "<leader>gb", add = "<leader>ga" }
+    local keymaps = opts.keymaps or default_keymaps
+    vim.api.nvim_create_user_command("GitBlame", Handle_blame, {})
+    vim.keymap.set("n", keymaps["blame"], Handle_blame, {
         desc = "Git blame",
+        silent = true
+    })
+    vim.api.nvim_create_user_command("GitAdd", Handle_add, {})
+    vim.keymap.set("n", keymaps["add"], Handle_add, {
+        desc = "Git add",
         silent = true
     })
 end
