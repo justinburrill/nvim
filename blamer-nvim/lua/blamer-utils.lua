@@ -1,13 +1,3 @@
---- @param p1 string
---- @param p2 string
-function Join_paths(p1, p2)
-    if #p1 > 0 then
-        return vim.fn.resolve(p1 .. "/" .. p2)
-    else
-        return p2
-    end
-end
-
 --- @param t any[]
 --- @return string
 local function table_to_str(t)
@@ -60,27 +50,12 @@ function Log(s)
     vim.api.nvim_echo({ { s } }, true, {})
 end
 
---- @param s string
---- @param prefix string
---- @return boolean
-function Has_prefix(s, prefix)
-    return s:sub(1, #prefix) == prefix
-end
-
-
---- @param s string
---- @param suffix string
---- @return boolean
-function Has_suffix(s, suffix)
-    return s:sub(#s - #suffix, #s) == suffix
-end
-
 --- @param lines string[] Lines to search
 --- @param prefix string Prefix to search for
 --- @return string | nil
 function Get_line_starting_with(lines, prefix)
     for _, line in ipairs(lines) do
-        if Has_prefix(line, prefix) then
+        if vim.startswith(line, prefix) then
             return line
         end
     end
@@ -107,7 +82,7 @@ function Remove_prefix(s, prefix, force)
     if force == nil then
         force = false
     end
-    if Has_prefix(s, prefix) then
+    if vim.startswith(s, prefix) then
         return s:sub(#prefix + 1)
     else
         if force == true then
@@ -117,7 +92,6 @@ function Remove_prefix(s, prefix, force)
     end
 end
 
-
 --- @param s string
 --- @param suffix string
 --- @param force boolean | nil
@@ -126,7 +100,7 @@ function Remove_suffix(s, suffix, force)
     if force == nil then
         force = false
     end
-    if Has_suffix(s, suffix) then
+    if vim.endswith(s, suffix) then
         return s:sub(1, #s - #suffix)
     else
         if force == true then
@@ -221,31 +195,13 @@ end
 --- @param filename string The file in the git repo
 --- @return string
 function Get_git_root_path(filename)
+    local abspath = vim.fs.abspath(vim.fs.normalize(filename))
+    local dirname = vim.fs.dirname(abspath)
     local cmd = { "git", "rev-parse", "--show-toplevel" }
-    local output, rc = Run_command(cmd, Get_dirname(filename))
+    local output, rc = Run_command(cmd, dirname)
     if rc ~= 0 then
         error("Failed to get git root path with cmd: " .. Stringit(cmd) .. "\nGot output: " .. output)
     end
-    local path = Remove_prefix(Remove_suffix(table.remove(cmd, 1), "git"), "/")
-    -- Log("Returned git root path: ".. path)
+    local path = table.remove(output, 1)
     return path
-end
-
---- @param filepath string
---- @return string
-function Get_dirname(filepath)
-    local ret = Get_abspath(filepath):match("(.*[/\\])")
-    -- Log("Dirname of ".. filepath .. " is " .. ret)
-    return ret
-end
-
--- TODO: fixme
---- @param filepath string
---- @return string
-function Get_abspath(filepath)
-    if Has_prefix(filepath, "/") then
-        return filepath
-    else
-        return vim.fn.resolve(Join_paths(vim.fn.getcwd(), filepath))
-    end
 end
