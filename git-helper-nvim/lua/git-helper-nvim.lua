@@ -5,6 +5,7 @@ table.unpack = table.unpack or unpack
 
 require "git-helper-nvim.lua.popups"
 require "git-helper-nvim.lua.git-helper-utils"
+require "git-helper-nvim.lua.string-utils"
 
 --- @class BlameData
 --- @field commit CommitData
@@ -37,7 +38,6 @@ function Extract_data_from_blame(blame_output_lines, path_to_orig_file)
         -- the line starting with a tab is the text
         new_text = Remove_prefix(text_line, "\t", false)
     end
-    local git_root_dir = Get_git_root_path(path_to_orig_file)
     local hash, orig_line_num_str, final_line_num_str = table.unpack(Split_fast(blame_output_lines[1]))
     local extracted_data = Extract_data_from_git_output(blame_output_lines)
     local previous_hash = nil
@@ -56,7 +56,7 @@ function Extract_data_from_blame(blame_output_lines, path_to_orig_file)
     if extracted_data.previous ~= nil then
         local prev_hash_raw, prev_filepath_raw = table.unpack(Split_fast(extracted_data.previous))
         previous_hash = prev_hash_raw
-        previous_filepath = vim.fs.joinpath(git_root_dir, prev_filepath_raw)
+        previous_filepath = prev_filepath_raw
     end
 
     --- @type BlameData
@@ -69,7 +69,7 @@ function Extract_data_from_blame(blame_output_lines, path_to_orig_file)
         previous_filepath = previous_filepath,
         previous_hash = previous_hash,
     }
-    Log("from lines: " .. Stringit(blame_output_lines) .. "\nmade this data: " .. Stringit(blame_data))
+    Log("Extract_data_from_blame: from lines: " .. Stringit(blame_output_lines) .. "\nmade this data: " .. Stringit(blame_data))
     return blame_data
 end
 
@@ -144,6 +144,7 @@ function Format_blame_popup(line_num)
         red_hl_line_start = number_of_Before_lines + 1,
         red_hl_line_end = red_hl_line_end,
     }
+    Log("Format_blame_popup at line " .. tostring(line_num) .. ":\n" .. Stringit(out))
 
     return out
 end
