@@ -69,7 +69,6 @@ function Extract_data_from_blame(blame_output_lines, path_to_orig_file)
         previous_filepath = previous_filepath,
         previous_hash = previous_hash,
     }
-    Log("Extract_data_from_blame: from lines: " .. Stringit(blame_output_lines) .. "\nmade this data: " .. Stringit(blame_data))
     return blame_data
 end
 
@@ -102,7 +101,7 @@ function Format_blame_popup(line_num)
     local function format_author_line(blame_obj)
         local author_line
         if tonumber(blame_obj.hash) ~= 0 then
-            author_line = ("%s by %s"):format(blame_obj.hash:sub(1, 6) or "<no hash>", blame_obj.author or "<no author>")
+            author_line = ("%s by %s on %s"):format(blame_obj.hash:sub(1, 6) or "<no hash>", blame_obj.author or "<no author>", blame_obj.author_date or blame_obj.committer_date or "<unknown date>")
         else
             author_line = "~~~ Not yet committed ~~~"
         end
@@ -110,7 +109,6 @@ function Format_blame_popup(line_num)
         if blame_obj.committer ~= nil and blame_obj.committer ~= blame_obj.author then
             author_line = author_line .. " committed by " .. blame_obj.committer
         end
-        Log("format_author_line made: " .. author_line .. "\nFrom blame_obj: " .. Stringit(blame_obj))
         return author_line
     end
     local relpath = vim.api.nvim_buf_get_name(0)
@@ -133,7 +131,11 @@ function Format_blame_popup(line_num)
         red_hl_line_end = number_of_Before_lines + 2
         local previous_commit_info = Get_commit_data(blame_info.previous_hash)
         table.insert(display_text, format_author_line(previous_commit_info))
-        table.insert(display_text, previous_commit_info.subject)
+        if previous_commit_info.subject then
+            table.insert(display_text, '"' .. previous_commit_info.subject .. '"')
+        else
+            table.insert(display_text, "<no summary>")
+        end
         table.insert(display_text, Get_line_at_commit(blame_info.previous_filepath, line_num, blame_info.previous_hash))
     else
         table.insert(display_text, "No previous commit")
@@ -148,7 +150,6 @@ function Format_blame_popup(line_num)
         red_hl_line_start = number_of_Before_lines + 1,
         red_hl_line_end = red_hl_line_end,
     }
-    Log("Format_blame_popup at line " .. tostring(line_num) .. ":\n" .. Stringit(out))
 
     return out
 end

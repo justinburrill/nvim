@@ -101,7 +101,6 @@ function Get_commit_data(hash)
         hash = hash,
     }
 
-    Log("Get_commit_data: (code " .. tostring(code) .. ") for hash " .. hash .. "\n" .. Stringit(out))
     return out
 end
 
@@ -119,8 +118,6 @@ function Extract_data_from_git_output(lines)
         end
     end
 
-    Log("Extract_data_from_git_output: Extracted: \n" ..
-        Stringit(extracted_data) .. "\nFrom lines: \n" .. Stringit(lines))
     return extracted_data
 end
 
@@ -130,7 +127,6 @@ end
 --- @return string
 function Get_line_at_commit(filepath, line_num, commit_hash)
     local location = commit_hash .. ":" .. filepath
-    Log("Get_line_at_commit: line " .. tostring(line_num) .. " at " .. location)
     local cmd = table.concat({ "git", "show", location, "|", "sed", "-n", tostring(line_num) .. "p" }, " ")
     local proc = io.popen(cmd, "r")
     if proc == nil then
