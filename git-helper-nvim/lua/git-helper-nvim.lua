@@ -98,10 +98,11 @@ end
 ---@param line_num integer Line number for blame
 ---@return BlameTextDisplayData
 function Format_blame_popup(line_num)
+    --- @param blame_obj CommitData
     local function format_author_line(blame_obj)
         local author_line
         if tonumber(blame_obj.hash) ~= 0 then
-            author_line = ("%s by %s"):format(blame_obj.hash or "<no hash>", blame_obj.author or "<no author>")
+            author_line = ("%s by %s"):format(blame_obj.hash:sub(1, 6) or "<no hash>", blame_obj.author or "<no author>")
         else
             author_line = "~~~ Not yet committed ~~~"
         end
@@ -109,6 +110,7 @@ function Format_blame_popup(line_num)
         if blame_obj.committer ~= nil and blame_obj.committer ~= blame_obj.author then
             author_line = author_line .. " committed by " .. blame_obj.committer
         end
+        Log("format_author_line made: " .. author_line .. "\nFrom blame_obj: " .. Stringit(blame_obj))
         return author_line
     end
     local relpath = vim.api.nvim_buf_get_name(0)
@@ -118,7 +120,7 @@ function Format_blame_popup(line_num)
     end
     local blame_info = Extract_data_from_blame(blame_output_lines, relpath)
 
-    local latest_commit_author_line = format_author_line(blame_info)
+    local latest_commit_author_line = format_author_line(blame_info.commit)
     --- @type string[]
     local display_text = {
         latest_commit_author_line,
@@ -126,10 +128,12 @@ function Format_blame_popup(line_num)
         blame_info.new_text or "<no text>",
     }
     local number_of_Before_lines = #display_text
-    local red_hl_line_end = number_of_Before_lines + 2
+    local red_hl_line_end
     if blame_info.previous_hash ~= nil then
+        red_hl_line_end = number_of_Before_lines + 2
         local previous_commit_info = Get_commit_data(blame_info.previous_hash)
         table.insert(display_text, format_author_line(previous_commit_info))
+        table.insert(display_text, previous_commit_info.subject)
         table.insert(display_text, Get_line_at_commit(blame_info.previous_filepath, line_num, blame_info.previous_hash))
     else
         table.insert(display_text, "No previous commit")
