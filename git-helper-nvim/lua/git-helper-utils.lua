@@ -1,3 +1,9 @@
+--- @class CommandOpts
+--- @field timeout number | nil
+--- @field cwd string | nil
+--- @field echo boolean
+
+-- TODO: pass CommandOpts to Run_command
 
 --- @param cmd string[]
 --- @param cwd string | nil
