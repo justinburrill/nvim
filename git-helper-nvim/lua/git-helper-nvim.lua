@@ -176,7 +176,9 @@ end
 ---@param filepath string
 function Git_add(filepath)
     local cmd = { "git", "add", filepath }
-    local lines, rc = Run_command(cmd, vim.fs.dirname(filepath))
+    local lines, rc = Run_command(cmd, { cwd = vim.fs.dirname(filepath), echo = true })
+    -- TODO:
+    -- vim.api.nvim_echo
     Handle_git_error({ cmd = cmd, lines = lines, code = rc, msg = "Failed to run git add", raise_error = true })
 end
 
