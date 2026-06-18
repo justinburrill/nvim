@@ -19,6 +19,8 @@ vim.cmd("highlight lineNrBelow guifg=#5c7351") -- green
 vim.cmd("highlight @keyword.exception gui=bold guifg=#6e94b2")
 
 vim.cmd("highlight! link String @string")
+vim.cmd("highlight! link StorageClass Keyword")
+vim.cmd("highlight! link rustMacroVariable @variable")
 vim.cmd("highlight! link @lsp.type.macro Macro")
 vim.cmd("highlight! link @lsp.type.function @function")
 vim.cmd("highlight! link @lsp.typemod.function @function")
