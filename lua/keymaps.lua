@@ -10,7 +10,7 @@ vim.keymap.set("n", "<leader>M", ":Mason<CR>", { desc = "Mason" })
 vim.keymap.set({ "n", "x" }, "<C-Space>", vim.lsp.buf.hover)
 
 vim.api.nvim_create_user_command("LspLog", function(_)
-    local log_path = vim.fs.joinpath(vim.fn.stdpath("state"), "lsp.log")
+    local log_path = vim.fs.joinpath(vim.fn.stdpath("state"), "logs/lsp.log")
     vim.cmd(string.format("edit %s", log_path))
 end, { desc = "Show LSP log" })
 vim.keymap.set("n", "<leader>LL", ":LspLog<CR>") -- TODO: what's the new version of this? read https://jdhao.github.io/2026/04/02/nvim-v012-release/
