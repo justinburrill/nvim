@@ -23,15 +23,15 @@ vim.keymap.set("n", "<C-K>", "<C-W>k")
 vim.keymap.set("n", "<C-H>", "<C-W>h")
 vim.keymap.set("n", "<C-L>", "<C-W>l")
 
-vim.keymap.set("n", "<M-j>", "<C-E>", { desc = "Scroll down one line" })
-vim.keymap.set("n", "<M-k>", "<C-Y>", { desc = "Scroll up one line" })
+vim.keymap.set({ "n", "x" }, "<M-j>", "<C-E>", { desc = "Scroll down one line" })
+vim.keymap.set({ "n", "x" }, "<M-k>", "<C-Y>", { desc = "Scroll up one line" })
 vim.keymap.set("i", "<M-j>", "<C-o><C-E>", { desc = "Scroll down one line" })
 vim.keymap.set("i", "<M-k>", "<C-o><C-Y>", { desc = "Scroll up one line" })
 
 -- basic LSP stuff
 
 vim.keymap.set("n", "<leader>cf", function() vim.lsp.buf.format({ timeout_ms = 2500 }) end, { desc = "Code format" })
-vim.keymap.set("v", "<leader>cf", function() vim.lsp.buf.format({ timeout_ms = 2500 }) end,
+vim.keymap.set("x", "<leader>cf", function() vim.lsp.buf.format({ timeout_ms = 2500 }) end,
     { desc = "Code format selection" })
 vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "Go to implementation" })
 vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition" })
@@ -82,17 +82,17 @@ vim.keymap.set("n", "<leader>q", ":bp|bd #<CR>", { desc = "Quit buffer" }) -- IM
 
 -- jumping through
 
-vim.keymap.set("n", "[d", function()
+vim.keymap.set({ "n", "x" }, "[d", function()
     vim.diagnostic.jump({ count = -1, float = true })
 end, { desc = "Jump to previous diagnostic" })
-vim.keymap.set("n", "]d", function()
+vim.keymap.set({ "n", "x" }, "]d", function()
     vim.diagnostic.jump({ count = 1, float = true })
 end, { desc = "Jump to next diagnostic" })
 
-vim.keymap.set("n", "]t", function()
+vim.keymap.set({ "n", "x" }, "]t", function()
     require("todo-comments").jump_next()
 end, { desc = "Next todo comment" })
-vim.keymap.set("n", "[t", function()
+vim.keymap.set({ "n", "x" }, "[t", function()
     require("todo-comments").jump_prev()
 end, { desc = "Previous todo comment" })
 
