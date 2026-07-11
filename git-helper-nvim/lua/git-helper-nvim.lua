@@ -75,14 +75,19 @@ end
 ---@param line_start integer
 ---@param line_end integer
 ---@param filename string
+---@param opts table | nil
 ---@return string[], string?
-function Run_git_blame(line_start, line_end, filename)
+function Run_git_blame(line_start, line_end, filename, opts)
+    local log = opts ~= nil and opts.log == true
     local cmd = {
         "git", "blame", "--porcelain", "--abbrev=6", "--root",
         "-L", string.format("%d,%d", line_start, line_end),
         "--", vim.fs.abspath(filename),
     }
     local blame_output_lines, blame_rc = Run_command(cmd, vim.fs.dirname(filename))
+    if log then
+        Log("Using command: " .. vim.fn.join(cmd, " ") .. "Got output:\n" .. Stringit(blame_output_lines))
+    end
     local error_msg = Handle_git_error({ cmd = cmd, code = blame_rc, lines = blame_output_lines, raise_error = false })
     return blame_output_lines, error_msg
 end
@@ -94,34 +99,41 @@ end
 ---@field red_hl_line_start number
 ---@field red_hl_line_end number
 
----@param line_num integer Line number for blame
+---@param line_num integer Which line to find the blame for
 ---@return BlameTextDisplayData
 function Format_blame_popup(line_num)
     --- @param blame_obj CommitData
     local function format_author_line(blame_obj)
-        local author_line
+        local header_line
         if tonumber(blame_obj.hash) ~= 0 then
-            author_line = ("%s by %s on %s"):format(blame_obj.hash:sub(1, 6) or "<no hash>", blame_obj.author or "<no author>", blame_obj.author_date or blame_obj.committer_date or "<unknown date>")
+            local date = blame_obj.author_date or "<unknown date>"
+            local author = blame_obj.author or "<no author>"
+            local hash = blame_obj.hash:sub(1, 6) or "<no hash>"
+            if date == "<unknown date>" then
+                error("From blame_obj:\n" .. Stringit(blame_obj) .. "\nMade date: " .. date)
+            end
+            header_line = ("%s by %s on %s"):format(hash, author, date)
         else
-            author_line = "~~~ Not yet committed ~~~"
+            header_line = "~~~ Not yet committed ~~~"
         end
 
+        -- If the committer is not the same as the author, add extra line
         if blame_obj.committer ~= nil and blame_obj.committer ~= blame_obj.author then
-            author_line = author_line .. " committed by " .. blame_obj.committer
+            header_line = header_line .. "\nCommitted by " .. blame_obj.committer .. " on " .. blame_obj.committer_date
         end
-        return author_line
+        return header_line
     end
     local relpath = vim.api.nvim_buf_get_name(0)
-    local blame_output_lines, err_msg = Run_git_blame(line_num, line_num, relpath)
+    local blame_output_lines, err_msg = Run_git_blame(line_num, line_num, relpath, { log = true })
     if err_msg ~= nil then
         error(err_msg)
     end
     local blame_info = Extract_data_from_blame(blame_output_lines, relpath)
 
-    local latest_commit_author_line = format_author_line(blame_info.commit)
+    local latest_commit_author_line = vim.split(format_author_line(blame_info.commit), "\n")
     --- @type string[]
     local display_text = {
-        latest_commit_author_line,
+        unpack(latest_commit_author_line),
         ('"' .. blame_info.commit.subject .. '"') or "<no summary>",
         blame_info.new_text or "<no text>",
     }

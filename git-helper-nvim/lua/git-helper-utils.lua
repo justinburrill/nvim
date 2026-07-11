@@ -1,21 +1,21 @@
 --- @class CommandOpts
 --- @field timeout number | nil
---- @field cwd string | nil
 --- @field echo boolean
 
--- TODO: pass CommandOpts to Run_command
 
 --- @param cmd string[]
---- @param cwd string | nil
---- @param timeout number | nil
+--- @param opts CommandOpts | nil
 --- @return string[] lines
 --- @return number code
-function Run_command(cmd, cwd, timeout)
-    if timeout == nil then
-        timeout = 10000
-    end
-    if cwd ~= nil and not (vim.fn.isdirectory(cwd) == 1) then
-        error("Can't run command in cwd '" .. cwd .. "' as it doesn't exist.")
+function Run_command(cmd, cwd, opts)
+    local timeout = 10000
+    if opts ~= nil then
+        if opts.timeout == nil then
+            timeout = opts.timeout
+        end
+        if cwd ~= nil and not (vim.fn.isdirectory(cwd) == 1) then
+            error("Can't run command in cwd '" .. cwd .. "' as it doesn't exist.")
+        end
     end
     local proc = vim.system(cmd, { text = true, cwd = cwd }):wait(timeout)
     if proc.code == 124 then
@@ -24,8 +24,6 @@ function Run_command(cmd, cwd, timeout)
         return Split_fast(Strip(proc.stdout) .. Strip(proc.stderr), "\n"), proc.code
     end
 end
-
-
 
 --- @param filename string The file in the git repo
 --- @return string
@@ -92,15 +90,16 @@ function Get_commit_data(hash)
     --- @type CommitData
     local out = {
         author = extracted_data["author"],
-        author_email = extracted_data["author-email"],
-        author_date = extracted_data["author-date"],
-        committer = extracted_data["author"],
-        committer_email = extracted_data["author-email"],
-        committer_date = extracted_data["author-date"],
+        author_email = extracted_data["author_email"],
+        author_date = extracted_data["author_date"],
+        committer = extracted_data["committer"],
+        committer_email = extracted_data["committer_email"],
+        committer_date = extracted_data["committer_date"],
         subject = extracted_data["subject"],
         hash = hash,
     }
 
+    Log("Got commit data:\n" .. Stringit(out) .. "\nFrom lines:\n" .. Stringit(lines))
     return out
 end
 
@@ -147,4 +146,3 @@ function Get_line_at_commit(filepath, line_num, commit_hash)
     -- })
     -- return lines[1]
 end
-
