@@ -44,7 +44,7 @@ function Open_popup_window(text_lines)
     end
     POPUP_WINDOW = win
 
-    -- Log("Creating window with lines: " .. Stringit(text_lines))
+    Log("Creating window with lines: " .. Stringit(text_lines))
     vim.api.nvim_buf_set_lines(newbuf, 0, -1, false, text_lines)
 
     function Close_blame_buffer()

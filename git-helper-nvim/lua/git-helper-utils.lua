@@ -73,6 +73,11 @@ end
 --- @param hash string
 --- @return CommitData
 function Get_commit_data(hash)
+    if tonumber(hash) == 0 then
+        return {
+            hash = hash
+        }
+    end
     local fields = {
         "author %an",
         "author_mail %ae",
@@ -99,7 +104,7 @@ function Get_commit_data(hash)
         hash = hash,
     }
 
-    Log("Got commit data:\n" .. Stringit(out) .. "\nFrom lines:\n" .. Stringit(lines))
+    -- Log("Got commit data:\n" .. Stringit(out) .. "\nFrom lines:\n" .. Stringit(lines))
     return out
 end
 
@@ -117,6 +122,8 @@ function Extract_data_from_git_output(lines)
         end
     end
 
+
+    -- Log("Got git data:\n" .. Stringit(extracted_data) .. "\nFrom lines:\n" .. Stringit(lines))
     return extracted_data
 end
 
@@ -145,4 +152,13 @@ function Get_line_at_commit(filepath, line_num, commit_hash)
     --     msg = "Couldn't get line at commit"
     -- })
     -- return lines[1]
+end
+
+--- @param time string
+--- @return string
+function Convert_epoch_time(time)
+    local cmd = { "date", "-d@" .. time }
+    local lines, code = Run_command(cmd)
+    Handle_git_error({ lines = lines, code = code, raise_error = true, cmd = cmd })
+    return lines[1]
 end

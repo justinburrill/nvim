@@ -42,16 +42,20 @@ function Extract_data_from_blame(blame_output_lines, path_to_orig_file)
     local extracted_data = Extract_data_from_git_output(blame_output_lines)
     local previous_hash = nil
     local previous_filepath = nil
-    local orig_commit = {
-        author = extracted_data["author"],
-        author_email = extracted_data["author-email"],
-        author_date = extracted_data["author-date"],
-        committer = extracted_data["author"],
-        committer_email = extracted_data["author-email"],
-        committer_date = extracted_data["author-date"],
-        subject = extracted_data["summary"],
-        hash = hash,
-    }
+    -- --- @type CommitData
+    -- local orig_commit = {
+    --     author = extracted_data["author"],
+    --     author_email = extracted_data["author-email"],
+    --     author_date = Convert_epoch_time(extracted_data["author-time"]),
+    --     committer = extracted_data["committer"],
+    --     committer_email = extracted_data["committer-email"],
+    --     committer_date = Convert_epoch_time(extracted_data["committer-time"]),
+    --     subject = extracted_data["summary"],
+    --     hash = hash,
+    -- }
+    local orig_commit = Get_commit_data(hash)
+
+    -- Log("Created orig_commit:\n" .. Stringit(orig_commit) .. "\nFrom extracted_data:\n" .. Stringit(extracted_data))
 
     if extracted_data.previous ~= nil then
         local prev_hash_raw, prev_filepath_raw = table.unpack(Split_fast(extracted_data.previous))
@@ -69,6 +73,7 @@ function Extract_data_from_blame(blame_output_lines, path_to_orig_file)
         previous_filepath = previous_filepath,
         previous_hash = previous_hash,
     }
+    -- Log("Made BlameData:\n" .. Stringit(blame_data) .. "\nFrom lines:\n" .. Stringit(blame_output_lines))
     return blame_data
 end
 
@@ -79,6 +84,7 @@ end
 ---@return string[], string?
 function Run_git_blame(line_start, line_end, filename, opts)
     local log = opts ~= nil and opts.log == true
+    --  "--date=human" does nothing with --porcelain
     local cmd = {
         "git", "blame", "--porcelain", "--abbrev=6", "--root",
         "-L", string.format("%d,%d", line_start, line_end),
@@ -86,7 +92,7 @@ function Run_git_blame(line_start, line_end, filename, opts)
     }
     local blame_output_lines, blame_rc = Run_command(cmd, vim.fs.dirname(filename))
     if log then
-        Log("Using command: " .. vim.fn.join(cmd, " ") .. "Got output:\n" .. Stringit(blame_output_lines))
+        Log("Using command: " .. vim.fn.join(cmd, " ") .. "\nGot output:\n" .. Stringit(blame_output_lines))
     end
     local error_msg = Handle_git_error({ cmd = cmd, code = blame_rc, lines = blame_output_lines, raise_error = false })
     return blame_output_lines, error_msg
@@ -102,38 +108,38 @@ end
 ---@param line_num integer Which line to find the blame for
 ---@return BlameTextDisplayData
 function Format_blame_popup(line_num)
-    --- @param blame_obj CommitData
-    local function format_author_line(blame_obj)
+    --- @param commit_data CommitData
+    local function format_author_line(commit_data)
         local header_line
-        if tonumber(blame_obj.hash) ~= 0 then
-            local date = blame_obj.author_date or "<unknown date>"
-            local author = blame_obj.author or "<no author>"
-            local hash = blame_obj.hash:sub(1, 6) or "<no hash>"
+        if tonumber(commit_data.hash) ~= 0 then
+            local date = commit_data.author_date or "<unknown date>"
+            local author = commit_data.author or "<no author>"
+            local hash = commit_data.hash:sub(1, 6) or "<no hash>"
             if date == "<unknown date>" then
-                error("From blame_obj:\n" .. Stringit(blame_obj) .. "\nMade date: " .. date)
+                error("From blame_obj:\n" .. Stringit(commit_data) .. "\nMade date: " .. date)
             end
             header_line = ("%s by %s on %s"):format(hash, author, date)
+            -- If the committer is not the same as the author, add extra line
+            if commit_data.committer ~= nil and commit_data.committer ~= commit_data.author then
+                header_line = header_line .. "\nCommitted by " .. commit_data.committer .. " on " .. commit_data.committer_date
+            end
         else
             header_line = "~~~ Not yet committed ~~~"
         end
 
-        -- If the committer is not the same as the author, add extra line
-        if blame_obj.committer ~= nil and blame_obj.committer ~= blame_obj.author then
-            header_line = header_line .. "\nCommitted by " .. blame_obj.committer .. " on " .. blame_obj.committer_date
-        end
         return header_line
     end
     local relpath = vim.api.nvim_buf_get_name(0)
-    local blame_output_lines, err_msg = Run_git_blame(line_num, line_num, relpath, { log = true })
+    local blame_output_lines, err_msg = Run_git_blame(line_num, line_num, relpath)
     if err_msg ~= nil then
         error(err_msg)
     end
     local blame_info = Extract_data_from_blame(blame_output_lines, relpath)
 
-    local latest_commit_author_line = vim.split(format_author_line(blame_info.commit), "\n")
+    local latest_commit_author_lines = vim.split(format_author_line(blame_info.commit), "\n")
     --- @type string[]
     local display_text = {
-        unpack(latest_commit_author_line),
+        unpack(latest_commit_author_lines),
         ('"' .. blame_info.commit.subject .. '"') or "<no summary>",
         blame_info.new_text or "<no text>",
     }
@@ -169,17 +175,17 @@ end
 function Handle_blame()
     local _, bufline, _, _ = table.unpack(vim.fn.getpos("."))
 
-    local blame_data = Format_blame_popup(bufline)
-    if blame_data == nil then error("blame_data is nil...") end
+    local blame_text = Format_blame_popup(bufline)
+    if blame_text == nil then error("blame_data is nil...") end
     if POPUP_WINDOW == nil then
-        local buf_id = Open_popup_window(blame_data.lines)
+        local buf_id = Open_popup_window(blame_text.lines)
         if buf_id == nil then
             error("Failed to create buffer")
         else
             Highlight_line(
-                buf_id, blame_data.green_hl_line_start, blame_data.green_hl_line_end, "tempgreen", "DiffAdd")
+                buf_id, blame_text.green_hl_line_start, blame_text.green_hl_line_end, "tempgreen", "DiffAdd")
             Highlight_line(
-                buf_id, blame_data.red_hl_line_start, blame_data.red_hl_line_end, "tempred", "DiffDelete")
+                buf_id, blame_text.red_hl_line_start, blame_text.red_hl_line_end, "tempred", "DiffDelete")
         end
     else
         Focus_popup_window()
@@ -188,6 +194,7 @@ end
 
 ---@param filepath string
 function Git_add(filepath)
+    error("Not yet implemented")
     local cmd = { "git", "add", filepath }
     local lines, rc = Run_command(cmd, { cwd = vim.fs.dirname(filepath), echo = true })
     -- TODO:
