@@ -76,7 +76,7 @@ end, { desc = "Pick references" })
 
 -- my keybinds !!
 vim.keymap.set("n", "<leader>rc", ":let @\"=@+<CR>", { desc = "Re-copy (\"+)" })
-vim.keymap.set("i", "<C-H>", "<C-W>")                                      -- delete word with ctrl+backspace
+vim.keymap.set({ "i", "c" }, "<C-H>", "<C-W>")                             -- delete word with ctrl+backspace
 vim.keymap.set("i", "<C-Del>", "<space><esc>ce")                           -- delete word with ctrl+del
 vim.keymap.set("n", "<leader>q", ":bp|bd #<CR>", { desc = "Quit buffer" }) -- IMPROVE: 'bp' isn't what i want here...
 
