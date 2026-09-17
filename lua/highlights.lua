@@ -33,6 +33,7 @@ vim.cmd("highlight! link pythonEllipsis Keyword")
 vim.cmd("highlight! link @keyword.import.python Keyword")
 vim.cmd("highlight! link @lsp.type.class.python Type")
 vim.cmd("highlight! link @lsp.type.class.c Type")
+vim.cmd("highlight! link @lsp.type.escapeSequence SpecialChar")
 
 -- copied from DiagnosticUnderlineInfo
 vim.cmd("highlight! DiagnosticUnnecessary cterm=underline gui=undercurl guisp=#aeaed1 guifg=#606079")
